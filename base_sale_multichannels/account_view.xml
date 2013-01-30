@@ -6,7 +6,6 @@
             <field name="name">base_sale_multichannels.view_tax_form</field>
             <field name="model">account.tax</field>
             <field name="inherit_id" ref="account.view_tax_form" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <field name="active" position="after">
                     <field name="group_id"/>
@@ -18,7 +17,6 @@
         <record id="view_tax_group_tree" model="ir.ui.view">
             <field name="name">account.tax.group</field>
             <field name="model">account.tax.group</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Account Tax Group">
                     <field name="name"/>
@@ -30,7 +28,6 @@
         <record id="view_tax_group_form" model="ir.ui.view">
             <field name="name">account.tax.group</field>
             <field name="model">account.tax.group</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Account Tax Group">
                     <field name="name" colspan="4"/>

@@ -6,24 +6,23 @@
             <field name="name">base_sale_multichannels_view_shop_form</field>
             <field name="model">sale.shop</field>
             <field name="inherit_id" ref="sale.view_shop_form" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <data>
                     <field name="payment_default_id" position="after">
-                        <field name="sale_journal" domain="[('type','=','sale')]"/>
+                        <field name="sale_journal" domain="[('type', '=', 'sale')]"/>
                     </field>
                     <form position="inside">
-                        <separator string="Sale Multi Channels" colspan="4" />
+                        <separator string="E-Commerce" colspan="4" />
                         <notebook colspan="4">
-                            <page string="External Shop Settings">
-                                <group col="4" colspan="4">
+                            <page string="Settings">
+                                <group>
                                     <field name="referential_id" />
                                     <field name="shop_group_id" />
-                                    <field name="type_name" invisible="True"/>
                                 </group>
                             </page>
                             <page string="Extra Information">
-                                <separator string='Accounting' colspan="4"/>
+                                <group>
+                                    <separator string='Accounting' colspan="4"/>
                                     <field name="auto_import"/>
                                     <field name="is_tax_included"/>
                                     <field name="use_external_tax"/>
@@ -33,12 +32,13 @@
                                     <field name="default_fiscal_position"/>
                                     <field name="default_customer_account"/>
                                     <field name="default_customer_lang"/>
-                                <separator string='Stock' colspan="4"/>
+                                    <separator string='Stock' colspan="4"/>
                                     <field name="product_stock_field_id"/>
-                                <separator string='Other Information' colspan="4"/>
+                                    <separator string='Other Information' colspan="4"/>
                                     <!-- <field name="address_id" colspan="2" /> -->
                                     <field name="website" colspan="2" />
                                     <field name="image" widget='image' colspan="2" />
+                                </group>
                             </page>
                         </notebook>
                     </form>
@@ -50,7 +50,6 @@
             <field name="name">base_sale_multichannel_view_order_tree</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_tree" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <field name="state" position="after">
                     <field name="need_to_update" />
@@ -65,7 +64,6 @@
             <field name="name">base_sale_multichannel.view_sales_order_filter</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter" />
-            <field name="type">search</field>
             <field eval="32" name="priority"/>
             <field name="arch" type="xml">
                 <filter icon="terp-check" string="Sales" position="after">
@@ -79,7 +77,6 @@
             <field name="name">base_sale_multichannel_view_order_form</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_automatic_workflow.sale_order_view_form" />
-            <field name="type">form</field>
             <field eval="30" name="priority"/>
             <field name="arch" type="xml">
                 <data>
@@ -92,13 +89,6 @@
                             <field name="need_to_update" />
                         </group>
                     </group>
-                    <xpath expr="/form/notebook/page/field/form/notebook/page[@string='Order Line']/group" position="after">
-                        <group name='External Information' colspan="4">
-                            <separator string="External Information" colspan="4" />
-                            <field name="ext_product_ref" />
-                            <field name="ext_ref_line" select="1" />
-                        </group>
-                    </xpath>
                 </data>
             </field>
         </record>
@@ -107,7 +97,6 @@
             <field name="name">base_sale_multichannel_view_order_tree</field>
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_order_line_tree" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <data>
                     <field name="product_id" position="after">
@@ -121,14 +110,13 @@
             <field name="name">base_sale_multichannel_view_order_form</field>
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_order_line_form2" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <data>
-                    <field name="notes" position="after">
-                        <group name='External Syncronization' colspan="4">
-                            <separator string="External syncronization" colspan="4" />
-                            <field name="ext_product_ref" select="1" />
-                            <field name="ext_ref_line" select="1" />
+                    <field name="name" position="after">
+                        <group name='external_synchronization' colspan="4">
+                            <separator string="External Synchronization" colspan="4" />
+                            <field name="ext_product_ref" />
+                            <field name="ext_ref_line" />
                         </group>
                     </field>
                 </data>
@@ -138,7 +126,6 @@
         <record id="view_base_sale_external_shop_group_form" model="ir.ui.view">
             <field name="name">base.sale.external.shop.group.form</field>
             <field name="model">external.shop.group</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="External shop group">
                     <field name="name" select="1" />
@@ -152,7 +139,6 @@
         <record id="view_base_sale_external_shop_group_tree" model="ir.ui.view">
             <field name="name">base.sale.external.shop.group.tree</field>
             <field name="model">external.shop.group</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="External shop groups">
                     <field name="name" />

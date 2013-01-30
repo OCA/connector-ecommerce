@@ -4,7 +4,6 @@
         <record model="ir.ui.view" id="sale_order_import_wizard_view">
             <field name="name">sale.order.import.wizard.view</field>
             <field name="model">sale.order.import.wizard</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Import a specifique order from an external system">
                     <field name="order_number" nolabel="1" colspan='4'/>

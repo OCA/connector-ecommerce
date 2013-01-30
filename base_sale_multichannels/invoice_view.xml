@@ -6,7 +6,6 @@
             <field name="name">base_sale_multichannel_invoice_form</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <field name="move_id" position="after">
                     <field name="shop_id" select="1" />
