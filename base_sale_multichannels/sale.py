@@ -214,7 +214,9 @@ class sale_shop(Model):
         'default_customer_account': fields.many2one('account.account', 'Default Customer Account'),
         'default_customer_lang': fields.many2one('res.lang', 'Default Customer Language'),
         'auto_import': fields.boolean('Automatic Import'),
-        'address_id':fields.many2one('res.partner.address', 'Address'),
+        # 'address_id':fields.many2one('res.partner.address', 'Address'),
+        # TODO migrate from address to partner?
+         'partner_id':fields.many2one('res.partner', 'Partner'),
         'website': fields.char('Website', size=64),
         'image':fields.binary('Image', filters='*.png,*.jpg,*.gif'),
         # to remove? (always computed by openerp)

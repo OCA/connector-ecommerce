@@ -48,11 +48,3 @@ class res_partner(orm.Model):
                 'shop_ids': [(4, shop.id)],
             })
         return defaults
-
-class res_partner_address(orm.Model):
-    _inherit = 'res.partner.address'
-
-    def _transform_one_resource(self, *args, **kwargs):
-        if kwargs.get('parent_data') and kwargs['parent_data'].get('partner_id'):
-            kwargs['defaults']['partner_id'] = kwargs['parent_data']['parent_id']
-        return super(res_partner_address, self)._transform_one_resource(*args, **kwargs)

@@ -36,7 +36,7 @@
                                 <separator string='Stock' colspan="4"/>
                                     <field name="product_stock_field_id"/>
                                 <separator string='Other Information' colspan="4"/>
-                                    <field name="address_id" colspan="2" />
+                                    <!-- <field name="address_id" colspan="2" /> -->
                                     <field name="website" colspan="2" />
                                     <field name="image" widget='image' colspan="2" />
                             </page>
@@ -207,14 +207,6 @@
             res_model="ir.model.data"
             src_model="res.partner"
             domain="[('res_id', '=', active_id), ('model', '=', 'res.partner')]"
-        />
-        
-        <act_window
-            id="base_external_referentials.ext_res_partner_address"
-            name="External Address"
-            res_model="ir.model.data"
-            src_model="res.partner.address"
-            domain="[('res_id', '=', active_id), ('model', '=', 'res.partner.address')]"
         />
 
     </data>
