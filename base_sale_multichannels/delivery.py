@@ -25,5 +25,6 @@ class delivery_carrier(Model):
     _inherit = "delivery.carrier"
 
     _columns = {
+        # TODO to be removed once the job export tracking is there
         'export_needs_tracking': fields.boolean('Export only shippings with a tracking number'),
     }

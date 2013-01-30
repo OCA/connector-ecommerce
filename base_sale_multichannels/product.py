@@ -22,6 +22,7 @@
 
 from openerp.osv.orm import Model
 from openerp.osv import fields
+
 from base_external_referentials.decorator import only_for_referential
 from base_external_referentials.decorator import commit_now
 

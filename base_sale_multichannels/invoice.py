@@ -26,8 +26,10 @@ class account_invoice(Model):
     
     _columns={
         'shop_id': fields.many2one('sale.shop', 'Shop', readonly=True, states={'draft': [('readonly', False)]}),
-        'do_not_export': fields.boolean('Do not export',
-                 help="This delivery order will not be exported to the external referential."),
+        'do_not_export': fields.boolean(
+            'Do not export',
+             help="This delivery order will not be exported "
+                  "to the external referential."),
     }
 
     def _prepare_invoice_refund(self, cr, uid, ids, invoice_vals, date=None, period_id=None, description=None, journal_id=None, context=None):

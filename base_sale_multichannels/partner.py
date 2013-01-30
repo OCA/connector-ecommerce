@@ -19,17 +19,21 @@
 #                                                                               #
 #################################################################################
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp.osv import orm, fields
 
 
-class res_partner(Model):
-    _inherit='res.partner'
+class res_partner(orm.Model):
+    _inherit = 'res.partner'
 
     _columns = {
-        # defaults_shop_id is deprecated... we should not use it any more !
-        'defaults_shop_id': fields.many2one('sale.shop', 'Sale Shop', help="This is the default shop of the customer"),
-        'shop_ids': fields.many2many('sale.shop', 'sale_shop_res_partner_rel', 'shop_id', 'partner_id', 'Present in Shops', readonly=True, help="List of shops in which this customer exists."),
+        'shop_ids': fields.many2many(
+            'sale.shop',
+            'sale_shop_res_partner_rel',
+            'shop_id',
+            'partner_id',
+            string='Present in Shops',
+            readonly=True,
+            help="List of shops in which this customer exists."),
     }
 
     # xxx move to BaseConnector _get_import_defaults_res_partner
@@ -45,8 +49,8 @@ class res_partner(Model):
             })
         return defaults
 
-class res_partner_address(Model):
-    _inherit='res.partner.address'
+class res_partner_address(orm.Model):
+    _inherit = 'res.partner.address'
 
     def _transform_one_resource(self, *args, **kwargs):
         if kwargs.get('parent_data') and kwargs['parent_data'].get('partner_id'):

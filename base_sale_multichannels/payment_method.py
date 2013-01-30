@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #################################################################################
 #                                                                               #
 #    base_sale_multichannels for OpenERP                                        #
@@ -20,18 +20,19 @@
 #################################################################################
 
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
+from openerp.osv import orm, fields
 
 
 
-class payment_method(Model):
+class payment_method(orm.Model):
     _inherit = "payment.method"
 
     _columns = {
-        'automatic_update': fields.boolean('Automatic Update',
-                help=("If the order is not paid, OpenERP  will call the external system",
-                     "before each order import in order to know if this order is paid")),
+        'automatic_update': fields.boolean(
+            'Automatic Update',
+            help="If the order is not paid, OpenERP  will call the "
+                 "external system before each order import in order to know "
+                 "if this order is paid"),
     }
 
     def get_or_create_payment_method(self, cr, uid, payment_method, context=None):

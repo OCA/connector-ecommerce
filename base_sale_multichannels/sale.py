@@ -24,32 +24,21 @@
 from openerp.osv.orm import Model
 from openerp.osv import fields
 from openerp.osv.osv import except_osv
-import pooler
+from openerp import pooler
 from sets import Set as set
-import netsvc
-from tools.translate import _
+from openerp import netsvc
+from openerp.tools.translate import _
 import time
 import decimal_precision as dp
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from base_external_referentials.external_osv import ExternalSession
 from base_external_referentials.decorator import open_report
 from base_external_referentials.decorator import catch_error_in_report
 
-#TODO use external_session.logger when it's posible
 import logging
 _logger = logging.getLogger(__name__)
-
-
-class StockPicking(Model):
-    '''Add a flag for marking picking as exported'''
-    _inherit = 'stock.picking'
-
-    _columns = {
-        'exported_to_magento': fields.boolean('Exported to Magento',
-            readonly=True),
-    }
 
 
 class external_shop_group(Model):
@@ -184,20 +173,39 @@ class sale_shop(Model):
         'exportable_root_category_id':fields.function(_get_rootcategory, fnct_inv = _set_rootcategory, type="many2one", relation="product.category", string="Root Category"),
         'exportable_product_ids': fields.function(_get_exportable_product_ids, type='many2many', relation="product.product", string='Exportable Products'),
         'shop_group_id': fields.many2one('external.shop.group', 'Shop Group', ondelete='cascade'),
+        # to remove?
         'last_inventory_export_date': fields.datetime('Last Inventory Export Time'),
+        # to remove
         'last_images_export_date': fields.datetime('Last Images Export Time'),
+        # to remove
         'last_update_order_export_date' : fields.datetime('Last Order Update  Time'),
+        # to remove
         'last_products_export_date' : fields.datetime('Last Product Export Time'),
+        # to remove
         'last_special_products_export_date' : fields.datetime('Last Special Product Export Time'),
+        # to remove
         'last_category_export_date' : fields.datetime('Last Category Export Time'),
-        'referential_id': fields.function(_get_referential_id,
-            fnct_inv=_set_referential_id, type='many2one',
-            relation='external.referential', string='External Referential', store={
-                'sale.shop': (lambda self, cr, uid, ids, c={}: ids, ['referential_integer_id', 'shop_group_id'], 10),
-                'external.shop.group': (_get_shop_from_shop_group, ['referential_id'], 20),
+        'referential_id': fields.function(
+            _get_referential_id,
+            fnct_inv=_set_referential_id,
+            type='many2one',
+            relation='external.referential',
+            string='External Referential',
+            store={
+                'sale.shop': (
+                    lambda self, cr, uid, ids, c=None: ids,
+                    ['referential_integer_id', 'shop_group_id'],
+                    10),
+                'external.shop.group': (
+                    _get_shop_from_shop_group,
+                    ['referential_id'],
+                    20),
                 }),
+        # wat?
         'referential_integer_id': fields.integer('Referential Integer ID'),
-        'is_tax_included': fields.boolean('Prices Include Tax', help="Does the external system work with Taxes Inclusive Prices ?"),
+        'is_tax_included': fields.boolean(
+            'Prices Include Tax',
+            help="Does the external system work with Taxes Inclusive prices ?"),
         'sale_journal': fields.many2one('account.journal', 'Sale Journal'),
         'order_prefix': fields.char('Order Prefix', size=64),
         'default_payment_method_id': fields.many2one('payment.method', 'Payment Method'),
@@ -209,13 +217,16 @@ class sale_shop(Model):
         'address_id':fields.many2one('res.partner.address', 'Address'),
         'website': fields.char('Website', size=64),
         'image':fields.binary('Image', filters='*.png,*.jpg,*.gif'),
+        # to remove? (always computed by openerp)
         'use_external_tax': fields.boolean(
             'Use External Taxes',
             help="If activated, the external taxes will be applied.\n"
                  "If not activated, OpenERP will compute them "
                  "according to default values and fiscal positions."),
         'import_orders_from_date': fields.datetime('Only created after'),
+        # to remove? always check
         'check_total_amount': fields.boolean('Check Total Amount', help="The total amount computed by OpenERP should match with the external amount, if not the sale order can not be confirmed."),
+        # to remove
         'type_name': fields.function(_get_referential_type_name, type='char', string='Referential type',
                 store={
                 'sale.shop': (lambda self, cr, uid, ids, c={}: ids, ['referential_id', 'shop_group_id'],10)}),
@@ -230,6 +241,7 @@ class sale_shop(Model):
     }
 
     _defaults = {
+        # FIXME, WTF with that default value
         'payment_default_id': 1, #required field that would cause trouble if not set when importing
         'auto_import': True,
         'use_external_tax': True,
@@ -511,6 +523,9 @@ class sale_order(Model):
     _inherit = "sale.order"
 
     _columns = {
+        # to remove? will the orders be created as draft when they
+        # wait a payment or are they not imported at all? (the job
+        # retries at intervals)
         'need_to_update': fields.boolean('Need To Update'),
         'ext_total_amount': fields.float(
             'Origin External Amount',
@@ -521,10 +536,13 @@ class sale_order(Model):
             digits_compute=dp.get_precision('Sale Price'),
             readonly=True),
         'referential_id': fields.related(
-                    'shop_id', 'referential_id',
-                    type='many2one', relation='external.referential',
-                    string='External Referential'),
+            'shop_id',
+            'referential_id',
+            type='many2one',
+            relation='external.referential',
+            string='External Referential'),
         'update_state_date': fields.datetime('Update State Date'),
+        # FIXME WTF are these 3 fields
         'shipping_tax_amount': fields.dummy(string = 'Shipping Taxe Amount'),
         'shipping_amount_tax_excluded': fields.dummy(string = 'Shipping Price Tax Exclude'),
         'shipping_amount_tax_included': fields.dummy(string = 'Shipping Price Tax Include'),
@@ -897,6 +915,7 @@ class sale_order_line(Model):
     _columns = {
         'ext_product_ref': fields.char('Product Ext Ref',
                             help="This is the original external product reference", size=256),
+        # FIXME WTF are these 3 fields
         'shipping_tax_amount': fields.dummy(string = 'Shipping Taxe Amount'),
         'shipping_amount_tax_excluded': fields.dummy(string = 'Shipping Price Tax Exclude'),
         'shipping_amount_tax_included': fields.dummy(string = 'Shipping Price Tax Include'),
@@ -927,6 +946,7 @@ class sale_order_line(Model):
         }
         return args, kwargs
 
+    # XXX what is the added value of those 'play' onchanges?
     def play_sale_order_line_onchange(self, cr, uid, line, parent_data, previous_lines, defaults=None, context=None):
         original_line = line.copy()
         if not context.get('use_external_tax') and 'tax_id' in line:
