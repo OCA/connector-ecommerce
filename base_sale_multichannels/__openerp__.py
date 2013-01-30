@@ -23,7 +23,7 @@
 
 {
     'name': 'Base Sale MultiChannels',
-    'version': '6.1.2',
+    'version': '7.0',
     'category': 'Generic Modules/Sale',
     'description': """
 This module provide an abstract common minimal base to multi-channels sales.
@@ -47,17 +47,16 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
 * import orders
 * export orders/picking status
     """,
-    'author': 'Akretion, Sharoon Thomas (Openlabs.co.in)',
-    'website': 'http://www.akretion.com',
+    'author': 'MagentoERPConnect Core Editors',
+    'website': 'http://www.magentoerpconnect.com',
     'depends': [
         'sale_automatic_workflow',
         'sale_exceptions',
         'base_external_referentials',
         'delivery',
-        'base_onchange_player',
+        'base_onchange_player',  # TODO remove dependency
     ],
-    'init_xml': [],
-    'update_xml': [
+    'data': [
         'security/ir.model.access.csv',
         'sale_view.xml',
         'partner_view.xml',
@@ -71,8 +70,5 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
         'payment_method_view.xml',
         'account_view.xml',
     ],
-    'demo_xml': [],
-    'installable': False,
-    'certificate': '',
+    'installable': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
