@@ -9,7 +9,8 @@
             <field name="arch" type="xml">
                 <data>
                     <field name="payment_default_id" position="after">
-                        <field name="sale_journal" domain="[('type', '=', 'sale')]"/>
+                        <field name="type_name" invisible="1"/>
+                        <field name="sale_journal" domain="[('referential_id.type', '=', 'sale')]"/>
                     </field>
                     <form position="inside">
                         <separator string="E-Commerce" colspan="4" />
