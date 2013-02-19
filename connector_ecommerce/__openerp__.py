@@ -22,10 +22,21 @@
 
 
 {
-    'name': 'Base Sale MultiChannels',
-    'version': '7.0',
-    'category': 'Generic Modules/Sale',
+    'name': 'Connector for E-Commerce',
+    'version': '2.0.0',
+    'category': 'Connector',
     'description': """
+Connector for E-Commerce
+========================
+
+TODO
+----
+
+Review the description
+
+Old Description
+---------------
+
 This module provide an abstract common minimal base to multi-channels sales.
 Say you want to expose your product catalog to
 * several instances of flashy-sluggish Magento web sites

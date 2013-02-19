@@ -33,7 +33,7 @@
     'author': 'Akretion',
     'website': 'http://www.akretion.com/',
     'depends': [
-        'base_sale_multichannels',
+        'connector_ecommerce',
         'report_synchronizer',
         ], 
     'init_xml': [],

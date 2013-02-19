@@ -13,7 +13,7 @@
         <record id="attributes_sale_shop_view_form" model="ir.ui.view">
             <field name="name">product_custom_attributs_shop.sale_shop.view_form</field>
             <field name="model">sale.shop</field>
-            <field name="inherit_id" ref="base_sale_multichannels.base_sale_multichannels_view_shop_form" />
+            <field name="inherit_id" ref="connector_ecommerce.connector_ecommerce_view_shop_form" />
             <field eval="16" name="priority"/>
             <field name="type">form</field>
             <field name="arch" type="xml">

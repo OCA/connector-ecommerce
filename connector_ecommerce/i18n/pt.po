@@ -17,12 +17,12 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-01-17 05:05+0000\n"
 "X-Generator: Launchpad (build 14676)\n"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,picking_policy:0
 msgid "Partial Delivery"
 msgstr "Entrega Parcial"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: constraint:ir.model:0
 msgid ""
 "The Object name must start with x_ and not contain any special character !"
@@ -30,8 +30,8 @@ msgstr ""
 "O nome do Objecto deve começar com x_ e não pode conter nenhum caracter "
 "especial !"
 
-#. module: base_sale_multichannels
-#: model:ir.module.module,description:base_sale_multichannels.module_meta_information
+#. module: connector_ecommerce
+#: model:ir.module.module,description:connector_ecommerce.module_meta_information
 msgid ""
 "\n"
 "This module provide an abstract common minimal base to multi-channels "
@@ -90,34 +90,34 @@ msgstr ""
 "* exportar ordens/estado da recolha\n"
 "    "
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,order_policy:0
 msgid "Shipping Policy"
 msgstr "Política de Expedição"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,invoice_generation_policy:0
 #: selection:sale.shop,picking_generation_policy:0
 msgid "None"
 msgstr "Nenhum"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,invoice_quantity:0
 msgid "Shipped Quantities"
 msgstr "Quantidades Enviadas"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:external.shop.group,referential_id:0
 msgid "Referential"
 msgstr "Referencial"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,invoice_generation_policy:0
 #: selection:sale.shop,picking_generation_policy:0
 msgid "Draft"
 msgstr "Rascunho"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,invoice_quantity:0
 msgid ""
 "The sale order will automatically create the invoice proposition (draft "
@@ -131,22 +131,22 @@ msgstr ""
 "enviadas. Se o produto é um serviço, quantidades enviadas significa horas "
 "gastas nas tarefas associadas."
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,shop_group_id:0
 msgid "Shop Group"
 msgstr "Grupo de Loja"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:product.category,recursive_childen_ids:0
 msgid "All Child Categories"
 msgstr "Todas as Categorias Descendentes"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Update Orders Status"
 msgstr "Estado das Ordens Actualizadas"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,picking_policy:0
 msgid ""
 "If you don't have enough stock available to deliver all at once, do you "
@@ -155,7 +155,7 @@ msgstr ""
 "Se não tiver stock sufeciente desponível para entregar de uma vez, aceita "
 "transferência parciais ou não?"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:account.journal,external_payment_codes:0
 msgid ""
 "Enter the external payment codes, comma separated. They will be used to "
@@ -164,87 +164,87 @@ msgstr ""
 "Entrar com os códigos de pagamento externo, vírgula separada. Eles serão "
 "utilizados para selecionar o diário de pagamento."
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,picking_policy:0
 msgid "Packing Policy"
 msgstr "Política de Embalagem"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,picking_policy:0
 msgid "Complete Delivery"
 msgstr "Entrega completa"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,invoice_generation_policy:0
 msgid "Invoice Generation Policy"
 msgstr "Politica de Geração de Factura"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,invoice_quantity:0
 msgid "Ordered Quantities"
 msgstr "Quantidades Ordenadas"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,is_tax_included:0
 msgid "Requires sale_tax_include module to be installed"
 msgstr "Requere que o módulo sale_tax_include seja instalado"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Catalog"
 msgstr "Catálogo"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "External Shop Settings"
 msgstr "Definições da Loja Externa"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Export Catalog"
 msgstr "Exportar Catálogo"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,order_policy:0
 msgid "Invoice from the Packing"
 msgstr "Factura de Embalagem"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Order Generation"
 msgstr "Ordem de Geração"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:account.journal,external_payment_codes:0
 msgid "External Payment Codes"
 msgstr "Códigos de Pagamento Externo"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,order_policy:0
 msgid "Invoice on Order After Delivery"
 msgstr "Ordem Facturada Antes da Entrega"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: constraint:ir.ui.view:0
 msgid "Invalid XML for View Architecture!"
 msgstr "XML Inválido para a Arquitectura de Vista!"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:external.shop.group,shop_ids:0
 msgid "Sale Shops"
 msgstr "Lojas de Vendas"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:external.shop.group,name:0
 msgid "Name"
 msgstr "Nome"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,invoice_quantity:0
 msgid "Invoice on"
 msgstr "Facturado em"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,order_policy:0
 msgid ""
 "The Shipping Policy is used to synchronise invoice and delivery operations.\n"
@@ -271,109 +271,109 @@ msgstr ""
 "   - A escolha 'Factura a partir da embalagem' é utilizada para criar uma "
 "factura durante o processo de embalagem."
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,last_inventory_export_date:0
 msgid "Last Inventory Export Time"
 msgstr "Último Inventário de Exportação de Tempo"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:external.referential,shop_group_ids:0
 msgid "Sub Entities"
 msgstr "Sub Movimentos"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,referential_id:0
 msgid "External Referential"
 msgstr "Referencial Externa"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,order_policy:0
 msgid "Payment Before Delivery"
 msgstr "Pagamento Antes da Entrega"
 
-#. module: base_sale_multichannels
-#: model:ir.module.module,shortdesc:base_sale_multichannels.module_meta_information
+#. module: connector_ecommerce
+#: model:ir.module.module,shortdesc:connector_ecommerce.module_meta_information
 msgid "Base Sale MultiChannels"
 msgstr "Venda Base de Multi-Canais"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 #: field:sale.shop,exportable_product_ids:0
 msgid "Exportable Products"
 msgstr "Produtos Exportados"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Import Orders"
 msgstr "Importar Ordem"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,picking_generation_policy:0
 msgid "Picking Generation Policy"
 msgstr "Política de Recolha de Geração"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,invoice_generation_policy:0
 msgid "Should orders create an invoice after import?"
 msgstr "As ordens devem criar uma factura depois da importação?"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,last_update_order_export_date:0
 msgid "Last Order Update  Time"
 msgstr "Última Actualização da Ordem Tempo"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: help:sale.shop,picking_generation_policy:0
 msgid "Should orders create a picking after import?"
 msgstr "As ordens devem criar uma recolha depois da importação?"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,invoice_generation_policy:0
 #: selection:sale.shop,picking_generation_policy:0
 msgid "Validated"
 msgstr "Validado"
 
-#. module: base_sale_multichannels
-#: model:ir.model,name:base_sale_multichannels.model_external_shop_group
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_external_shop_group
 msgid "External Referential Shop Group"
 msgstr "Referencia Externa Grupo de Loja"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Export Stock Levels Only"
 msgstr "Exportar Somente os Níveis de Stock"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: selection:sale.shop,order_policy:0
 msgid "Shipping & Manual Invoice"
 msgstr "Expedição e Factura Manual"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Actions"
 msgstr "Acção"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,exportable_root_category_ids:0
 msgid "Root Category"
 msgstr "Categoria Raíz"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: field:sale.shop,is_tax_included:0
 msgid "Prices Include Tax?"
 msgstr "Preços Incluem Impostos?"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Sale Shop"
 msgstr "Loja de Venda"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Sale Multi Channels"
 msgstr "Venda Multi Canais"
 
-#. module: base_sale_multichannels
+#. module: connector_ecommerce
 #: view:sale.shop:0
 msgid "Orders"
 msgstr "Ordem"

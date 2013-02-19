@@ -25,8 +25,8 @@ from openerp.osv.orm import Model
 from openerp.osv.orm import TransientModel
 from openerp.osv import fields
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from connector.decorator import only_for_referential
-from connector.decorator import commit_now
+from openerp.addons.connector.decorator import only_for_referential
+from openerp.addons.connector.decorator import commit_now
 
 
 class product_product(Model):

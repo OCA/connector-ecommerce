@@ -36,7 +36,7 @@
     'author': 'Akretion',
     'website': 'http://www.akretion.com/',
     'depends': [
-        'base_sale_multichannels',
+        'connector_ecommerce',
         'product_custom_attributes',
         ],
     'init_xml': [],

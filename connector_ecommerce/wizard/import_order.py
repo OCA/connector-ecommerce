@@ -22,7 +22,7 @@
 
 from osv import fields,osv
 from tools.translate import _
-from connector.external_osv import ExternalSession
+from openerp.addons.connector.external_osv import ExternalSession
 
 class sale_order_import_wizard(osv.osv_memory):
     _name = 'sale.order.import.wizard'

@@ -33,9 +33,9 @@ import decimal_precision as dp
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
-from connector.external_osv import ExternalSession
-from connector.decorator import open_report
-from connector.decorator import catch_error_in_report
+from openerp.addons.connector.external_osv import ExternalSession
+from openerp.addons.connector.decorator import open_report
+from openerp.addons.connector.decorator import catch_error_in_report
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -791,7 +791,7 @@ class sale_order(Model):
         # sometime openerp run two scheduler at the same time, or the customer launch two openerp at the same time
         # or the external system give us again an already imported order
         # As the update of an existing order (this is not the update of the status but the update of the line, the address...)
-        # is not supported by base_sale_multichannels and also not in magentoerpconnect.
+        # is not supported by connector_ecommerce and also not in magentoerpconnect.
         # It's better to don't allow this feature to avoid hidding a problem.
         # It's better to have the order not imported and to know it than having order with duplicated line.
         if not (context and context.get('oe_update_supported', False)):
@@ -845,18 +845,18 @@ class sale_order(Model):
             'price_unit_tax_excluded' : 'shipping_amount_tax_excluded',
             'price_unit_tax_included' : 'shipping_amount_tax_included',
             'tax_rate_field' : 'shipping_tax_rate',
-            'product_ref' : ('base_sale_multichannels', 'product_product_shipping'),
+            'product_ref' : ('connector_ecommerce', 'product_product_shipping'),
             },
             {
             'tax_rate_field' : 'cash_on_delivery_taxe_rate',
             'price_unit_tax_excluded' : 'cash_on_delivery_amount_tax_excluded',
             'price_unit_tax_included' : 'cash_on_delivery_amount_tax_included',
-            'product_ref' : ('base_sale_multichannels', 'product_product_cash_on_delivery'),
+            'product_ref' : ('connector_ecommerce', 'product_product_cash_on_delivery'),
             },
             {
             'price_unit_tax_excluded' : 'gift_certificates_amount', #gift certificate doesn't have any tax
             'price_unit_tax_included' : 'gift_certificates_amount',
-            'product_ref' : ('base_sale_multichannels', 'product_product_gift'),
+            'product_ref' : ('connector_ecommerce', 'product_product_gift'),
             'code_field': 'gift_certificates_code',
             'sign': -1,
             },

@@ -2,8 +2,8 @@
 <openerp>
     <data>
 
-        <record model="ir.ui.view" id="base_sale_multichannels_view_shop_form">
-            <field name="name">base_sale_multichannels_view_shop_form</field>
+        <record model="ir.ui.view" id="connector_ecommerce_view_shop_form">
+            <field name="name">connector_ecommerce_view_shop_form</field>
             <field name="model">sale.shop</field>
             <field name="inherit_id" ref="sale.view_shop_form" />
             <field name="arch" type="xml">

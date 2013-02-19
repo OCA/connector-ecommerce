@@ -25,7 +25,7 @@ from openerp.osv.orm import TransientModel
 from openerp.osv import fields
 from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
-from connector.external_osv import ExternalSession
+from openerp.addons.connector.external_osv import ExternalSession
 
 class partner_export_wizard(TransientModel):
     _name = 'partner.export.wizard'

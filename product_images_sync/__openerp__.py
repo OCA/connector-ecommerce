@@ -36,7 +36,7 @@
     'depends': [
         'product_images_olbs',
         'connector',
-        'base_sale_multichannels',
+        'connector_ecommerce',
         ],
     'init_xml': [],
     'update_xml': [

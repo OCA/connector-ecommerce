@@ -30,7 +30,7 @@
     """,
     'author': 'Akretion',
     'website': 'http://www.akretion.com',
-    'depends': ['base_sale_multichannels'],
+    'depends': ['connector_ecommerce'],
     'init_xml': [],
     'update_xml': [
         'wizard/export_product.xml',

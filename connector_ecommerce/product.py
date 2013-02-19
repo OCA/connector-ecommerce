@@ -1,7 +1,7 @@
     # -*- encoding: utf-8 -*-
 ###############################################################################
 #                                                                             #
-#   base_sale_multichannels for OpenERP                                       #
+#   connector_ecommerce for OpenERP                                       #
 #   Copyright (C) 2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>  #
 #                                                                             #
 #   This program is free software: you can redistribute it and/or modify      #
@@ -23,8 +23,8 @@
 from openerp.osv.orm import Model
 from openerp.osv import fields
 
-from connector.decorator import only_for_referential
-from connector.decorator import commit_now
+from openerp.addons.connector.decorator import only_for_referential
+from openerp.addons.connector.decorator import commit_now
 
 class product_product(Model):
     _inherit='product.product'

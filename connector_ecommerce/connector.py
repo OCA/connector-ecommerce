@@ -20,7 +20,7 @@
 #                                                                             #
 ###############################################################################
 
-from connector.connector import AbstractConnector
+from openerp.addons.connector.connector import AbstractConnector
 
 class BaseConnector(AbstractConnector):
     def _get_import_defaults_res_partner(self, cr, uid, context=None):

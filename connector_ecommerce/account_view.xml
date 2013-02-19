@@ -3,7 +3,7 @@
     <data>
 
         <record id="view_tax_form" model="ir.ui.view">
-            <field name="name">base_sale_multichannels.view_tax_form</field>
+            <field name="name">connector_ecommerce.view_tax_form</field>
             <field name="model">account.tax</field>
             <field name="inherit_id" ref="account.view_tax_form" />
             <field name="arch" type="xml">
