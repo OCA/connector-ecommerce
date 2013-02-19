@@ -33,9 +33,9 @@ import decimal_precision as dp
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
-from base_external_referentials.external_osv import ExternalSession
-from base_external_referentials.decorator import open_report
-from base_external_referentials.decorator import catch_error_in_report
+from connector.external_osv import ExternalSession
+from connector.decorator import open_report
+from connector.decorator import catch_error_in_report
 
 import logging
 _logger = logging.getLogger(__name__)

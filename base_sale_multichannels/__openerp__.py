@@ -52,7 +52,7 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
     'depends': [
         'sale_automatic_workflow',
         'sale_exceptions',
-        'base_external_referentials',
+        'connector',
         'delivery',
         'base_onchange_player',  # TODO remove dependency
     ],

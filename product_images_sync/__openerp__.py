@@ -35,7 +35,7 @@
     'website': 'http://www.akretion.com',
     'depends': [
         'product_images_olbs',
-        'base_external_referentials',
+        'connector',
         'base_sale_multichannels',
         ],
     'init_xml': [],

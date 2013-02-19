@@ -21,7 +21,7 @@
 ##############################################################################
 
 from osv import osv, fields
-from base_external_referentials.decorator import only_for_referential, commit_now
+from connector.decorator import only_for_referential, commit_now
 
 # TODO : move field last_images_export_date in this module ? (-> will need to update dependancy ?)
 
