@@ -29,7 +29,7 @@ from sets import Set as set
 from openerp import netsvc
 from openerp.tools.translate import _
 import time
-import decimal_precision as dp
+import openerp.addons.decimal_precision as dp
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
