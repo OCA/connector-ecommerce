@@ -21,7 +21,7 @@
 
 from openerp.addons.connector.event import Event
 
-    
+
 on_picking_done = Event()
 """
 ``on_picking_done`` is fired when a picking has been marked as done.
