@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #########################################################################
 #                                                                       #
 #########################################################################
@@ -19,32 +19,34 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
 #########################################################################
 
-from openerp.osv import orm, fields, osv
+from openerp.osv.orm import Model
+from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp.connector.queue import job
+
+from openerp.connector.session import ConnectorSession
+from .event import on_picking_done
 
 
 class stock_picking(orm.Model):
     _inherit = "stock.picking"
 
     _columns = {
-        'do_not_export': fields.boolean(
-            'Do not export',
-            help="This delivery order will not be exported to the "
-                 "external referential."
-        ),
-        'shop_id': fields.many2one(
-            'sale.shop',
-            'Shop',
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+        'related_backorder_ids': fields.one2many(
+            'stock.picking', 'backorder_id',
+            string="Related backorders"),
     }
 
-    def create_ext_shipping(self, cr, uid, id, picking_type, external_referential_id, context):
-        raise osv.except_osv(_("Not Implemented"),
-                             _("Not Implemented in abstract base module!"))
-
-    def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
-        vals = super(stock_picking, self)._prepare_invoice(cr, uid, picking, partner, \
-                                                            inv_type, journal_id, context=context)
-        vals['shop_id'] = picking.shop_id.id
-        return vals
+    def action_done(self, cr, uid, ids, context=None):
+        res = super(stock_picking, self).action_done(self, cr, uid, ids, context=context)
+        session = ConnectorSession(cr, uid, context=context)
+        # Look if it exists a backorder, in that case call for partial
+        picking_vals = self.read(cr, uid, ids, ['id','related_backorder_ids'], context=context)
+        for record_id, related_backorder_ids in picking_vals:
+            if related_backorder_ids:
+                picking_type = 'partial'
+            else:
+                picking_type = 'complete'
+            on_picking_done.fire(session, self._name, record_id, picking_type)
+        return res
+        
