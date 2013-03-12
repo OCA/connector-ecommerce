@@ -1,50 +1,51 @@
-# -*- encoding: utf-8 -*-
-#########################################################################
-#                                                                       #
-#########################################################################
-#                                                                       #
-# Copyright (C) 2010 BEAU Sébastien                                     #
-#                                                                       #
-#This program is free software: you can redistribute it and/or modify   #
-#it under the terms of the GNU General Public License as published by   #
-#the Free Software Foundation, either version 3 of the License, or      #
-#(at your option) any later version.                                    #
-#                                                                       #
-#This program is distributed in the hope that it will be useful,        #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of         #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          #
-#GNU General Public License for more details.                           #
-#                                                                       #
-#You should have received a copy of the GNU General Public License      #
-#along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
-#########################################################################
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    Author: Joel Grand-Guillaume
+#    Copyright 2013 Camptocamp SA
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
 
-from openerp.osv import orm, fields, osv
-from openerp.tools.translate import _
+from openerp.osv import orm, fields
+
+from openerp.connector.session import ConnectorSession
+from .event import on_picking_done
 
 
 class stock_picking(orm.Model):
-    _inherit = "stock.picking"
+    _inherit = 'stock.picking'
 
     _columns = {
-        'do_not_export': fields.boolean(
-            'Do not export',
-            help="This delivery order will not be exported to the "
-                 "external referential."
-        ),
-        'shop_id': fields.many2one(
-            'sale.shop',
-            'Shop',
-            readonly=True,
-            states={'draft': [('readonly', False)]}),
+        'related_backorder_ids': fields.one2many(
+            'stock.picking', 'backorder_id',
+            string="Related backorders"),
     }
 
-    def create_ext_shipping(self, cr, uid, id, picking_type, external_referential_id, context):
-        raise osv.except_osv(_("Not Implemented"),
-                             _("Not Implemented in abstract base module!"))
-
-    def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
-        vals = super(stock_picking, self)._prepare_invoice(cr, uid, picking, partner, \
-                                                            inv_type, journal_id, context=context)
-        vals['shop_id'] = picking.shop_id.id
-        return vals
+    def action_done(self, cr, uid, ids, context=None):
+        res = super(stock_picking, self).action_done(
+                self, cr, uid, ids, context=context)
+        session = ConnectorSession(cr, uid, context=context)
+        # Look if it exists a backorder, in that case call for partial
+        picking_vals = self.read(cr, uid, ids,
+                                 ['id', 'related_backorder_ids'],
+                                 context=context)
+        for record_id, related_backorder_ids in picking_vals:
+            if related_backorder_ids:
+                picking_type = 'partial'
+            else:
+                picking_type = 'complete'
+            on_picking_done.fire(session, self._name, record_id, picking_type)
+        return res
