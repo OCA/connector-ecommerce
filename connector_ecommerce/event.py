@@ -46,3 +46,15 @@ Listeners should take the following arguments:
  * record_id: id of the record
  * tracking_number: char of the tracking number
 """
+
+on_invoice_paid = Event()
+"""
+``on_invoice_paid`` is fired when an invoice related to an order
+  has been paid.
+
+Listeners should take the following arguments:
+
+ * session: `Session` object
+ * model_name: name of the model
+ * record_id: id of the record
+"""
