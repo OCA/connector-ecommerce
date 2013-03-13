@@ -34,6 +34,7 @@ Listeners should take the following arguments:
  * type: 'partial' or 'complete' depending on the picking done
 """
 
+
 on_tracking_number_added = Event()
 """
 ``on_tracking_number_added`` is fired when a picking has been marked as
@@ -41,6 +42,19 @@ on_tracking_number_added = Event()
 
 Listeners should take the following arguments:
 
+ * session: `connector.session.ConnectorSession` object
+ * model_name: name of the model
+ * record_id: id of the record
+"""
+
+
+on_invoice_paid = Event()
+"""
+``on_invoice_paid`` is fired when an invoice has been paid.
+
+Listeners should take the following arguments:
+
+ * session: `Session` object
  * session: `connector.session.ConnectorSession` object
  * model_name: name of the model
  * record_id: id of the record
