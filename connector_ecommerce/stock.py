@@ -22,7 +22,7 @@
 from openerp.osv import orm, fields
 
 from openerp.addons.connector.session import ConnectorSession
-from .event import on_picking_done
+from .event import on_picking_done, on_tracking_number_added
 
 
 class stock_picking(orm.Model):
@@ -49,14 +49,14 @@ class stock_picking(orm.Model):
                 picking_type = 'complete'
             on_picking_done.fire(session, self._name, record_id, picking_type)
         return res
-    
+
     def write(self, cr, uid, ids, vals, context=None):
-        if context is None:
-            context = {}
-        res = super(stock_picking, self).write(cr, uid, ids, vals, context=context)
-        if vals.get('carrier_tracking_ref', False):
+        if not hasattr(ids, '__iter__'):
+            ids = [ids]
+        res = super(stock_picking, self).write(cr, uid, ids,
+                                               vals, context=context)
+        if vals.get('carrier_tracking_ref'):
             session = ConnectorSession(cr, uid, context=context)
             for record_id in ids:
-                on_tracking_number_added.fire(session, self._name, record_id, vals['carrier_tracking_ref'])
+                on_tracking_number_added.fire(session, self._name, record_id)
         return res
-
