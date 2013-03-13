@@ -49,3 +49,14 @@ class stock_picking(orm.Model):
                 picking_type = 'complete'
             on_picking_done.fire(session, self._name, record_id, picking_type)
         return res
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
+        res = super(stock_picking, self).write(cr, uid, ids, vals, context=context)
+        if vals.get('carrier_tracking_ref', False):
+            session = ConnectorSession(cr, uid, context=context)
+            for record_id in ids:
+                on_tracking_number_added.fire(session, self._name, record_id, vals['carrier_tracking_ref'])
+        return res
+
