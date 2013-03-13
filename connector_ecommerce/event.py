@@ -28,7 +28,7 @@ on_picking_done = Event()
 
 Listeners should take the following arguments:
 
- * session: `Session` object
+ * session: `connector.session.ConnectorSession` object
  * model_name: name of the model
  * record_id: id of the record
  * type: 'partial' or 'complete' depending on the picking done
@@ -41,8 +41,7 @@ on_tracking_number_added = Event()
 
 Listeners should take the following arguments:
 
- * session: `Session` object
+ * session: `connector.session.ConnectorSession` object
  * model_name: name of the model
  * record_id: id of the record
- * tracking_number: char of the tracking number
 """
