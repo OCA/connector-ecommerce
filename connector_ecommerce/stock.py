@@ -21,7 +21,7 @@
 
 from openerp.osv import orm, fields
 
-from openerp.connector.session import ConnectorSession
+from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_done
 
 
