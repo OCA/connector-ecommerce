@@ -33,3 +33,16 @@ Listeners should take the following arguments:
  * record_id: id of the record
  * type: 'partial' or 'complete' depending on the picking done
 """
+
+on_tracking_number_added = Event()
+"""
+``on_tracking_number_added`` is fired when a picking has been marked as
+ done and a tracking number has been added to it (write).
+
+Listeners should take the following arguments:
+
+ * session: `Session` object
+ * model_name: name of the model
+ * record_id: id of the record
+ * tracking_number: char of the tracking number
+"""
