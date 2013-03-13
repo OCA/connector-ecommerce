@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################### 
 #
-#    Author: Guewen Baconnier
-#    Copyright 2013 Camptocamp SA
+#   connector-ecommerce for OpenERP
+#   Copyright (C) 2013-TODAY Akretion <http://www.akretion.com>.
+#     @author Sébastien BEAU <sebastien.beau@akretion.com>
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+############################################################################### 
+
 
 import unittest2
 import mock
@@ -45,7 +47,9 @@ class test_onchange(common.TransactionCase):
         product_model = self.registry('product.product')
         partner_model = self.registry('res.partner')
         shop_model = self.registry('sale.shop')
-        
+        tax_model = self.registry('account.tax')
+
+
         backend_record = mock.Mock()
         env = Environment(backend_record, self.session, 'sale.order')
 
@@ -63,9 +67,14 @@ class test_onchange(common.TransactionCase):
                 'parent_id': partner_id,
                 })
 
+        tax_id = tax_model.create(self.cr, self.uid, {
+                'name': 'My Tax',
+                })
+
         product_id = product_model.create(self.cr, self.uid, {
                 'name': 'My Product',
                 'weight': 15,
+                'taxes_id': [(6,0,[tax_id])],
                 })
 
         shop_id = shop_model.create(self.cr, self.uid, {
@@ -93,4 +102,5 @@ class test_onchange(common.TransactionCase):
         line = order['order_line'][0][2] 
         self.assertEqual(line['name'], 'My Real Name')
         self.assertEqual(line['th_weight'], 15)
+        self.assertEqual(line['tax_id'][0][2][0], tax_id)
 

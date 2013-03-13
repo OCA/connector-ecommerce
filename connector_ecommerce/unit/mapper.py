@@ -1,11 +1,10 @@
-
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
 #   connector-ecommerce for OpenERP
 #   Copyright (C) 2013-TODAY Akretion <http://www.akretion.com>.
-#     All Rights Reserved
 #     @author Sébastien BEAU <sebastien.beau@akretion.com>
+#
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU Affero General Public License as
 #   published by the Free Software Foundation, either version 3 of the
@@ -26,25 +25,63 @@ from openerp.addons.connector.unit.mapper import ImportMapper
 
 class SaleOrderImportMapper(ImportMapper):
 
-    def _prepare_order_params(self, result):
-        args = [None, result['partner_id']]
+    def _get_partner_id_onchange_param(self, order):
+        """ Prepare the arguments for calling the partner_id change
+        on sale order. You can overwrite this method in your own
+        module if they modify the onchange signature
+ 
+        :param order: a dictionnary of the value of your sale order
+        :type: dict
+        
+        :return: a tuple of args and kwargs for the onchange
+        :rtype: tuple
+        """
+        args = [
+            None, # sale order ids not needed
+            order['partner_id'],
+        ]
         kwargs = {'context': self.session.context}
         return args, kwargs
 
-    def _play_order_onchange(self, result):
-        sale_model = self.session.pool.get('sale.order')
-        args, kwargs = self._prepare_order_params(result)
-        onchange = sale_model.onchange_partner_id(self.session.cr,
-                self.session.uid, *args, **kwargs)
-        vals = onchange.get('value')
-        for key in vals:
-            if not key in result:
-                result[key] = vals[key]
-        return result
+    def _play_order_onchange(self, order):
+        """ Play the onchange of the sale order
  
-    def _prepare_line_params(self, line, previous_line, order):
+        :param order: a dictionnary of the value of your sale order
+        :type: dict
+        
+        :return: the value of the sale order updated with the onchange result
+        :rtype: dict
+        """
+        sale_model = self.session.pool.get('sale.order')
+        
+        #Play partner_id onchange
+        args, kwargs = self._get_partner_id_onchange_param(order)
+        res = sale_model.onchange_partner_id(self.session.cr,
+                self.session.uid, *args, **kwargs)
+        vals = res.get('value')
+        for key in vals:
+            if not key in order:
+                order[key] = vals[key]
+
+        return order
+ 
+    def _get_product_id_onchange_param(self, line, previous_line, order):
+        """ Prepare the arguments for calling the product_id change
+        on sale order line. You can overwrite this method in your own
+        module if they modify the onchange signature
+ 
+        :param line: the sale order line to process
+        :type: dict
+        :param previous_line: list of dict of the previous line processed
+        :type: list
+        :param order: data of the sale order
+        :type: dict
+
+        :return: a tuple of args and kwargs for the onchange
+        :rtype: tuple
+        """
         args = [
-            None, #ids
+            None, # sale order line ids not needed
             order.get('pricelist_id'),
             line.get('product_id')
         ]
@@ -66,15 +103,31 @@ class SaleOrderImportMapper(ImportMapper):
         return args, kwargs
 
     def _play_line_onchange(self, line, previous_line, order):
+        """ Play the onchange of the sale order line
+ 
+        :param line: the sale order line to process
+        :type: dict
+        :param previous_line: list of dict of the previous line processed
+        :type: list
+        :param order: data of the sale order
+        :type: dict
+        
+        :return: the value of the sale order updated with the onchange result
+        :rtype: dict
+        """
         sale_line_model = self.session.pool.get('sale.order.line')
-        args, kwargs = self._prepare_line_params(line, previous_line, order)
-        onchange = sale_line_model.product_id_change(self.session.cr,
+
+        #Play product_id onchange
+        args, kwargs = self._get_product_id_onchange_param(line, previous_line, order)
+        res = sale_line_model.product_id_change(self.session.cr,
                 self.session.uid, *args, **kwargs)
-        vals = onchange.get('value')
+        vals = res.get('value')
         for key in vals:
             if not key in line:
-                #TODO support correct m2m [(6, 0, line['tax_id'])]
-                line[key] = vals[key]
+                if sale_line_model._columns[key]._type == 'many2many':
+                    line[key] = [(6, 0, vals[key])]
+                else:
+                    line[key] = vals[key]
         return line
 
     def _after_mapping(self, result):
