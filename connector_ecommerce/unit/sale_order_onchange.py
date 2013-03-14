@@ -23,17 +23,16 @@
 from openerp.addons.connector.connector import ConnectorUnit
 
 class SaleOrderOnChange(ConnectorUnit):
-    # name of the OpenERP model, to be defined in concrete classes
     _model_name = None
 
     def _get_partner_id_onchange_param(self, order):
         """ Prepare the arguments for calling the partner_id change
         on sale order. You can overwrite this method in your own
         module if they modify the onchange signature
- 
-        :param order: a dictionnary of the value of your sale order
+
+        :param order: a dictionary of the value of your sale order
         :type: dict
-        
+
         :return: a tuple of args and kwargs for the onchange
         :rtype: tuple
         """
@@ -46,31 +45,33 @@ class SaleOrderOnChange(ConnectorUnit):
 
     def _play_order_onchange(self, order):
         """ Play the onchange of the sale order
- 
-        :param order: a dictionnary of the value of your sale order
+
+        :param order: a dictionary of the value of your sale order
         :type: dict
-        
+
         :return: the value of the sale order updated with the onchange result
         :rtype: dict
         """
         sale_model = self.session.pool.get('sale.order')
-        
+
         #Play partner_id onchange
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
-                self.session.uid, *args, **kwargs)
+                                             self.session.uid,
+                                             *args,
+                                             **kwargs)
         vals = res.get('value', {})
         for key in vals:
             if not key in order:
                 order[key] = vals[key]
 
         return order
- 
+
     def _get_product_id_onchange_param(self, line, previous_lines, order):
         """ Prepare the arguments for calling the product_id change
         on sale order line. You can overwrite this method in your own
         module if they modify the onchange signature
- 
+
         :param line: the sale order line to process
         :type: dict
         :param previous_lines: list of dict of the previous lines processed
@@ -85,12 +86,15 @@ class SaleOrderOnChange(ConnectorUnit):
             None, # sale order line ids not needed
             order.get('pricelist_id'),
             line.get('product_id')
-        ]
+            ]
+        uos_qty = float(line.get('product_uos_qty', 0))
+        if not uos_qty:
+            uos_qty = float(line.get('product_uom_qty', 0))
+
         kwargs ={
-            'qty': float(line.get('product_uom_qty')),
+            'qty': float(line.get('product_uom_qty', 0)),
             'uom': line.get('product_uom'),
-            'qty_uos': float(line.get('product_uos_qty')\
-                    or line.get('product_uom_qty')),
+            'qty_uos': uos_qty,
             'uos': line.get('product_uos'),
             'name': line.get('name'),
             'partner_id': order.get('partner_id'),
@@ -101,19 +105,19 @@ class SaleOrderOnChange(ConnectorUnit):
             'fiscal_position': order.get('fiscal_position'),
             'flag': False,
             'context': self.session.context,
-        }
+            }
         return args, kwargs
 
     def _play_line_onchange(self, line, previous_lines, order):
         """ Play the onchange of the sale order line
- 
+
         :param line: the sale order line to process
         :type: dict
         :param previous_lines: list of dict of the previous line processed
         :type: list
         :param order: data of the sale order
         :type: dict
-        
+
         :return: the value of the sale order updated with the onchange result
         :rtype: dict
         """
@@ -121,9 +125,12 @@ class SaleOrderOnChange(ConnectorUnit):
 
         #Play product_id onchange
         args, kwargs = self._get_product_id_onchange_param(line,
-                                        previous_lines, order)
+                                                           previous_lines,
+                                                           order)
         res = sale_line_model.product_id_change(self.session.cr,
-                self.session.uid, *args, **kwargs)
+                                                self.session.uid,
+                                                *args,
+                                                **kwargs)
         vals = res.get('value', {})
         for key in vals:
             if not key in line:
@@ -135,10 +142,10 @@ class SaleOrderOnChange(ConnectorUnit):
 
     def play(self, order):
         """ Play the onchange of the sale order and it's lines
- 
+
         :param order: data of the sale order
         :type: dict
-        
+
         :return: the value of the sale order updated with the onchange result
         :rtype: dict
         """
@@ -154,6 +161,6 @@ class SaleOrderOnChange(ConnectorUnit):
                                                  order)
                         )
             order_lines.append(new_line)
-        order['order_line'] = order_lines 
+        order['order_line'] = order_lines
         return order
 
