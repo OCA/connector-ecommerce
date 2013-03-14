@@ -59,21 +59,21 @@ class SaleOrderOnChange(ConnectorUnit):
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
                 self.session.uid, *args, **kwargs)
-        vals = res.get('value')
+        vals = res.get('value', {})
         for key in vals:
             if not key in order:
                 order[key] = vals[key]
 
         return order
  
-    def _get_product_id_onchange_param(self, line, previous_line, order):
+    def _get_product_id_onchange_param(self, line, previous_lines, order):
         """ Prepare the arguments for calling the product_id change
         on sale order line. You can overwrite this method in your own
         module if they modify the onchange signature
  
         :param line: the sale order line to process
         :type: dict
-        :param previous_line: list of dict of the previous line processed
+        :param previous_lines: list of dict of the previous lines processed
         :type: list
         :param order: data of the sale order
         :type: dict
@@ -104,12 +104,12 @@ class SaleOrderOnChange(ConnectorUnit):
         }
         return args, kwargs
 
-    def _play_line_onchange(self, line, previous_line, order):
+    def _play_line_onchange(self, line, previous_lines, order):
         """ Play the onchange of the sale order line
  
         :param line: the sale order line to process
         :type: dict
-        :param previous_line: list of dict of the previous line processed
+        :param previous_lines: list of dict of the previous line processed
         :type: list
         :param order: data of the sale order
         :type: dict
@@ -121,10 +121,10 @@ class SaleOrderOnChange(ConnectorUnit):
 
         #Play product_id onchange
         args, kwargs = self._get_product_id_onchange_param(line,
-                                        previous_line, order)
+                                        previous_lines, order)
         res = sale_line_model.product_id_change(self.session.cr,
                 self.session.uid, *args, **kwargs)
-        vals = res.get('value')
+        vals = res.get('value', {})
         for key in vals:
             if not key in line:
                 if sale_line_model._columns[key]._type == 'many2many':
@@ -146,9 +146,14 @@ class SaleOrderOnChange(ConnectorUnit):
         order = self._play_order_onchange(order)
         #play onchanfe on sale order line
         order_lines = []
+        # order['order_line'] = [(0, 0, {...}), (0, 0, {...})]
         for line in order['order_line']:
-            order_lines.append((0, 0,
-                self._play_line_onchange(line[2], order_lines, order)))
+            new_line = (0, 0,
+                        self._play_line_onchange(line[2],
+                                                 order_lines,
+                                                 order)
+                        )
+            order_lines.append(new_line)
         order['order_line'] = order_lines 
         return order
 
