@@ -26,8 +26,8 @@ import mock
 import magento
 
 from openerp.addons.connector.connector import ConnectorUnit
-from openerp.addons.connector_ecommerce.unit.mapper import \
-                                         SaleOrderImportMapper
+from openerp.addons.connector_ecommerce.unit.sale_order_onchange import \
+                                         SaleOrderOnChange
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.connector import Environment
 import openerp.tests.common as common
@@ -72,6 +72,7 @@ class test_onchange(common.TransactionCase):
                 })
 
         product_id = product_model.create(self.cr, self.uid, {
+                'default_code': 'MyCode',
                 'name': 'My Product',
                 'weight': 15,
                 'taxes_id': [(6,0,[tax_id])],
@@ -95,8 +96,8 @@ class test_onchange(common.TransactionCase):
             ]
         }
  
-        mapper = SaleOrderImportMapper(env)
-        order = mapper._after_mapping(order_input)
+        onchange = SaleOrderOnChange(env)
+        order = onchange.play(order_input)
         
         self.assertEqual(order['partner_invoice_id'], partner_invoice_id)
         line = order['order_line'][0][2] 

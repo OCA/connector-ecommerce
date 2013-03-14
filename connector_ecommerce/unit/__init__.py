@@ -1,4 +1,2 @@
 # -*- coding: utf-8 -*-
-import mapper
-
-
+import sale_order_onchange

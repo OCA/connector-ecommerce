@@ -20,10 +20,11 @@
 #
 ###############################################################################
 
-from openerp.addons.connector.unit.mapper import ImportMapper
+from openerp.addons.connector.connector import ConnectorUnit
 
-
-class SaleOrderImportMapper(ImportMapper):
+class SaleOrderOnChange(ConnectorUnit):
+    # name of the OpenERP model, to be defined in concrete classes
+    _model_name = None
 
     def _get_partner_id_onchange_param(self, order):
         """ Prepare the arguments for calling the partner_id change
@@ -88,7 +89,8 @@ class SaleOrderImportMapper(ImportMapper):
         kwargs ={
             'qty': float(line.get('product_uom_qty')),
             'uom': line.get('product_uom'),
-            'qty_uos': float(line.get('product_uos_qty') or line.get('product_uom_qty')),
+            'qty_uos': float(line.get('product_uos_qty')\
+                    or line.get('product_uom_qty')),
             'uos': line.get('product_uos'),
             'name': line.get('name'),
             'partner_id': order.get('partner_id'),
@@ -118,7 +120,8 @@ class SaleOrderImportMapper(ImportMapper):
         sale_line_model = self.session.pool.get('sale.order.line')
 
         #Play product_id onchange
-        args, kwargs = self._get_product_id_onchange_param(line, previous_line, order)
+        args, kwargs = self._get_product_id_onchange_param(line,
+                                        previous_line, order)
         res = sale_line_model.product_id_change(self.session.cr,
                 self.session.uid, *args, **kwargs)
         vals = res.get('value')
@@ -130,14 +133,22 @@ class SaleOrderImportMapper(ImportMapper):
                     line[key] = vals[key]
         return line
 
-    def _after_mapping(self, result):
-        result = super(SaleOrderImportMapper, self)._after_mapping(result)
-        result = self._play_order_onchange(result)
-
+    def play(self, order):
+        """ Play the onchange of the sale order and it's lines
+ 
+        :param order: data of the sale order
+        :type: dict
+        
+        :return: the value of the sale order updated with the onchange result
+        :rtype: dict
+        """
+        #play onchange on sale order
+        order = self._play_order_onchange(order)
+        #play onchanfe on sale order line
         order_lines = []
-        for line in result['order_line']:
+        for line in order['order_line']:
             order_lines.append((0, 0,
-                self._play_line_onchange(line[2], order_lines, result)))
-        result['order_line'] = order_lines 
-        return result
+                self._play_line_onchange(line[2], order_lines, order)))
+        order['order_line'] = order_lines 
+        return order
 
