@@ -23,7 +23,6 @@
 
 import unittest2
 import mock
-import magento
 
 from openerp.addons.connector.connector import ConnectorUnit
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import \
@@ -37,7 +36,7 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class test_onchange(common.TransactionCase):
-    """ Test the imports from a Magento Mock """
+    """ Test the imports from a Magento-like Mock """
 
     def setUp(self):
         super(test_onchange, self).setUp()
@@ -75,7 +74,7 @@ class test_onchange(common.TransactionCase):
                 'default_code': 'MyCode',
                 'name': 'My Product',
                 'weight': 15,
-                'taxes_id': [(6,0,[tax_id])],
+                'taxes_id': [(6, 0, [tax_id])],
                 })
 
         shop_id = shop_model.create(self.cr, self.uid, {
@@ -87,7 +86,7 @@ class test_onchange(common.TransactionCase):
             'name': 'mag_10000001',
             'partner_id': partner_id,
             'order_line': [
-                (0,0,{
+                (0, 0, {
                     'product_id': product_id,
                     'price_unit': 20,
                     'name': 'My Real Name',
