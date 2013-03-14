@@ -70,6 +70,7 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
     'data': [
         'security/ir.model.access.csv',
         'sale_view.xml',
+        'product_view.xml',
         'partner_view.xml',
         'invoice_view.xml',
         'wizard/import_order.xml',
