@@ -22,7 +22,15 @@
 
 from openerp.addons.connector.connector import ConnectorUnit
 
-class SaleOrderOnChange(ConnectorUnit):
+class OnChangeManager(ConnectorUnit):
+    def merge_values(self, record, on_change_result):
+        vals = on_change_result.get('value', {})
+        for key in vals:
+            if not key in record:
+                record[key] = vals[key]
+
+
+class SaleOrderOnChange(OnChangeManager):
     _model_name = None
 
     def _get_partner_id_onchange_param(self, order):
@@ -43,6 +51,12 @@ class SaleOrderOnChange(ConnectorUnit):
         kwargs = {'context': self.session.context}
         return args, kwargs
 
+    def _get_shop_id_onchange_param(self, order):
+        args = [None,
+                order['shop_id']]
+        kwargs = {'context': self.session.context}
+        return args, kwargs
+
     def _play_order_onchange(self, order):
         """ Play the onchange of the sale order
 
@@ -55,16 +69,18 @@ class SaleOrderOnChange(ConnectorUnit):
         sale_model = self.session.pool.get('sale.order')
 
         #Play partner_id onchange
+        args, kwargs = self._get_shop_id_onchange_param(order)
+        res = sale_model.onchange_shop_id(self.session.cr,
+                                          self.session.uid,
+                                          *args,
+                                          **kwargs)
+        self.merge_values(order, res)
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
                                              self.session.uid,
                                              *args,
                                              **kwargs)
-        vals = res.get('value', {})
-        for key in vals:
-            if not key in order:
-                order[key] = vals[key]
-
+        self.merge_values(order, res)
         return order
 
     def _get_product_id_onchange_param(self, line, previous_lines, order):
@@ -131,6 +147,7 @@ class SaleOrderOnChange(ConnectorUnit):
                                                 self.session.uid,
                                                 *args,
                                                 **kwargs)
+        # TODO refactor this with merge_values
         vals = res.get('value', {})
         for key in vals:
             if not key in line:
@@ -140,7 +157,7 @@ class SaleOrderOnChange(ConnectorUnit):
                     line[key] = vals[key]
         return line
 
-    def play(self, order):
+    def play(self, order, order_lines):
         """ Play the onchange of the sale order and it's lines
 
         :param order: data of the sale order
@@ -152,15 +169,20 @@ class SaleOrderOnChange(ConnectorUnit):
         #play onchange on sale order
         order = self._play_order_onchange(order)
         #play onchanfe on sale order line
-        order_lines = []
-        # order['order_line'] = [(0, 0, {...}), (0, 0, {...})]
-        for line in order['order_line']:
-            new_line = (0, 0,
-                        self._play_line_onchange(line[2],
-                                                 order_lines,
-                                                 order)
-                        )
-            order_lines.append(new_line)
-        order['order_line'] = order_lines
+        processed_order_lines = []
+        line_lists = [order_lines]
+        if 'order_line' in order and order['order_line'] is not order_lines:
+            # we have both backend-dependent and oerp-native order lines
+            line_lists.append(order['order_line'])
+        for line_list in line_lists:
+            for idx, line in enumerate(line_list):
+                # line_list format:[(0, 0, {...}), (0, 0, {...})]
+                old_line_data = line[2]
+                new_line_data = self._play_line_onchange(old_line_data,
+                                                         processed_order_lines,
+                                                         order)
+                new_line = (0, 0, new_line_data)
+                processed_order_lines.append(new_line)
+                line_list[idx] = new_line
         return order
 
