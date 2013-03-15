@@ -699,7 +699,7 @@ class sale_order(Model):
 
     def oe_create(self, cr, uid, external_session, vals, resource, defaults, context):
         #depending of the external system the contact address can be optionnal
-        vals = self._convert_special_fields(cr, uid, vals, external_session.referential_id.id, context=context)
+        vals = self._convert_special_fields(cr, uid, vals, vals['order_line'], context=context)
         if not vals.get('partner_order_id'):
             vals['partner_order_id'] = vals['partner_invoice_id']
         if not vals.get('partner_shipping_id'):
@@ -800,7 +800,7 @@ class sale_order(Model):
                                 " This feature is not supported. Maybe the import try to reimport an existing sale order"%(existing_rec_id,))))
         return super(sale_order, self).oe_update(cr, uid, external_session, existing_rec_id, vals, resource, defaults, context=context)
 
-    def _convert_special_fields(self, cr, uid, vals, referential_id, context=None):
+    def _convert_special_fields(self, cr, uid, vals, order_lines, context=None):
         """
         Convert the special 'fake' field into an order line
         special field are :
@@ -819,8 +819,8 @@ class sale_order(Model):
                         'shipping_amount_tax_included',
                         'shipping_tax_amount'])
                     & set(keys)) >= 2
-
-        for line in vals['order_line']:
+        vals.setdefault('order_line', [])
+        for line in order_lines:
             for field in ['shipping_amount_tax_excluded','shipping_amount_tax_included', 'shipping_tax_amount']:
                 if field in line[2]:
                     vals[field] = vals.get(field, 0.0) + line[2][field]
@@ -893,18 +893,6 @@ class sale_order(Model):
                         'price_unit': price_unit,
                     }
 
-        extra_line = self.pool.get('sale.order.line').play_sale_order_line_onchange(cr, uid, extra_line, vals, vals['order_line'], context=context)
-        if context.get('use_external_tax') and option.get('tax_rate_field'):
-            tax_rate = vals.pop(option['tax_rate_field'])
-            if tax_rate:
-                line_tax_id = self.pool.get('account.tax').get_tax_from_rate(cr, uid, tax_rate, context.get('is_tax_included'), context=context)
-                if not line_tax_id:
-                    raise except_osv(_('Error'), _('No tax id found for the rate %s with the tax include = %s')%(tax_rate, context.get('is_tax_included')))
-                extra_line['tax_id'] = [(6, 0, [line_tax_id])]
-            else:
-                extra_line['tax_id'] = False
-        if not option.get('tax_rate_field'):
-            del extra_line['tax_id']
         ext_code_field = option.get('code_field')
         if ext_code_field and vals.get(ext_code_field):
             extra_line['name'] = "%s [%s]" % (extra_line['name'], vals[ext_code_field])
