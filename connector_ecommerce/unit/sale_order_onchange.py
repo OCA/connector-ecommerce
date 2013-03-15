@@ -172,7 +172,10 @@ class SaleOrderOnChange(OnChangeManager):
         processed_order_lines = []
         line_lists = [order_lines]
         if 'order_line' in order and order['order_line'] is not order_lines:
-            # we have both backend-dependent and oerp-native order lines
+            # we have both backend-dependent and oerp-native order
+            # lines.
+            # oerp-native lines can have been added to map
+            # shipping fees with an OpenERP Product
             line_lists.append(order['order_line'])
         for line_list in line_lists:
             for idx, line in enumerate(line_list):
@@ -183,6 +186,7 @@ class SaleOrderOnChange(OnChangeManager):
                                                          order)
                 new_line = (0, 0, new_line_data)
                 processed_order_lines.append(new_line)
+                # in place modification of the sale order line in the list
                 line_list[idx] = new_line
         return order
 
