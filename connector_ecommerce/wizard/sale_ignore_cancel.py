@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Base_sale_multichannels module for OpenERP
-#    Copyright (C) 2010 Sébastien BEAU <sebastien.beau@akretion.com>
+#    Author: Guewen Baconnier
+#    Copyright 2013 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,24 +19,28 @@
 #
 ##############################################################################
 
+from openerp.osv import orm, fields
 
-from osv import fields,osv
-from tools.translate import _
-from openerp.addons.connector.external_osv import ExternalSession
 
-class sale_order_import_wizard(osv.osv_memory):
-    _name = 'sale.order.import.wizard'
-    _description = 'sale order import wizard'
+class sale_ignore_cancel(orm.TransientModel):
+    _name = 'sale.ignore.cancel'
+    _description = 'Ignore Sales Order Cancel'
 
     _columns = {
-        'order_number': fields.char('Order Number', size=64),
-        }
+        'reason': fields.html('Reason', required=True),
+    }
 
-    def import_order(self, cr, uid, ids, context=None):
+    def confirm_ignore_cancel(self, cr, uid, ids, context=None):
         if context is None:
-            context={}
-        shop = self.pool.get('sale.shop').browse(cr, uid, context['active_id'], context=context)
-        external_session = ExternalSession(shop.referential_id, shop)
-        wizard = self.browse(cr, uid, ids[0], context=context)
-        self.pool.get('sale.order')._import_one_resource(cr, uid, external_session, wizard.order_number, context=context)
+            context = {}
+        if isinstance(ids, (list, tuple)):
+            assert len(ids) == 1
+            ids = ids[0]
+        order_ids = context.get('active_ids')
+        if order_ids is None:
+            return
+        form = self.browse(cr, uid, ids, context=context)
+        self.pool.get('sale.order').ignore_cancellation(cr, uid, order_ids,
+                                                        form.reason,
+                                                        context=context)
         return {'type': 'ir.actions.act_window_close'}
