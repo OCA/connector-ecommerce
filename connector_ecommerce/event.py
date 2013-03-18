@@ -22,9 +22,10 @@
 from openerp.addons.connector.event import Event
 
 
-on_picking_done = Event()
+on_picking_out_done = Event()
 """
-``on_picking_done`` is fired when a picking has been marked as done.
+``on_picking_out_done`` is fired when an outgoing picking has been
+marked as done.
 
 Listeners should take the following arguments:
 
@@ -54,8 +55,22 @@ on_invoice_paid = Event()
 
 Listeners should take the following arguments:
 
- * session: `Session` object
  * session: `connector.session.ConnectorSession` object
  * model_name: name of the model
  * record_id: id of the record
+"""
+
+on_product_price_changed = Event()
+"""
+``on_product_price_changed`` is fired when the price of a product is
+changed. Specifically, it is fired when one of the products' fields used
+in the sale pricelists are modified.
+
+There is no guarantee that's the price actually changed,
+because it depends on the pricelists.
+
+ * session: `connector.session.ConnectorSession` object
+ * model_name: name of the model
+ * record_id: id of the record
+
 """
