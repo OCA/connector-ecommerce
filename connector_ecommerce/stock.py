@@ -35,8 +35,8 @@ class stock_picking(orm.Model):
     }
 
     def action_done(self, cr, uid, ids, context=None):
-        res = super(stock_picking, self).action_done(
-                self, cr, uid, ids, context=context)
+        res = super(stock_picking, self).action_done(cr, uid,
+                                                     ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
         picking_vals = self.read(cr, uid, ids,
