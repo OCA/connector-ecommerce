@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="view_picking_out_form_ext" model="ir.ui.view">
-            <field name="name">stock.picking.out.form.ext</field>
-            <field name="model">stock.picking</field>
+        <record id="view_stock_picking_out_connector_form" model="ir.ui.view">
+            <field name="name">stock.picking.out.connector.form</field>
+            <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_form"/>
             <field name="arch" type="xml">
-                <page string="Additional info" position="inside">
-                    <field name="do_not_export"/>
+                <page string="Additional Info" position="after">
+                    <!-- change the invisible attribute to 0 when used
+                         in submodules -->
+                    <page name="connector" string="Connectors" invisible="1">
+                    </page>
                 </page>
             </field>
         </record>
