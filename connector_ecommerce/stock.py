@@ -22,8 +22,7 @@
 from openerp.osv import orm, fields
 
 from openerp.addons.connector.session import ConnectorSession
-from .event import on_picking_done, on_tracking_number_added
-
+from .event import on_picking_out_done, on_tracking_number_added
 
 class stock_picking(orm.Model):
     _inherit = 'stock.picking'
@@ -39,22 +38,29 @@ class stock_picking(orm.Model):
                                                      ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
-        picking_vals = self.read(cr, uid, ids,
-                                 ['id', 'related_backorder_ids'],
+        picking_records = self.read(cr, uid, ids,
+                                 ['id', 'related_backorder_ids', 'type'],
                                  context=context)
-        for record_id, related_backorder_ids in picking_vals:
-            if related_backorder_ids:
-                picking_type = 'partial'
+        for picking_vals in picking_records:
+            if picking_vals['type'] != 'out':
+                continue
+            if picking_vals['related_backorder_ids']:
+                picking_method = 'partial'
             else:
-                picking_type = 'complete'
-            on_picking_done.fire(session, self._name, record_id, picking_type)
+                picking_method = 'complete'
+            on_picking_out_done.fire(session, self._name,
+                                     picking_vals['id'], picking_method)
         return res
+
+
+class stock_picking_out(orm.Model):
+    _inherit = 'stock.picking.out'
 
     def write(self, cr, uid, ids, vals, context=None):
         if not hasattr(ids, '__iter__'):
             ids = [ids]
-        res = super(stock_picking, self).write(cr, uid, ids,
-                                               vals, context=context)
+        res = super(stock_picking_out, self).write(cr, uid, ids,
+                                                   vals, context=context)
         if vals.get('carrier_tracking_ref'):
             session = ConnectorSession(cr, uid, context=context)
             for record_id in ids:
