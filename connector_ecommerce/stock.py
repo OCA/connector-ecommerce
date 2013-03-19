@@ -24,9 +24,8 @@ from openerp.osv import orm, fields
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
-
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
+class stock_picking(orm.Model):
+    _inherit = 'stock.picking'
 
     _columns = {
         'related_backorder_ids': fields.one2many(
@@ -35,21 +34,27 @@ class stock_picking_out(orm.Model):
     }
 
     def action_done(self, cr, uid, ids, context=None):
-        res = super(stock_picking_out, self).action_done(cr, uid,
-                                                         ids, context=context)
+        res = super(stock_picking, self).action_done(cr, uid,
+                                                     ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
         picking_records = self.read(cr, uid, ids,
-                                 ['id', 'related_backorder_ids'],
+                                 ['id', 'related_backorder_ids', 'type'],
                                  context=context)
         for picking_vals in picking_records:
+            if picking_vals['type'] != 'out':
+                continue
             if picking_vals['related_backorder_ids']:
-                picking_type = 'partial'
+                picking_method = 'partial'
             else:
-                picking_type = 'complete'
+                picking_method = 'complete'
             on_picking_out_done.fire(session, self._name,
-                                     picking_vals['id'], picking_type)
+                                     picking_vals['id'], picking_method)
         return res
+
+
+class stock_picking_out(orm.Model):
+    _inherit = 'stock.picking.out'
 
     def write(self, cr, uid, ids, vals, context=None):
         if not hasattr(ids, '__iter__'):
