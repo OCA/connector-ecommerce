@@ -17,14 +17,3 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from openerp.osv.orm import Model
-from openerp.osv import fields
-
-class delivery_carrier(Model):
-    _inherit = "delivery.carrier"
-
-    _columns = {
-        # TODO to be removed once the job export tracking is there
-        'export_needs_tracking': fields.boolean('Export only shippings with a tracking number'),
-    }
