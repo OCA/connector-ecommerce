@@ -22,9 +22,10 @@
 from openerp.addons.connector.event import Event
 
 
-on_picking_done = Event()
+on_picking_out_done = Event()
 """
-``on_picking_done`` is fired when a picking has been marked as done.
+``on_picking_out_done`` is fired when an outgoing picking has been
+marked as done.
 
 Listeners should take the following arguments:
 
