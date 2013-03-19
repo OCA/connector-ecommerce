@@ -75,7 +75,7 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
         'invoice_view.xml',
         'wizard/import_order.xml',
         'delivery_view.xml',
-        'base_sale_data.xml',
+        'ecommerce_data.xml',
         'settings/sale.exception.csv',
         'settings/external.referential.category.csv',
         'stock_view.xml',
