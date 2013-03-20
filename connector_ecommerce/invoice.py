@@ -29,10 +29,6 @@ class account_invoice(orm.Model):
     _inherit='account.invoice'
 
     _columns = {
-        'origin_order_id': fields.many2one(  # XXX common to all ecom
-            'sale.order',
-            string='Origin Sale Order',
-            help='Sale Order which generated this invoice'),
         'sale_order_ids': fields.many2many(  # TODO duplicate with 'sale_ids', replace
             'sale.order',
             'sale_order_invoice_rel',
@@ -41,33 +37,6 @@ class account_invoice(orm.Model):
             string='Sale Orders', readonly=True,
             help="This is the list of sale orders related to this invoice."),
     }
-
-    def _get_related_so_shop(self, invoice):
-        """
-        As several sale order can be linked to several invoices, we try
-        to get the common shop between them all. The goal is further, in
-        the consumer implementation, to be able to retrieve the right
-        backend to use.
-
-        An exception is raised if no common shop is found
-
-        :param invoice: browsable record of account.invoice
-        :type invoice: browse_record
-        :returns: a common sale.shop browse record between all related
-                  sale orders
-        :raises: osv.except_osv
-        """
-        shops = set()
-        for so in invoice.sale_order_ids:
-            shops.add(so.shop_id)
-        if len(shops) != 1:
-            raise osv.except_osv(_("Wrong value for sale_order_ids, "
-                                   "an invoice cannot be related to sale "
-                                   "orders that doesn't belong to the "
-                                   "same shop, but must belong to one at "
-                                   "least (shops: %s).") %
-                                   [shop.name for shop in shops])
-        return shops[0].id
 
     def confirm_paid(self, cr, uid, ids, context=None):
         res = super(account_invoice, self).confirm_paid(
