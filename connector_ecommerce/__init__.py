@@ -27,4 +27,3 @@ import invoice
 import payment_method
 import event
 import unit
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
