@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-###############################################################################
+##############################################################################
 #
 #   connector-ecommerce for OpenERP
 #   Copyright (C) 2013-TODAY Akretion <http://www.akretion.com>.
@@ -18,9 +18,10 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-###############################################################################
+##############################################################################
 
 from openerp.addons.connector.connector import ConnectorUnit
+
 
 class OnChangeManager(ConnectorUnit):
     def merge_values(self, record, on_change_result):
@@ -189,4 +190,3 @@ class SaleOrderOnChange(OnChangeManager):
                 # in place modification of the sale order line in the list
                 line_list[idx] = new_line
         return order
-

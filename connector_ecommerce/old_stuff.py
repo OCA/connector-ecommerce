@@ -1,25 +1,27 @@
-# -*- encoding: utf-8 -*-
-#########################################################################
-#                                                                       #
-# Copyright (C) 2009  Raphaël Valyi                                     #
-# Copyright (C) 2010-2011 Akretion Sébastien BEAU                       #
-#                                        <sebastien.beau@akretion.com>  #
-# Copyright (C) 2011-2012 Camptocamp Guewen Baconnier                   #
-# Copyright (C) 2011 by Openlabs Technologies & Consulting (P) Limited  #
-#                                                                       #
-#This program is free software: you can redistribute it and/or modify   #
-#it under the terms of the GNU General Public License as published by   #
-#the Free Software Foundation, either version 3 of the License, or      #
-#(at your option) any later version.                                    #
-#                                                                       #
-#This program is distributed in the hope that it will be useful,        #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of         #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          #
-#GNU General Public License for more details.                           #
-#                                                                       #
-#You should have received a copy of the GNU General Public License      #
-#along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
-#########################################################################
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2009 Akretion (<http://www.akretion.com>). All Rights Reserved
+#    authors: Raphaël Valyi, Sharoon Thomas
+#    Copyright (C) 2010-2013 Akretion Sébastien BEAU <sebastien.beau@akretion.com>
+#    Copyright 2011-2013 Camptocamp SA
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+# moved from sale.py ##################
 
 from openerp.osv.orm import Model
 from openerp.osv import fields
@@ -39,6 +41,7 @@ from openerp.addons.connector.decorator import catch_error_in_report
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 
 class external_shop_group(Model):
@@ -74,6 +77,7 @@ class ExternalShippingCreateError(Exception):
       external referential will never be able to create it!
      """
      pass
+
 
 
 class sale_shop(Model):
@@ -899,6 +903,7 @@ class sale_order(Model):
         vals['order_line'].append((0, 0, extra_line))
         return vals
 
+
 class sale_order_line(Model):
     _inherit='sale.order.line'
 
@@ -978,4 +983,234 @@ class sale_order_line(Model):
                 line['tax_id'] = False
         return line
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+# moved from partner.py ###############
+
+from openerp.osv import orm, fields
+
+
+class res_partner(orm.Model):
+    _inherit = 'res.partner'
+
+    _columns = {
+        'shop_ids': fields.many2many(
+            'sale.shop',
+            'sale_shop_res_partner_rel',
+            'shop_id',
+            'partner_id',
+            string='Present in Shops',
+            readonly=True,
+            help="List of shops in which this customer exists."),
+    }
+
+    # xxx move to BaseConnector _get_import_defaults_res_partner
+    def _get_default_import_values(self, cr, uid, external_session, mapping_id=None, defaults=None, context=None):
+        if external_session.sync_from_object._name == 'sale.shop':
+            shop = external_session.sync_from_object
+            if not defaults: defaults = {}
+            defaults.update({
+                'lang': shop.default_customer_lang.code,
+                'property_account_position': shop.default_fiscal_position.id,
+                'property_account_receivable': shop.default_customer_account,
+                'shop_ids': [(4, shop.id)],
+            })
+        return defaults
+
+
+# moved from product.py #################
+
+
+
+from openerp.osv.orm import Model
+from openerp.osv import fields
+
+from openerp.addons.connector.decorator import only_for_referential
+from openerp.addons.connector.decorator import commit_now
+
+class product_product(Model):
+    _inherit='product.product'
+
+    def _check_if_export(self, cr, uid, external_session, product, context=None):
+        if context.get('export_product') == 'simple':
+            return True
+        return False
+
+    @only_for_referential(ref_categ ='Multichannel Sale')
+    def _get_last_exported_date(self, cr, uid, external_session, context=None):
+        shop = external_session.sync_from_object
+        if context.get('export_product') == 'simple':
+            return shop.last_products_export_date
+        elif context.get('export_product') == 'special':
+            return shop.last_special_products_export_date
+        return False
+
+    @only_for_referential(ref_categ ='Multichannel Sale')
+    @commit_now
+    def _set_last_exported_date(self, cr, uid, external_session, date, context=None):
+        shop = external_session.sync_from_object
+        if context.get('export_product') == 'simple':
+            return self.pool.get('sale.shop').write(cr, uid, shop.id, {'last_products_export_date': date}, context=context)
+        elif context.get('export_product') == 'special':
+            return self.pool.get('sale.shop').write(cr, uid, shop.id, {'last_special_products_export_date': date}, context=context)
+
+    @only_for_referential(ref_categ ='Multichannel Sale')
+    def get_ids_and_update_date(self, cr, uid, external_session, ids=None, last_exported_date=None, context=None):
+        res = (), {} # list of ids, dict of ids to date_changed
+        shop = external_session.sync_from_object
+        if shop.exportable_product_ids:
+            product_ids = [product.id for product in shop.exportable_product_ids if self._check_if_export(cr, uid, external_session, product, context=context)]
+            if ids:
+                product_ids = set(ids).intersection(set(product_ids))
+            if product_ids:
+                res = super(product_product, self).get_ids_and_update_date(cr, uid, external_session,
+                                                            ids=product_ids,
+                                                            last_exported_date=last_exported_date,
+                                                            context=context)
+        return res
+
+
+    def _get_categories_ids_for_shop(self, cr, uid, product_id, shop_id, context=None):
+        shop_categ_ids = self.pool.get('sale.shop').read(cr, uid, shop_id,
+                                ['exportable_category_ids'],
+                                context=context)['exportable_category_ids']
+        product = self.read(cr, uid, product_id, ['categ_ids', 'categ_id'], context=context)
+        product_categ_ids = product['categ_ids']
+        if product['categ_id'][0] not in product_categ_ids:
+            product_categ_ids.append(product['categ_id'][0])
+        res = []
+        for categ in product_categ_ids:
+            if categ in shop_categ_ids:
+                res.append(categ)
+        return res
+
+    def _get_categories_ids_for_shop(self, cr, uid, product_id, shop_id, context=None):
+        shop_obj = self.pool.get('sale.shop')
+        shop_values = shop_obj.read(cr, uid, shop_id,
+                                    ['exportable_category_ids'],
+                                    context=context)
+        shop_categ_ids = set(shop_values['exportable_category_ids'])
+        product = self.read(cr, uid, product_id, ['categ_ids', 'categ_id'], context=context)
+        product_categ_ids = set(product['categ_ids'])
+        product_categ_ids.add(product['categ_id'][0])
+        return list(prod_categ_ids & shop_categ_ids)
+
+    def _get_or_create_ext_category_ids_for_shop(self, cr, uid, external_session, product_id, context=None):
+        res = []
+        categ_obj = self.pool.get('product.category')
+        for oe_categ_id in self._get_categories_ids_for_shop(cr, uid, product_id, external_session.sync_from_object.id, context=context):
+            res.append(categ_obj.get_or_create_extid(cr, uid, external_session, oe_categ_id, context=context))
+        return res
+
+
+class product_category(Model):
+    _inherit = "product.category"
+
+    def collect_children(self, category, children=None):
+        if children is None:
+            children = []
+
+        for child in category.child_id:
+            children.append(child.id)
+            self.collect_children(child, children)
+
+        return children
+
+    def _get_recursive_children_ids(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        for category in self.browse(cr, uid, ids):
+            res[category.id] = self.collect_children(category, [category.id])
+        return res
+
+    _columns = {
+        'recursive_children_ids': fields.function(_get_recursive_children_ids, method=True, type='one2many', relation="product.category", string='All Child Categories'),
+    }
+
+    @only_for_referential(ref_categ ='Multichannel Sale')
+    def _get_last_exported_date(self, cr, uid, external_session, context=None):
+        shop = external_session.sync_from_object
+        return shop.last_category_export_date
+
+    @only_for_referential(ref_categ ='Multichannel Sale')
+    @commit_now
+    def _set_last_exported_date(self, cr, uid, external_session, date, context=None):
+        shop = external_session.sync_from_object
+        return self.pool.get('sale.shop').write(cr, uid, shop.id, {'last_category_export_date': date}, context=context)
+
+    def get_ids_and_update_date(self, cr, uid, external_session, ids=None, last_exported_date=None, context=None):
+        shop = external_session.sync_from_object
+        if shop.exportable_category_ids:
+            res = super(product_category, self).get_ids_and_update_date(cr, uid, external_session,
+                                                            ids=[categ.id for categ in shop.exportable_category_ids],
+                                                            last_exported_date=last_exported_date,
+                                                            context=context)
+        else:
+            res = (), {} # list of ids, dict of ids to date_changed
+        return res
+
+
+# moved from external_referential.py #########
+
+
+from openerp.osv import orm, fields
+
+
+class external_referential(orm.Model):
+    _inherit = "external.referential"
+
+    _columns = {
+        'last_imported_product_id': fields.integer(
+            'Last Imported Product Id',
+            help="Product are imported one by one. "
+                 "This is the magento id of the last product imported. "
+                 "If you clear it all product will be imported"),
+        # TODO replace by last import date (at website level)
+        'last_imported_partner_id': fields.integer(
+            'Last Imported Partner Id',
+            help="Partners are imported one by one. "
+                 "This is the magento id of the last partner imported. "
+                 "If you clear it all partners will be imported"),
+        'import_all_attributs': fields.boolean(
+            'Import all attributs',
+            help="If the option is uncheck only the attributs "
+                 "that doesn't exist in OpenERP will be imported "),
+        'import_image_with_product': fields.boolean(
+            'With image',
+            help="If the option is check the product's image and "
+                 "the product will be imported at the same time and"
+                 "so the step '7-import images' is not needed"),
+        'import_links_with_product': fields.boolean(
+            'With links',
+            help="If the option is check the product's links "
+                 "(Up-Sell, Cross-Sell, Related) and the product will "
+                 "be imported at the same time and so the step "
+                 "'8-import links' is not needed"),
+        }
+
+    def import_customer_groups(self, cr, uid, ids, context=None):
+        self.import_resources(cr, uid, ids, 'res.partner.category', context=context)
+        return True
+
+    def import_product_categories(self, cr, uid, ids, context=None):
+        self.import_resources(cr, uid, ids, 'product.category', context=context)
+        return True
+
+    def import_customers(self, cr, uid, ids, context=None):
+        self.import_resources(cr, uid, ids, 'res.partner', context=context)
+        return True
+
+#    def import_product_attributes_sets(self, cr, uid, ids, context=None):
+#        return self.import_resources(cr, uid, ids, 'TODO', context=context)
+#
+#    def import_product_attributes_groups(self, cr, uid, ids, context=None):
+#        return self.import_resources(cr, uid, ids, 'TODO', context=context)
+#
+#    def import_product_attributes(self, cr, uid, ids, context=None):
+#        return self.import_resources(cr, uid, ids, 'TODO', context=context)
+
+    def import_products(self, cr, uid, ids, context=None):
+        self.import_resources(cr, uid, ids, 'product.product', context=context)
+        return True
+
+    def import_product_links(self, cr, uid, ids, context=None):
+        self.import_resources(cr, uid, ids, 'product.link', context=context)
+        return True

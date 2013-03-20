@@ -1,31 +1,31 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2009 Akretion (<http://www.akretion.com>). All Rights Reserved
-#    authors: Raphaël Valyi, Sharoon Thomas
-#    Copyright (C) 2010-2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>
+#    Copyright 2013 Camptocamp SA
+#    Copyright 2013 Akretion
+#
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+#    GNU Affero General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
+#    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
-
-{
-    'name': 'Connector for E-Commerce',
-    'version': '2.0.0',
-    'category': 'Connector',
-    'description': """
+{'name': 'Connector for E-Commerce',
+ 'version': '2.0.0',
+ 'category': 'Connector',
+ 'author': 'MagentoERPConnect Core Editors',
+ 'website': 'http://www.magentoerpconnect.com',
+ 'license': 'AGPL-3',
+ 'description': """
 Connector for E-Commerce
 ========================
 
@@ -58,29 +58,22 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
 * import orders
 * export orders/picking status
     """,
-    'author': 'MagentoERPConnect Core Editors',
-    'website': 'http://www.magentoerpconnect.com',
-    'depends': [
-        'sale_automatic_workflow',
-        'sale_exceptions',
-        'connector',
-        'delivery',
-        'base_onchange_player',  # TODO remove dependency
-    ],
-    'data': [
-        'security/ir.model.access.csv',
-        'sale_view.xml',
-        'product_view.xml',
-        'partner_view.xml',
-        'invoice_view.xml',
-        'wizard/import_order.xml',
-        'delivery_view.xml',
-        'base_sale_data.xml',
-        'settings/sale.exception.csv',
-        'settings/external.referential.category.csv',
-        'stock_view.xml',
-        'payment_method_view.xml',
-        'account_view.xml',
-    ],
-    'installable': True,
+ 'depends': [
+     'connector',
+     'sale_automatic_workflow',
+     'sale_exceptions',
+     'delivery',  # XXX still needed?
+ ],
+ 'data': [
+     'security/ir.model.access.csv',
+     'sale_view.xml',
+     'product_view.xml',
+     'invoice_view.xml',
+     'ecommerce_data.xml',
+     # 'settings/sale.exception.csv',  # TODO reimplement the check
+     'stock_view.xml',
+     'payment_method_view.xml',
+     'account_view.xml',
+ ],
+ 'installable': True,
 }
