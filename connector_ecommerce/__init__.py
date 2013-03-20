@@ -26,3 +26,4 @@ import invoice
 import payment_method
 import event
 import unit
+import sale
