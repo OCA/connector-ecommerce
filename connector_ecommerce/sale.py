@@ -24,3 +24,9 @@ from openerp.osv import fields, orm
 
 class sale_order(orm.Model):
     _inherit = 'sale.order'
+
+    def _prepare_invoice(self, cr, uid, order, lines, context=None):
+        invoice_vals = super(sale_order, self)._prepare_invoice(
+                cr, uid, order, lines, context=context)
+        invoice_vals['origin_order_id'] = order.id
+        return invoice_vals
