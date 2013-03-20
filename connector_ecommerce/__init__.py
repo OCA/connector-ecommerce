@@ -20,12 +20,8 @@
 #
 ##############################################################################
 
-import sale
 import stock
-import delivery
-import partner
 import account
-import external_referential
 import product
 import invoice
 import payment_method

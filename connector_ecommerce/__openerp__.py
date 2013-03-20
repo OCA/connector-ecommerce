@@ -71,10 +71,8 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
         'security/ir.model.access.csv',
         'sale_view.xml',
         'product_view.xml',
-        'partner_view.xml',
         'invoice_view.xml',
         'wizard/import_order.xml',
-        'delivery_view.xml',
         'ecommerce_data.xml',
         # 'settings/sale.exception.csv',  # TODO reimplement the check
         'stock_view.xml',
