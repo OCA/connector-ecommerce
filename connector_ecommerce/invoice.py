@@ -29,7 +29,11 @@ class account_invoice(orm.Model):
     _inherit='account.invoice'
 
     _columns = {
-        'sale_order_ids': fields.many2many(
+        'origin_order_id': fields.many2one(  # XXX common to all ecom
+            'sale.order',
+            string='Origin Sale Order',
+            help='Sale Order which generated this invoice'),
+        'sale_order_ids': fields.many2many(  # TODO duplicate with 'sale_ids', replace
             'sale.order',
             'sale_order_invoice_rel',
             'invoice_id',
