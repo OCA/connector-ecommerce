@@ -62,9 +62,10 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
      'connector',
      'sale_automatic_workflow',
      'sale_exceptions',
-     'delivery',  # XXX still needed?
+     'delivery',
  ],
  'data': [
+     'security/security.xml',
      'security/ir.model.access.csv',
      'sale_view.xml',
      'product_view.xml',

@@ -58,6 +58,18 @@ class SaleOrderOnChange(OnChangeManager):
         kwargs = {'context': self.session.context}
         return args, kwargs
 
+    def _get_payment_method_id_onchange_param(self, order):
+        args = [None,
+                order['payment_method_id']]
+        kwargs = {'context': self.session.context}
+        return args, kwargs
+
+    def _get_workflow_process_id_onchange_param(self, order):
+        args = [None,
+                order['workflow_process_id']]
+        kwargs = {'context': self.session.context}
+        return args, kwargs
+
     def _play_order_onchange(self, order):
         """ Play the onchange of the sale order
 
@@ -76,11 +88,28 @@ class SaleOrderOnChange(OnChangeManager):
                                           *args,
                                           **kwargs)
         self.merge_values(order, res)
+
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
                                              self.session.uid,
                                              *args,
                                              **kwargs)
+        self.merge_values(order, res)
+
+        # apply payment method
+        args, kwargs = self._get_payment_method_id_onchange_param(order)
+        res = sale_model.onchange_payment_method_id(self.session.cr,
+                                                    self.session.uid,
+                                                    *args,
+                                                    **kwargs)
+        self.merge_values(order, res)
+
+        # apply default values from the workflow
+        args, kwargs = self._get_workflow_process_id_onchange_param(order)
+        res = sale_model.onchange_workflow_process_id(self.session.cr,
+                                                      self.session.uid,
+                                                      *args,
+                                                      **kwargs)
         self.merge_values(order, res)
         return order
 
