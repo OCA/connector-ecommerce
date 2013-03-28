@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
-#   sale_quick_payment for OpenERP                                  #
-#   Copyright (C) 2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>   #
+#   sale_payment_method for OpenERP                                            #
+#   Copyright (C) 2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>  #
 #                                                                             #
 #   This program is free software: you can redistribute it and/or modify      #
 #   it under the terms of the GNU Affero General Public License as            #
@@ -19,20 +19,31 @@
 #                                                                             #
 ###############################################################################
 
-from openerp.osv.orm import Model
-from openerp.osv import fields
-import netsvc
+{
+    'name': 'Sale Payment Method',
+    'version': '0.2',
+    'category': 'Generic Modules/Others',
+    'license': 'AGPL-3',
+    'description': """
+Sale Payment Method
+===================
 
+This module adds low-level features used for instance by modules:
 
-class payment_method(Model):
-    
-    _name = "payment.method"
-    _description = "payment method"
-    
+- Sale Automatic Workflow
+- Sale Quick Payment
 
-    _columns = {
-        'name': fields.char('Name', size=64),
-        'journal_id': fields.many2one('account.journal', 'Journal'),
-        'payment_term_id': fields.many2one('account.payment.term', 'Payment Term'),
-    }
-
+It adds a payment method on the sales orders and allow to register
+payments entries on sales orders.
+""",
+    'author': 'Akretion',
+    'website': 'http://www.akretion.com/',
+    'depends': ['sale',
+                ],
+    'data': ['sale_view.xml',
+             'payment_method_view.xml',
+             'security/ir.model.access.csv',
+             ],
+    'demo': [],
+    'installable': True,
+}
