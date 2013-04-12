@@ -109,6 +109,8 @@ class product_product(orm.Model):
                 on_product_price_changed.fire(session, self._name, prod_id)
 
     def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
         context = context.copy()
         context['from_product_ids'] = ids
         result = super(product_product, self).write(
