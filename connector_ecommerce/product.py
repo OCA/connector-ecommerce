@@ -20,6 +20,8 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+from openerp.addons.connector.session import ConnectorSession
+from .event import on_product_price_changed
 
 
 class product_template(orm.Model):
@@ -43,3 +45,106 @@ class product_template(orm.Model):
                             help='Tax group are used with some external '
                                  'system like magento or prestashop'),
     }
+
+    def _price_changed(self, cr, uid, ids, vals, context=None):
+        """ Fire the ``on_product_price_changed`` on all the variants of
+        the template if the price if the product could have changed.
+
+        If one of the field used in a sale pricelist item has been
+        modified, we consider that the price could have changed.
+
+        There is no guarantee that's the price actually changed,
+        because it depends on the pricelists.
+        """
+        if context is None:
+            context = {}
+        type_obj = self.pool['product.price.type']
+        price_fields = type_obj.sale_price_fields(cr, uid, context=context)
+        # restrict the fields to the template ones only, so if
+        # the write has been done on product.product, we won't
+        # update all the variant if a price field of the
+        # variant has been changed
+        tmpl_fields = [field for field in vals if field in self._columns]
+        if any(field in price_fields for field in tmpl_fields):
+            product_obj = self.pool['product.product']
+            session = ConnectorSession(cr, uid, context=context)
+            product_ids = product_obj.search(cr, uid,
+                                             [('product_tmpl_id', 'in', ids)],
+                                             context=context)
+            # when the write is done on the product.product, avoid
+            # to fire the event 2 times
+            if context.get('from_product_ids'):
+                product_ids = list(set(product_ids) -
+                                   set(context['from_product_ids']))
+            for prod_id in product_ids:
+                on_product_price_changed.fire(session,
+                                              product_obj._name,
+                                              prod_id)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        result = super(product_template, self).write(cr, uid, ids,
+                                                     vals, context=context)
+        self._price_changed(cr, uid, ids, vals, context=context)
+        return result
+
+
+class product_product(orm.Model):
+    _inherit = 'product.product'
+
+    def _price_changed(self, cr, uid, ids, vals, context=None):
+        """ Fire the ``on_product_price_changed`` if the price
+        if the product could have changed.
+
+        If one of the field used in a sale pricelist item has been
+        modified, we consider that the price could have changed.
+
+        There is no guarantee that's the price actually changed,
+        because it depends on the pricelists.
+        """
+        type_obj = self.pool['product.price.type']
+        price_fields = type_obj.sale_price_fields(cr, uid, context=context)
+        if any(field in price_fields for field in vals):
+            session = ConnectorSession(cr, uid, context=context)
+            for prod_id in ids:
+                on_product_price_changed.fire(session, self._name, prod_id)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        context = context.copy()
+        context['from_product_ids'] = ids
+        result = super(product_product, self).write(
+            cr, uid, ids, vals, context=context)
+        self._price_changed(cr, uid, ids, vals, context=context)
+        return result
+
+    def create(self, cr, uid, vals, context=None):
+        product_ids = super(product_product, self).create(
+            cr, uid, vals, context=None)
+        self._price_changed(cr, uid, [product_ids], vals, context=context)
+        return product_ids
+
+
+class product_price_type(orm.Model):
+    _inherit = 'product.price.type'
+
+    _columns = {
+        'pricelist_item_ids': fields.one2many(
+            'product.pricelist.item', 'base',
+            string='Pricelist Items',
+            readonly=True)
+    }
+
+    def sale_price_fields(self, cr, uid, context=None):
+        """ Returns a list of fields used by sale pricelists.
+        Used to know if the sale price could have changed
+        when one of these fields has changed.
+        """
+        item_obj = self.pool['product.pricelist.item']
+        item_ids = item_obj.search(
+            cr, uid,
+            [('price_version_id.pricelist_id.type', '=', 'sale')],
+            context=context)
+        type_ids = self.search(cr, uid,
+                               [('pricelist_item_ids', 'in', item_ids)],
+                               context=context)
+        types = self.read(cr, uid, type_ids, ['field'], context=context)
+        return [t['field'] for t in types]
