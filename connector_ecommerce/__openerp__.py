@@ -29,35 +29,35 @@
 Connector for E-Commerce
 ========================
 
-TODO
-----
+This modules aims to be a common layer for the connectors dealing with
+e-commerce.
 
-Review the description
+It sits on top of the `connector`_ framework and is used by the
+e-commerce connectors, like `magentoerpconnect`_ or
+`prestashoperpconnect`_.
 
-Old Description
----------------
+That's a technical module, which include amongst other things:
 
-This module provide an abstract common minimal base to multi-channels sales.
-Say you want to expose your product catalog to
-* several instances of flashy-sluggish Magento web sites
-* a cutting edge Spree web shop
-* a Neteven online Marketplace
-* EBay
-* Amazon
-* Google Base
-* an external Point Of Sale system
-* ...
-Then this module allows you to:
-* use several external references ids on every OpenERP object matching those all those external referentials
-* per referential instance, use several sale sub platform entities (ex: several Magento websites per instance)
-* per sub platform, use several shops (ex: several Magento web shops per website)
+Events
 
-For each sale shop (matching OpenERP sale.shop object), this module abstract the interfaces to:
-* export the catalog, shop warehouse stock level wise, shop pricelist wise
-* import the catalog
-* import orders
-* export orders/picking status
-    """,
+    On which the connectors can subscribe consumers
+    (tracking number added, invoice paid, picking sent, ...)
+
+
+ConnectorUnit
+
+    A piece of code which allows to play all the ``onchanges`` required
+    when we create a sale order.
+
+Data Model
+
+    Add structures shared for e-commerce connectors
+
+
+.. _`connector`: https://code.launchpad.net/openerp-connector
+.. _`magentoerpconnect`: https://launchpad.net/magentoerpconnect
+.. _`prestashoperpconnect`: https://launchpad.net/prestashoperpconnect
+""",
  'depends': [
      'connector',
      'sale_automatic_workflow',
@@ -71,7 +71,6 @@ For each sale shop (matching OpenERP sale.shop object), this module abstract the
      'product_view.xml',
      'invoice_view.xml',
      'ecommerce_data.xml',
-     # 'settings/sale.exception.csv',  # TODO reimplement the check
      'stock_view.xml',
      'payment_method_view.xml',
      'account_view.xml',
