@@ -269,7 +269,17 @@ class sale_order(orm.Model):
         if len(payment_ids) > 1:
             action['domain'] = str([('id', 'in', payment_ids)])
         else:
-            ref = mod_obj.get_object_reference(cr, uid, 'account', 'view_move_form')
+            ref = mod_obj.get_object_reference(cr, uid, 'account',
+                                               'view_move_form')
             action['views'] = [(ref[1] if ref else False, 'form')]
             action['res_id'] = payment_ids[0] if payment_ids else False
         return action
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        for sale in self.browse(cr, uid, ids, context=context):
+            if sale.payment_ids:
+                raise osv.except_osv(
+                    _('Cannot cancel this sales order!'),
+                    _('Automatic payment entries are linked '
+                      'with the sale order.'))
+        return super(sale_order, self).action_cancel(cr, uid, ids, context=context)
