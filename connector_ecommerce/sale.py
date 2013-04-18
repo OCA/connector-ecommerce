@@ -22,6 +22,7 @@
 ##############################################################################
 
 from openerp.osv import orm, fields
+from openerp.tools.translate import _
 
 
 class sale_shop(orm.Model):
@@ -52,7 +53,8 @@ class sale_order(orm.Model):
         # set to True when the cancellation from the backend is
         # resolved, either because the SO has been canceled or
         # because the user manually chosed to keep it open
-        'cancellation_resolved': fields.boolean('Cancellation resolved'),
+        'cancellation_resolved': fields.boolean('Cancellation from the backend '
+                                                'resolved')
     }
 
     def action_cancel(self, cr, uid, ids, context=None):
@@ -67,8 +69,9 @@ class sale_order(orm.Model):
             # the sale order is cancelled => considered as resolved
             if (sale['cancelled_in_backend'] and
                     not sale['cancellation_resolved']):
-                self.set_cancellation_resolved(cr, uid, sale['id'],
-                                               context=context)
+                self.write(cr, uid, sale['id'],
+                           {'cancellation_resolved': True},
+                           context=context)
         return True
 
     def set_cancellation_resolved(self, cr, uid, ids, context=None):
@@ -77,6 +80,9 @@ class sale_order(orm.Model):
         The user can choose to keep the sale order active for some reason,
         so it just push a button to keep it alive.
         """
+        message = _("Despite the cancellation of the sales order on the "
+                    "backend, it should stay open.")
+        self.message_post(cr, uid, ids, body=message, context=context)
         self.write(cr, uid, ids,
                    {'cancellation_resolved': True},
                    context=context)
