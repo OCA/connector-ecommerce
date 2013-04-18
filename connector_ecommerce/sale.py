@@ -21,7 +21,7 @@
 #
 ##############################################################################
 
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class sale_shop(orm.Model):
@@ -46,6 +46,41 @@ class sale_shop(orm.Model):
 
 class sale_order(orm.Model):
     _inherit = 'sale.order'
+
+    _columns = {
+        'cancelled_in_backend': fields.boolean('Cancelled in backend'),
+        # set to True when the cancellation from the backend is
+        # resolved, either because the SO has been canceled or
+        # because the user manually chosed to keep it open
+        'cancellation_resolved': fields.boolean('Cancellation resolved'),
+    }
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        if not hasattr(ids, '__iter__'):
+            ids = [ids]
+        super(sale_order, self).action_cancel(cr, uid, ids, context=context)
+        sales = self.read(cr, uid, ids,
+                          ['cancelled_in_backend',
+                           'cancellation_resolved'],
+                          context=context)
+        for sale in sales:
+            # the sale order is cancelled => considered as resolved
+            if (sale['cancelled_in_backend'] and
+                    not sale['cancellation_resolved']):
+                self.set_cancellation_resolved(cr, uid, sale['id'],
+                                               context=context)
+        return True
+
+    def set_cancellation_resolved(self, cr, uid, ids, context=None):
+        """ Manually set the cancellation from the backend as resolved.
+
+        The user can choose to keep the sale order active for some reason,
+        so it just push a button to keep it alive.
+        """
+        self.write(cr, uid, ids,
+                   {'cancellation_resolved': True},
+                   context=context)
+        return True
 
     # XXX the 3 next methods seems very specific to magento
     def _convert_special_fields(self, cr, uid, vals, order_lines, context=None):
