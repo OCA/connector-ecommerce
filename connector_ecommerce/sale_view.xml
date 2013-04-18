@@ -42,8 +42,9 @@
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <filter name="my_sale_orders_filter" position="after">
-                    <filter string="Cancelled in backend"
-                        domain="[('cancelled_in_backend', '=', True)]"
+                    <filter string="Cancelled in backend, to cancel"
+                        domain="[('cancelled_in_backend', '=', True),
+                                 ('cancellation_resolved', '=', False)]"
                         help="Only sales orders cancelled in their backend"
                         name="cancelled_in_backend_filter"/>
                 </filter>
