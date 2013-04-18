@@ -93,14 +93,15 @@ class sale_order(orm.Model):
                            context=context)
         return True
 
-    def set_cancellation_resolved(self, cr, uid, ids, context=None):
+    def ignore_cancellation(self, cr, uid, ids, reason, context=None):
         """ Manually set the cancellation from the backend as resolved.
 
         The user can choose to keep the sale order active for some reason,
         so it just push a button to keep it alive.
         """
-        message = _("Despite the cancellation of the sales order on the "
-                    "backend, it should stay open.")
+        message = (_("Despite the cancellation of the sales order on the "
+                     "backend, it should stay open.<br/><br/>Reason: %s") %
+                   reason)
         self.message_post(cr, uid, ids, body=message, context=context)
         self.write(cr, uid, ids,
                    {'cancellation_resolved': True},

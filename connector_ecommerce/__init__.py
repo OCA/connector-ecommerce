@@ -27,3 +27,4 @@ import payment_method
 import event
 import unit
 import sale
+import wizard
