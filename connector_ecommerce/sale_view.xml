@@ -25,6 +25,14 @@
                     <field name="cancelled_in_backend"/>
                     <field name="cancellation_resolved" invisible="1"/>
                 </field>
+                <button name="invoice_recreate" position="before">
+                    <field name="parent_id" invisible="1"/>
+                    <button name="action_view_parent"
+                        string="View Parent Sales Order"
+                        type="object" class="oe_highlight"
+                        attrs="{'invisible': [('parent_id', '=', False)]}"
+                        groups="base.group_user"/>
+                </button>
                 <button name="invoice_cancel" position="after">
                     <button name="%(action_sale_ignore_cancel)d"
                         type="action"

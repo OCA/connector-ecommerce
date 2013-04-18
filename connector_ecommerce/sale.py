@@ -71,6 +71,8 @@ class sale_order(orm.Model):
         'parent_id': fields.function(_get_parent_id,
                                      string='Parent Order',
                                      type='many2one',
+                                     help='A parent sales order is a sales '
+                                          'order replaced by this one.',
                                      relation='sale.order'),
     }
 
@@ -123,6 +125,36 @@ class sale_order(orm.Model):
                    {'cancellation_resolved': True},
                    context=context)
         return True
+
+    def action_view_parent(self, cr, uid, ids, context=None):
+        """ Return an action to display the parent sale order """
+        if isinstance(ids, (list, tuple)):
+            assert len(ids) == 1
+            ids = ids[0]
+
+        mod_obj = self.pool.get('ir.model.data')
+        act_obj = self.pool.get('ir.actions.act_window')
+
+        parent = self.browse(cr, uid, ids, context=context).parent_id
+        if not parent:
+            return
+
+        view_xmlid = ('sale', 'view_order_form')
+        if parent.state in ('draft', 'sent', 'cancel'):
+            action_xmlid = ('sale', 'action_quotations')
+        else:
+            action_xmlid = ('sale', 'action_orders')
+
+        ref = mod_obj.get_object_reference(cr, uid, *action_xmlid)
+        action_id = False
+        if ref:
+            __, action_id = ref
+        action = act_obj.read(cr, uid, [action_id], context=context)[0]
+
+        ref = mod_obj.get_object_reference(cr, uid, *view_xmlid)
+        action['views'] = [(ref[1] if ref else False, 'form')]
+        action['res_id'] = parent.id
+        return action
 
     # XXX the 3 next methods seems very specific to magento
     def _convert_special_fields(self, cr, uid, vals, order_lines, context=None):
