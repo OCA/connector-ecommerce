@@ -29,8 +29,8 @@
                     <button name="set_cancellation_resolved"
                         type="object"
                         attrs="{'invisible': ['|', ('cancelled_in_backend', '=', False), ('cancellation_resolved', '=', True)]}"
-                        string="Forget backend's cancellation, Keep Open"
-                        groups="base.group_user"/>
+                        string="Ignore backend's cancellation, Keep Open"
+                        groups="base.group_sale_manager"/>
                 </button>
             </field>
         </record>
