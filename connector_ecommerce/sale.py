@@ -49,13 +49,32 @@ class sale_order(orm.Model):
     _inherit = 'sale.order'
 
     _columns = {
-        'cancelled_in_backend': fields.boolean('Cancelled in backend'),
+        'cancelled_in_backend': fields.boolean('Cancelled in backend',
+                                               readonly=True),
         # set to True when the cancellation from the backend is
         # resolved, either because the SO has been canceled or
         # because the user manually chosed to keep it open
-        'cancellation_resolved': fields.boolean('Cancellation from the backend '
-                                                'resolved')
+        'cancellation_resolved': fields.boolean('Cancellation from the '
+                                                'backend resolved')
     }
+
+    def _log_cancelled_in_backend(self, cr, uid, ids, context=None):
+        message = _("The sales order has been cancelled on the backend.")
+        self.message_post(cr, uid, ids, body=message, context=context)
+
+    def create(self, cr, uid, values, context=None):
+        order_id = super(sale_order, self).create(cr, uid, values,
+                                                  context=context)
+        if values.get('cancelled_in_backend'):
+            self._log_cancelled_in_backend(cr, uid, [order_id],
+                                           context=context)
+        return order_id
+
+    def write(self, cr, uid, ids, values, context=None):
+        if values.get('cancelled_in_backend'):
+            self._log_cancelled_in_backend(cr, uid, ids, context=context)
+        return super(sale_order, self).write(cr, uid, ids, values,
+                                             context=context)
 
     def action_cancel(self, cr, uid, ids, context=None):
         if not hasattr(ids, '__iter__'):
