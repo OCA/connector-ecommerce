@@ -48,6 +48,18 @@ class sale_shop(orm.Model):
 class sale_order(orm.Model):
     _inherit = 'sale.order'
 
+    def _get_parent_id(self, cr, uid, ids, name, arg, context=None):
+        return self.pool.get('sale.order').get_parent_id(cr, uid, ids,
+                                                         context=context)
+
+    def get_parent_id(self, cr, uid, ids, context=None):
+        """ Need to be inherited in the connectors to implement the
+        parent logic.
+
+        See an implementation example in ``magentoerpconnect``.
+        """
+        return dict.fromkeys(ids, False)
+
     _columns = {
         'cancelled_in_backend': fields.boolean('Cancelled in backend',
                                                readonly=True),
@@ -55,7 +67,11 @@ class sale_order(orm.Model):
         # resolved, either because the SO has been canceled or
         # because the user manually chosed to keep it open
         'cancellation_resolved': fields.boolean('Cancellation from the '
-                                                'backend resolved')
+                                                'backend resolved'),
+        'parent_id': fields.function(_get_parent_id,
+                                     string='Parent Order',
+                                     type='many2one',
+                                     relation='sale.order'),
     }
 
     def _log_cancelled_in_backend(self, cr, uid, ids, context=None):
