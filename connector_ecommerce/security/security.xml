@@ -11,6 +11,12 @@
         <field name="implied_ids" eval="[(4, ref('stock.group_locations')), (4, ref('sale.group_discount_per_so_line')), (4, ref('sale.group_delivery_invoice_address'))]"/>
     </record>
 
+    <!-- the connector managers always need theses rights to import or export products,
+         sales orders, ... -->
+    <record id="connector.group_connector_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('base.group_sale_manager'))]"/>
+    </record>
+
     </data>
 </openerp>
 
