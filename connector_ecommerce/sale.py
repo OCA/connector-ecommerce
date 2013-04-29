@@ -60,6 +60,20 @@ class sale_order(orm.Model):
         """
         return dict.fromkeys(ids, False)
 
+    def _get_need_cancel(self, cr, uid, ids, name, arg, context=None):
+        result = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            result[order.id] = self._need_cancel(cr, uid, order,
+                                                 context=context)
+        return result
+
+    def _get_parent_need_cancel(self, cr, uid, ids, name, arg, context=None):
+        result = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            result[order.id] = self._parent_need_cancel(cr, uid, order,
+                                                        context=context)
+        return result
+
     _columns = {
         'cancelled_in_backend': fields.boolean('Cancelled in backend',
                                                readonly=True),
@@ -74,7 +88,39 @@ class sale_order(orm.Model):
                                      help='A parent sales order is a sales '
                                           'order replaced by this one.',
                                      relation='sale.order'),
+        'need_cancel': fields.function(_get_need_cancel,
+                                       string='Need to be cancelled',
+                                       type='boolean',
+                                       help='Has been cancelled on the backend'
+                                            ', need to be cancelled.'),
+        'parent_need_cancel': fields.function(
+            _get_parent_need_cancel,
+            string='A parent sales orders needs cancel',
+            type='boolean',
+            help='A parent sales orders has been cancelled on the backend'
+                 ' and needs to be cancelled.'),
     }
+
+    def _need_cancel(self, cr, uid, order, context=None):
+        """ Return True if the sales order need to be cancelled
+        (has been cancelled on the Backend) """
+        return order.cancelled_in_backend and not order.cancellation_resolved
+
+    def _parent_need_cancel(self, cr, uid, order, context=None):
+        """ Return True if at least one parent sales order need to
+        be cancelled (has been cancelled on the backend).
+        Follows all the parent sales orders.
+        """
+        def need_cancel(order):
+            if self._need_cancel(cr, uid, order, context=context):
+                return True
+            if order.parent_id:
+                return need_cancel(order.parent_id)
+            else:
+                return False
+        if not order.parent_id:
+            return False
+        return need_cancel(order.parent_id)
 
     def _log_cancelled_in_backend(self, cr, uid, ids, context=None):
         message = _("The sales order has been cancelled on the backend.")
