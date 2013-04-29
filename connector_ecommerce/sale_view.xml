@@ -51,7 +51,8 @@
                 <filter name="my_sale_orders_filter" position="after">
                     <filter string="Canceled in backend, to cancel"
                         domain="[('canceled_in_backend', '=', True),
-                                 ('cancellation_resolved', '=', False)]"
+                                 ('cancellation_resolved', '=', False),
+                                 ('state', '!=', 'cancel')]"
                         help="Only sales orders canceled in their backend"
                         name="canceled_in_backend_filter"/>
                 </filter>
