@@ -36,7 +36,7 @@
                 <button name="invoice_cancel" position="after">
                     <button name="%(action_sale_ignore_cancel)d"
                         type="action"
-                        attrs="{'invisible': ['|', ('canceled_in_backend', '=', False), ('cancellation_resolved', '=', True), ('state', '!=', 'cancel')]}"
+                        attrs="{'invisible': ['|', '|', ('canceled_in_backend', '=', False), ('cancellation_resolved', '=', True), ('state', '==', 'cancel')]}"
                         string="Ignore backend's cancellation, Keep Open"
                         groups="base.group_sale_manager"/>
                 </button>
