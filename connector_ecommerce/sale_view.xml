@@ -46,11 +46,10 @@
         <record id="view_sales_order_filter" model="ir.ui.view">
             <field name="name">sale.order.search</field>
             <field name="model">sale.order</field>
-            <field name="type">search</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <filter name="my_sale_orders_filter" position="after">
-                    <filter string="Cancelled in backend, to cancel"
+                    <filter string="Canceled in backend, to cancel"
                         domain="[('canceled_in_backend', '=', True),
                                  ('cancellation_resolved', '=', False)]"
                         help="Only sales orders canceled in their backend"
