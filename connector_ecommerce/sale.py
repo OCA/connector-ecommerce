@@ -75,7 +75,7 @@ class sale_order(orm.Model):
         return result
 
     _columns = {
-        'cancelled_in_backend': fields.boolean('Cancelled in backend',
+        'canceled_in_backend': fields.boolean('Canceled in backend',
                                                readonly=True),
         # set to True when the cancellation from the backend is
         # resolved, either because the SO has been canceled or
@@ -89,26 +89,26 @@ class sale_order(orm.Model):
                                           'order replaced by this one.',
                                      relation='sale.order'),
         'need_cancel': fields.function(_get_need_cancel,
-                                       string='Need to be cancelled',
+                                       string='Need to be canceled',
                                        type='boolean',
-                                       help='Has been cancelled on the backend'
-                                            ', need to be cancelled.'),
+                                       help='Has been canceled on the backend'
+                                            ', need to be canceled.'),
         'parent_need_cancel': fields.function(
             _get_parent_need_cancel,
             string='A parent sales orders needs cancel',
             type='boolean',
-            help='A parent sales orders has been cancelled on the backend'
-                 ' and needs to be cancelled.'),
+            help='A parent sales orders has been canceled on the backend'
+                 ' and needs to be canceled.'),
     }
 
     def _need_cancel(self, cr, uid, order, context=None):
-        """ Return True if the sales order need to be cancelled
-        (has been cancelled on the Backend) """
-        return order.cancelled_in_backend and not order.cancellation_resolved
+        """ Return True if the sales order need to be canceled
+        (has been canceled on the Backend) """
+        return order.canceled_in_backend and not order.cancellation_resolved
 
     def _parent_need_cancel(self, cr, uid, order, context=None):
         """ Return True if at least one parent sales order need to
-        be cancelled (has been cancelled on the backend).
+        be canceled (has been canceled on the backend).
         Follows all the parent sales orders.
         """
         def need_cancel(order):
@@ -122,21 +122,21 @@ class sale_order(orm.Model):
             return False
         return need_cancel(order.parent_id)
 
-    def _log_cancelled_in_backend(self, cr, uid, ids, context=None):
-        message = _("The sales order has been cancelled on the backend.")
+    def _log_canceled_in_backend(self, cr, uid, ids, context=None):
+        message = _("The sales order has been canceled on the backend.")
         self.message_post(cr, uid, ids, body=message, context=context)
 
     def create(self, cr, uid, values, context=None):
         order_id = super(sale_order, self).create(cr, uid, values,
                                                   context=context)
-        if values.get('cancelled_in_backend'):
-            self._log_cancelled_in_backend(cr, uid, [order_id],
+        if values.get('canceled_in_backend'):
+            self._log_canceled_in_backend(cr, uid, [order_id],
                                            context=context)
         return order_id
 
     def write(self, cr, uid, ids, values, context=None):
-        if values.get('cancelled_in_backend'):
-            self._log_cancelled_in_backend(cr, uid, ids, context=context)
+        if values.get('canceled_in_backend'):
+            self._log_canceled_in_backend(cr, uid, ids, context=context)
         return super(sale_order, self).write(cr, uid, ids, values,
                                              context=context)
 
@@ -145,12 +145,12 @@ class sale_order(orm.Model):
             ids = [ids]
         super(sale_order, self).action_cancel(cr, uid, ids, context=context)
         sales = self.read(cr, uid, ids,
-                          ['cancelled_in_backend',
+                          ['canceled_in_backend',
                            'cancellation_resolved'],
                           context=context)
         for sale in sales:
-            # the sale order is cancelled => considered as resolved
-            if (sale['cancelled_in_backend'] and
+            # the sale order is canceled => considered as resolved
+            if (sale['canceled_in_backend'] and
                     not sale['cancellation_resolved']):
                 self.write(cr, uid, sale['id'],
                            {'cancellation_resolved': True},

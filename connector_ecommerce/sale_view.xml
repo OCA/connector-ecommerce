@@ -22,7 +22,7 @@
             <field name="inherit_id" ref="sale_automatic_workflow.sale_order_view_form" />
             <field name="arch" type="xml">
                 <field name="workflow_process_id" position="after">
-                    <field name="cancelled_in_backend"/>
+                    <field name="canceled_in_backend"/>
                     <field name="cancellation_resolved" invisible="1"/>
                 </field>
                 <button name="invoice_recreate" position="before">
@@ -36,7 +36,7 @@
                 <button name="invoice_cancel" position="after">
                     <button name="%(action_sale_ignore_cancel)d"
                         type="action"
-                        attrs="{'invisible': ['|', ('cancelled_in_backend', '=', False), ('cancellation_resolved', '=', True)]}"
+                        attrs="{'invisible': ['|', ('canceled_in_backend', '=', False), ('cancellation_resolved', '=', True)]}"
                         string="Ignore backend's cancellation, Keep Open"
                         groups="base.group_sale_manager"/>
                 </button>
@@ -51,10 +51,10 @@
             <field name="arch" type="xml">
                 <filter name="my_sale_orders_filter" position="after">
                     <filter string="Cancelled in backend, to cancel"
-                        domain="[('cancelled_in_backend', '=', True),
+                        domain="[('canceled_in_backend', '=', True),
                                  ('cancellation_resolved', '=', False)]"
-                        help="Only sales orders cancelled in their backend"
-                        name="cancelled_in_backend_filter"/>
+                        help="Only sales orders canceled in their backend"
+                        name="canceled_in_backend_filter"/>
                 </filter>
             </field>
         </record>
