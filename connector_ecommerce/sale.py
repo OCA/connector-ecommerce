@@ -169,6 +169,17 @@ class sale_order(orm.Model):
     def _log_canceled_in_backend(self, cr, uid, ids, context=None):
         message = _("The sales order has been canceled on the backend.")
         self.message_post(cr, uid, ids, body=message, context=context)
+        for order in self.browse(cr, uid, ids, context=context):
+            message = _("Warning: the origin sales order %s has been canceled "
+                        "on the backend.") % order.name
+            if order.picking_ids:
+                picking_obj = self.pool.get('stock.picking')
+                picking_obj.message_post(cr, uid, order.picking_ids,
+                                         body=message, context=context)
+            if order.invoice_ids:
+                picking_obj = self.pool.get('account.invoice')
+                picking_obj.message_post(cr, uid, order.invoice_ids,
+                                         body=message, context=context)
 
     def create(self, cr, uid, values, context=None):
         order_id = super(sale_order, self).create(cr, uid, values,
@@ -179,11 +190,12 @@ class sale_order(orm.Model):
         return order_id
 
     def write(self, cr, uid, ids, values, context=None):
+        result = super(sale_order, self).write(cr, uid, ids, values,
+                                               context=context)
         if values.get('canceled_in_backend'):
             self._log_canceled_in_backend(cr, uid, ids, context=context)
             self._try_auto_cancel(cr, uid, ids, context=context)
-        return super(sale_order, self).write(cr, uid, ids, values,
-                                             context=context)
+        return result
 
     def action_cancel(self, cr, uid, ids, context=None):
         if not hasattr(ids, '__iter__'):
