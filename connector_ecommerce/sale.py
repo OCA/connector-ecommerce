@@ -21,8 +21,9 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp.osv import orm, fields, osv
 from openerp.tools.translate import _
+from openerp import netsvc
 
 
 class sale_shop(orm.Model):
@@ -46,6 +47,26 @@ class sale_shop(orm.Model):
 
 
 class sale_order(orm.Model):
+    """ Add a cancellation mecanism in the sales orders
+
+    When a sale order is canceled in a backend, the connectors can flag
+    the 'canceled_in_backend' flag. It will:
+
+    * try to automatically cancel the sales order
+    * block the confirmation of the sales orders using a 'sales exception'
+
+    When a sales order is canceled or the user used the button to force
+    to 'keep it open', the flag 'cancellation_resolved' is set to True.
+
+    The second axe which can be used by the connectors is the 'parent'
+    sale order. When a sales order has a parent sales order (logic to
+    link with the parent to be defined by each connector), it will be
+    blocked until the cancellation of the sale order is resolved.
+
+    This is used by, for instance, the magento connector, when one
+    modifies a sales order, Magento cancels it and create a new one with
+    the first one as parent.
+    """
     _inherit = 'sale.order'
 
     def _get_parent_id(self, cr, uid, ids, name, arg, context=None):
@@ -122,6 +143,29 @@ class sale_order(orm.Model):
             return False
         return need_cancel(order.parent_id)
 
+    def _try_auto_cancel(self, cr, uid, ids, context=None):
+        """ Try to automatically cancel a sales order canceled
+        in a backend.
+
+        If it can't cancel it, does nothing.
+        """
+        wf_service = netsvc.LocalService("workflow")
+        for order_id in ids:
+            try:
+                wf_service.trg_validate(uid, 'sale.order',
+                                        order_id, 'cancel', cr)
+            except osv.except_osv:
+                # the 'cancellation_resolved' flag will stay to False
+                message = _("The sales order could not be automatically "
+                            "canceled. <p>Resolution:<ol>"
+                            "<li>Cancel the linked invoices, delivery orders,"
+                            " automatic payments.</li>"
+                            "<li>Cancel the sales order manually.</li></ol>")
+            else:
+                message = _("The sales order has been automatically canceled.")
+            self.message_post(cr, uid, [order_id], body=message,
+                              context=context)
+
     def _log_canceled_in_backend(self, cr, uid, ids, context=None):
         message = _("The sales order has been canceled on the backend.")
         self.message_post(cr, uid, ids, body=message, context=context)
@@ -130,13 +174,14 @@ class sale_order(orm.Model):
         order_id = super(sale_order, self).create(cr, uid, values,
                                                   context=context)
         if values.get('canceled_in_backend'):
-            self._log_canceled_in_backend(cr, uid, [order_id],
-                                           context=context)
+            self._log_canceled_in_backend(cr, uid, [order_id], context=context)
+            self._try_auto_cancel(cr, uid, [order_id], context=context)
         return order_id
 
     def write(self, cr, uid, ids, values, context=None):
         if values.get('canceled_in_backend'):
             self._log_canceled_in_backend(cr, uid, ids, context=context)
+            self._try_auto_cancel(cr, uid, ids, context=context)
         return super(sale_order, self).write(cr, uid, ids, values,
                                              context=context)
 
