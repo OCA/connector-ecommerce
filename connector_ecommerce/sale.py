@@ -70,8 +70,7 @@ class sale_order(orm.Model):
     _inherit = 'sale.order'
 
     def _get_parent_id(self, cr, uid, ids, name, arg, context=None):
-        return self.pool.get('sale.order').get_parent_id(cr, uid, ids,
-                                                         context=context)
+        return self.get_parent_id(cr, uid, ids, context=context)
 
     def get_parent_id(self, cr, uid, ids, context=None):
         """ Need to be inherited in the connectors to implement the

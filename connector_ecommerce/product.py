@@ -91,6 +91,29 @@ class product_template(orm.Model):
 class product_product(orm.Model):
     _inherit = 'product.product'
 
+    def _get_checkpoint(self, cr, uid, ids, name, arg, context=None):
+        result = {}
+        checkpoint_obj = self.pool.get('connector.checkpoint')
+        model_obj = self.pool.get('ir.model')
+        model_id = model_obj.search(cr, uid,
+                                    [('model', '=', 'product.product')],
+                                    context=context)[0]
+        for product_id in ids:
+            point_ids = checkpoint_obj.search(cr, uid,
+                                              [('model_id', '=', model_id),
+                                               ('record_id', '=', product_id),
+                                               ('state', '=', 'need_review')],
+                                              context=context)
+            result[product_id] = bool(point_ids)
+        return result
+
+    _columns = {
+        'has_checkpoint': fields.function(_get_checkpoint,
+                                          type='boolean',
+                                          readonly=True,
+                                          string='Has Checkpoint'),
+    }
+
     def _price_changed(self, cr, uid, ids, vals, context=None):
         """ Fire the ``on_product_price_changed`` if the price
         if the product could have changed.
