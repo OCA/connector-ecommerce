@@ -149,20 +149,48 @@ class sale_order(orm.Model):
 
         If it can't cancel it, does nothing.
         """
+        wkf_states = ('draft', 'sent')
+        action_states = ('manual', 'progress')
         wf_service = netsvc.LocalService("workflow")
+        resolution_msg = _("<p>Resolution:<ol>"
+                           "<li>Cancel the linked invoices, delivery "
+                           "orders, automatic payments.</li>"
+                           "<li>Cancel the sales order manually.</li>"
+                           "</ol></p>")
         for order_id in ids:
-            try:
-                wf_service.trg_validate(uid, 'sale.order',
-                                        order_id, 'cancel', cr)
-            except osv.except_osv:
-                # the 'cancellation_resolved' flag will stay to False
-                message = _("The sales order could not be automatically "
-                            "canceled. <p>Resolution:<ol>"
-                            "<li>Cancel the linked invoices, delivery orders,"
-                            " automatic payments.</li>"
-                            "<li>Cancel the sales order manually.</li></ol>")
+            state = self.read(cr, uid, order_id,
+                              ['state'], context=context)['state']
+            if state == 'cancel':
+                continue
+            elif state == 'done':
+                message = _("The sales order cannot be automatically "
+                            "canceled because it is already done.")
+            elif state in wkf_states + action_states:
+                try:
+                    # respect the same cancellation methods than
+                    # the sales order view: quotations use the workflow
+                    # action, sales orders use the action_cancel method.
+                    if state in wkf_states:
+                        wf_service.trg_validate(uid, 'sale.order',
+                                                order_id, 'cancel', cr)
+                    elif state in action_states:
+                        self.action_cancel(cr, uid, order_id, context=context)
+                    else:
+                        raise ValueError('%s should not fall here.' % state)
+                except osv.except_osv:
+                    # the 'cancellation_resolved' flag will stay to False
+                    message = _("The sales order could not be automatically "
+                                "canceled.") + resolution_msg
+                else:
+                    message = _("The sales order has been automatically "
+                                "canceled.")
             else:
-                message = _("The sales order has been automatically canceled.")
+                # shipping_except, invoice_except, ...
+                # can not be canceled from the view, so assume that it
+                # should not be canceled here neiter, exception to
+                # resolve
+                message = _("The sales order could not be automatically "
+                            "canceled for this status.") + resolution_msg
             self.message_post(cr, uid, [order_id], body=message,
                               context=context)
 
