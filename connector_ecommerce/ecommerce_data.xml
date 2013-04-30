@@ -42,5 +42,26 @@
             <field name="categ_id" ref="product_categ_services"/>
         </record>
 
+        <record id="excep_parent_order_need_cancel" model="sale.exception">
+            <field name="name">Parent sales order canceled on the backend.</field>
+            <field name="description">The parent sales order has been canceled on the backend.
+You will not be able to process this sales order until the parent's one is canceled.</field>
+            <field name="sequence">30</field>
+            <field name="model">sale.order</field>
+            <field name="code">if order.parent_need_cancel:
+    failed = True</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="excep_order_need_cancel" model="sale.exception">
+            <field name="name">Sales order canceled on the backend.</field>
+            <field name="description">The sales order has been canceled on the backend.</field>
+            <field name="sequence">20</field>
+            <field name="model">sale.order</field>
+            <field name="code">if order.need_cancel:
+    failed = True</field>
+            <field name="active" eval="True"/>
+        </record>
+
     </data>
 </openerp>
