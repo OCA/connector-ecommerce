@@ -29,6 +29,7 @@ class payment_method(orm.Model):
         return [('always', 'Always'),
                 ('never', 'Never'),
                 ('paid', 'Paid'),
+                ('authorized', 'Authorized'),
                 ]
 
     _columns = {
