@@ -24,6 +24,7 @@
 from openerp.osv import orm, fields, osv
 from openerp.tools.translate import _
 from openerp import netsvc
+from openerp.addons.connector.connector import ConnectorUnit
 
 
 class sale_shop(orm.Model):
@@ -396,3 +397,73 @@ class sale_order(orm.Model):
                                               vals[ext_code_field])
         vals['order_line'].append((0, 0, extra_line))
         return vals
+
+
+class ExtraOrderLineBuilder(ConnectorUnit):
+    """ Base class to build a sale order line for a sale order
+
+    Used when extra order lines have to be added in a sale order
+    but we only know some parameters (product, price, ...), for instance,
+    a line for the shipping costs or the gift coupons.
+
+    It can be subclassed to customize the way the lines are created.
+    """
+    _model_name = None
+
+    def __init__(self, environment):
+        super(ExtraOrderLineCreator, self).__init__(environment)
+        self.product_ref = None  # tuple (module, xmlid)
+        self.price_unit = None
+        self.quantity = 1
+        self.sign = 1
+
+    def get_line(self):
+        assert self.product_ref
+        assert self.price_unit is not None
+        line = {}
+
+        model_data_obj = self.pool.get('ir.model.data')
+        product_obj = self.pool.get('product.product')
+        __, product_id = model_data_obj.get_object_reference(
+            cr, uid, *self.product_ref)
+        product = product_obj.browse(cr, uid, product_id, context=context)
+
+        return {'product_id': product.id,
+                'name': product.name,
+                'product_uom': product.uom_id.id,
+                'product_uom_qty': self.quantity,
+                'price_unit': self.price_unit * self.sign}
+
+
+class ShippingLineBuilder(ExtraOrderLineBuilder):
+    _model_name = None
+
+    def __init__(self, environment):
+        super(ShippingLineBuilder, self).__init__(environment)
+        self.product_ref = ('connector_ecommerce', 'product_product_shipping')
+
+
+class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
+    _model_name = None
+
+    def __init__(self, environment):
+        super(CashOnDeliveryLineBuilder, self).__init__(environment)
+        self.product_ref = ('connector_ecommerce',
+                            'product_product_cash_on_delivery')
+
+
+class GiftOrderLineBuilder(ExtraOrderLineBuilder):
+    _model_name = None
+
+    def __init__(self, environment):
+        super(GiftOrderLineBuilder, self).__init__(environment)
+        self.product_ref = ('connector_ecommerce',
+                            'product_product_gift')
+        self.sign = -1
+        self.gift_code = None
+
+    def get_line(self):
+        line = super(GiftOrderLineBuilder, self).get_line()
+        if self.gift_code:
+            line['name'] = "%s [%s]" % (line['name'], self.gift_code)
+        return line
