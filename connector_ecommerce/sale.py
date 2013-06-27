@@ -371,13 +371,7 @@ class sale_order(orm.Model):
         elif vals.get(option['price_unit_tax_excluded']):
             price_unit = vals.pop(option['price_unit_tax_excluded']) * sign
         else:
-            for key in ['price_unit_tax_excluded',
-                        'price_unit_tax_included',
-                        'tax_rate_field']:
-                if option.get(key) and option[key] in vals:
-                    del vals[option[key]]
-            return vals  # if there is no price, we have nothing to import
-
+            return self._clean_special_fields(option, vals)
         model_data_obj = self.pool.get('ir.model.data')
         product_obj = self.pool.get('product.product')
         __, product_id = model_data_obj.get_object_reference(
@@ -395,4 +389,13 @@ class sale_order(orm.Model):
             extra_line['name'] = "%s [%s]" % (extra_line['name'],
                                               vals[ext_code_field])
         vals['order_line'].append((0, 0, extra_line))
-        return vals
+
+        return self._clean_special_fields(option, vals)
+
+    def _clean_special_fields(self, option, vals):
+        for key in ['price_unit_tax_excluded',
+                    'price_unit_tax_included',
+                    'tax_rate_field']:
+            if option.get(key) and option[key] in vals:
+                del vals[option[key]]
+        return vals  # if there is no price, we have nothing to import
