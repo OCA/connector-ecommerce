@@ -354,6 +354,16 @@ class sale_order(orm.Model):
             },
         ]
 
+    def _get_order_extra_line_vals(self, cr, uid, vals, option, product,
+                                   price_unit, context=None):
+        return {
+            'product_id': product.id,
+            'name': product.name,
+            'product_uom': product.uom_id.id,
+            'product_uom_qty': 1,
+            'price_unit': price_unit
+        }
+
     def _add_order_extra_line(self, cr, uid, vals, option, context=None):
         """ Add or substract amount on order as a separate line item
         with single quantity for each type of amounts like: shipping,
@@ -375,14 +385,11 @@ class sale_order(orm.Model):
         model_data_obj = self.pool.get('ir.model.data')
         product_obj = self.pool.get('product.product')
         __, product_id = model_data_obj.get_object_reference(
-                cr, uid, *option['product_ref'])
+            cr, uid, *option['product_ref'])
         product = product_obj.browse(cr, uid, product_id, context=context)
 
-        extra_line = {'product_id': product.id,
-                      'name': product.name,
-                      'product_uom': product.uom_id.id,
-                      'product_uom_qty': 1,
-                      'price_unit': price_unit}
+        extra_line = self._get_order_extra_line_vals(
+            cr, uid, vals, option, product, price_unit, context=context)
 
         ext_code_field = option.get('code_field')
         if ext_code_field and vals.get(ext_code_field):
