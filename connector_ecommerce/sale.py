@@ -355,8 +355,8 @@ class sale_order(orm.Model):
             },
         ]
 
-    def _get_order_extra_line_vals(self, cr, uid,
-            vals, option, product, price_unit, context=None):
+    def _get_order_extra_line_vals(self, cr, uid, vals, option, product,
+                                   price_unit, context=None):
         return {
             'product_id': product.id,
             'name': product.name,
@@ -386,11 +386,11 @@ class sale_order(orm.Model):
         model_data_obj = self.pool.get('ir.model.data')
         product_obj = self.pool.get('product.product')
         __, product_id = model_data_obj.get_object_reference(
-                cr, uid, *option['product_ref'])
+            cr, uid, *option['product_ref'])
         product = product_obj.browse(cr, uid, product_id, context=context)
 
-        extra_line = self._get_order_extra_line_vals(cr,
-                uid, vals, option, product, price_unit, context=context)
+        extra_line = self._get_order_extra_line_vals(
+            cr, uid, vals, option, product, price_unit, context=context)
 
         ext_code_field = option.get('code_field')
         if ext_code_field and vals.get(ext_code_field):
