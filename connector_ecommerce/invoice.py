@@ -24,6 +24,7 @@ from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_invoice_paid, on_invoice_validated
 
+
 class account_invoice(orm.Model):
     _inherit='account.invoice'
 
