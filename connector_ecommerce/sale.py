@@ -21,10 +21,14 @@
 #
 ##############################################################################
 
+import logging
+
 from openerp.osv import orm, fields, osv
 from openerp.tools.translate import _
 from openerp import netsvc
 from openerp.addons.connector.connector import ConnectorUnit
+
+_logger = logging.getLogger(__name__)
 
 
 class sale_shop(orm.Model):
@@ -302,6 +306,9 @@ class sale_order(orm.Model):
         :return: the value for the sale order with the special field converted
         :rtype: dict
         """
+        _logger.warning('sale_order._convert_special_fields() has been '
+                        'deprecated. Use a specialized '
+                        'SpecialOrderLineBuilder class instead.')
         shipping_fields = ['shipping_amount_tax_excluded',
                            'shipping_amount_tax_included',
                            'shipping_tax_amount']
@@ -400,7 +407,7 @@ class sale_order(orm.Model):
         return vals
 
 
-class ExtraOrderLineBuilder(ConnectorUnit):
+class SpecialOrderLineBuilder(ConnectorUnit):
     """ Base class to build a sale order line for a sale order
 
     Used when extra order lines have to be added in a sale order
@@ -408,27 +415,40 @@ class ExtraOrderLineBuilder(ConnectorUnit):
     a line for the shipping costs or the gift coupons.
 
     It can be subclassed to customize the way the lines are created.
+
+    Usage::
+
+        builder = self.get_connector_for_unit(ShippingLineBuilder,
+                                              model='sale.order.line')
+        builder.price_unit = 100
+        builder.get_line()
+
     """
     _model_name = None
 
     def __init__(self, environment):
-        super(ExtraOrderLineCreator, self).__init__(environment)
+        super(SpecialOrderLineBuilder, self).__init__(environment)
+        self.product = None  # id or browse_record
+        # when no product_id, fallback to a product_ref
         self.product_ref = None  # tuple (module, xmlid)
         self.price_unit = None
         self.quantity = 1
         self.sign = 1
 
     def get_line(self):
-        assert self.product_ref
+        assert self.product_ref or self.product
         assert self.price_unit is not None
         line = {}
+        session = self.session
 
-        model_data_obj = self.pool.get('ir.model.data')
-        product_obj = self.pool.get('product.product')
-        __, product_id = model_data_obj.get_object_reference(
-            cr, uid, *self.product_ref)
-        product = product_obj.browse(cr, uid, product_id, context=context)
+        product = product_id = self.product
+        if product_id is None:
+            model_data_obj = session.pool.get('ir.model.data')
+            __, product_id = model_data_obj.get_object_reference(
+                session.cr, session.uid, *self.product_ref)
 
+        if not isinstance(product_id, orm.browse_record):
+            product = session.browse('product.product', product_id)
         return {'product_id': product.id,
                 'name': product.name,
                 'product_uom': product.uom_id.id,
@@ -436,7 +456,8 @@ class ExtraOrderLineBuilder(ConnectorUnit):
                 'price_unit': self.price_unit * self.sign}
 
 
-class ShippingLineBuilder(ExtraOrderLineBuilder):
+class ShippingLineBuilder(SpecialOrderLineBuilder):
+    """ Return values for a Shipping line """
     _model_name = None
 
     def __init__(self, environment):
@@ -444,7 +465,8 @@ class ShippingLineBuilder(ExtraOrderLineBuilder):
         self.product_ref = ('connector_ecommerce', 'product_product_shipping')
 
 
-class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
+class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
+    """ Return values for a Cash on Delivery line """
     _model_name = None
 
     def __init__(self, environment):
@@ -453,7 +475,8 @@ class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
                             'product_product_cash_on_delivery')
 
 
-class GiftOrderLineBuilder(ExtraOrderLineBuilder):
+class GiftOrderLineBuilder(SpecialOrderLineBuilder):
+    """ Return values for a Gift line """
     _model_name = None
 
     def __init__(self, environment):
