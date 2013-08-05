@@ -20,11 +20,13 @@
 ##############################################################################
 
 import test_onchange
+import test_invoice_event
 
 fast_suite = [
 ]
 
 checks = [
     test_onchange,
+    test_invoice_event,
 ]
 
