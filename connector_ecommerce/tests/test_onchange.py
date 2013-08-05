@@ -94,13 +94,13 @@ class test_onchange(common.TransactionCase):
                 }),
             ]
         }
- 
+
         onchange = SaleOrderOnChange(env)
-        order = onchange.play(order_input)
-        
+        order = onchange.play(order_input,
+                              order_input['order_line'])
+
         self.assertEqual(order['partner_invoice_id'], partner_invoice_id)
-        line = order['order_line'][0][2] 
+        line = order['order_line'][0][2]
         self.assertEqual(line['name'], 'My Real Name')
         self.assertEqual(line['th_weight'], 15)
         self.assertEqual(line['tax_id'][0][2][0], tax_id)
-
