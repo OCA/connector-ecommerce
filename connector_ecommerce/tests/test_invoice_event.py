@@ -21,15 +21,10 @@
 
 import unittest2
 import mock
+from functools import partial
 
-# from openerp.addons.connector_ecommerce.event import (on_invoice_paid,
-#                                                       on_invoice_validated)
-from openerp.addons.connector.session import ConnectorSession
 import openerp.tests.common as common
 from openerp import netsvc
-
-DB = common.DB
-ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class test_invoice_event(common.TransactionCase):
@@ -42,9 +37,8 @@ class test_invoice_event(common.TransactionCase):
         partner_model = self.registry('res.partner')
         partner_id = partner_model.create(cr, uid, {'name': 'Hodor'})
         data_model = self.registry('ir.model.data')
-        product_id = data_model.get_object_reference(cr, uid,
-                                                     'product',
-                                                     'product_product_6')[1]
+        self.get_ref = partial(data_model.get_object_reference, cr, uid)
+        product_id = self.get_ref('product', 'product_product_6')[1]
         invoice_vals = {'partner_id': partner_id,
                         'type': 'out_invoice',
                         'invoice_line': [(0, 0, {'name': "LCD Screen",
@@ -64,10 +58,40 @@ class test_invoice_event(common.TransactionCase):
         cr, uid = self.cr, self.uid
         assert self.invoice, "The invoice has not been created"
         wf_service = netsvc.LocalService('workflow')
-        path = 'openerp.addons.connector_ecommerce.invoice.on_invoice_validated'
-        with mock.patch(path) as EventMock:
+        event = 'openerp.addons.connector_ecommerce.invoice.on_invoice_validated'
+        with mock.patch(event) as event_mock:
             wf_service.trg_validate(uid, 'account.invoice',
                                     self.invoice.id, 'invoice_open', cr)
-            EventMock.fire.assert_called_with(mock.ANY,
-                                              'account.invoice',
-                                              self.invoice.id)
+            self.assertEqual(self.invoice.state, 'open')
+            event_mock.fire.assert_called_with(mock.ANY,
+                                               'account.invoice',
+                                               self.invoice.id)
+
+    def test_event_paid(self):
+        """ Test if the ``on_invoice_paid`` event is fired
+        when an invoice is paid """
+        cr, uid = self.cr, self.uid
+        assert self.invoice, "The invoice has not been created"
+        wf_service = netsvc.LocalService('workflow')
+        wf_service.trg_validate(uid, 'account.invoice',
+                                self.invoice.id, 'invoice_open', cr)
+        self.assertEqual(self.invoice.state, 'open')
+        journal_id = self.get_ref('account', 'bank_journal')[1]
+        pay_account_id = self.get_ref('account', 'cash')[1]
+        period_id = self.get_ref('account', 'period_10')[1]
+        event = 'openerp.addons.connector_ecommerce.invoice.on_invoice_paid'
+        with mock.patch(event) as event_mock:
+            self.invoice.pay_and_reconcile(
+                pay_amount=self.invoice.amount_total,
+                pay_account_id=pay_account_id,
+                period_id=period_id,
+                pay_journal_id=journal_id,
+                writeoff_acc_id=pay_account_id,
+                writeoff_period_id=period_id,
+                writeoff_journal_id=journal_id,
+                name="Payment for test of the event on_invoice_paid")
+            self.invoice.refresh()
+            self.assertEqual(self.invoice.state, 'paid')
+            event_mock.fire.assert_called_with(mock.ANY,
+                                               'account.invoice',
+                                               self.invoice.id)
