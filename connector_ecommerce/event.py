@@ -60,6 +60,17 @@ Listeners should take the following arguments:
  * record_id: id of the record
 """
 
+on_invoice_validated = Event()
+"""
+``on_invoice_validated`` is fired when an invoice has been validated.
+
+Listeners should take the following arguments:
+
+ * session: `connector.session.ConnectorSession` object
+ * model_name: name of the model
+ * record_id: id of the record
+"""
+
 on_product_price_changed = Event()
 """
 ``on_product_price_changed`` is fired when the price of a product is

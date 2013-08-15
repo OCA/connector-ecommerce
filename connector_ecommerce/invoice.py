@@ -22,7 +22,7 @@
 from openerp.osv import fields, orm, osv
 from openerp.tools.translate import _
 from openerp.addons.connector.session import ConnectorSession
-from .event import on_invoice_paid
+from .event import on_invoice_paid, on_invoice_validated
 
 
 class account_invoice(orm.Model):
@@ -44,4 +44,12 @@ class account_invoice(orm.Model):
         session = ConnectorSession(cr, uid, context=context)
         for record_id in ids:
             on_invoice_paid.fire(session, self._name, record_id)
+        return res
+
+    def invoice_validate(self, cr, uid, ids, context=None):
+        res = super(account_invoice, self).invoice_validate(
+                cr, uid, ids, context=context)
+        session = ConnectorSession(cr, uid, context=context)
+        for record_id in ids:
+            on_invoice_validated.fire(session, self._name, record_id)
         return res
