@@ -20,13 +20,11 @@
 #
 ############################################################################### 
 
-
 import unittest2
 import mock
 
-from openerp.addons.connector.connector import ConnectorUnit
-from openerp.addons.connector_ecommerce.unit.sale_order_onchange import \
-                                         SaleOrderOnChange
+from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
+    SaleOrderOnChange)
 from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.connector import Environment
 import openerp.tests.common as common
@@ -36,50 +34,40 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class test_onchange(common.TransactionCase):
-    """ Test the imports from a Magento-like Mock """
+    """ Test if the onchanges are applied correctly on a sale order"""
 
     def setUp(self):
         super(test_onchange, self).setUp()
         self.session = ConnectorSession(self.cr, self.uid)
 
     def test_play_onchange(self):
+        """ Play the onchange ConnectorUnit on a sale order """
         product_model = self.registry('product.product')
         partner_model = self.registry('res.partner')
         shop_model = self.registry('sale.shop')
         tax_model = self.registry('account.tax')
-
+        cr, uid = self.cr, self.uid
 
         backend_record = mock.Mock()
         env = Environment(backend_record, self.session, 'sale.order')
 
-        partner_id = partner_model.create(self.cr, self.uid, {
-                'name': 'seb',
-                'zip': '69100',
-                'city': 'Villeurbanne',
-                })
-        
-        partner_invoice_id = partner_model.create(self.cr, self.uid, {
-                'name': 'Guewen',
-                'zip': '1015',
-                'city': 'Lausanne',
-                'type': 'invoice',
-                'parent_id': partner_id,
-                })
-
-        tax_id = tax_model.create(self.cr, self.uid, {
-                'name': 'My Tax',
-                })
-
-        product_id = product_model.create(self.cr, self.uid, {
-                'default_code': 'MyCode',
-                'name': 'My Product',
-                'weight': 15,
-                'taxes_id': [(6, 0, [tax_id])],
-                })
-
-        shop_id = shop_model.create(self.cr, self.uid, {
-                'name': 'My shop',
-                })
+        partner_id = partner_model.create(cr, uid,
+                                          {'name': 'seb',
+                                          'zip': '69100',
+                                          'city': 'Villeurbanne'})
+        partner_invoice_id = partner_model.create(cr, uid,
+                                                  {'name': 'Guewen',
+                                                   'zip': '1015',
+                                                   'city': 'Lausanne',
+                                                   'type': 'invoice',
+                                                   'parent_id': partner_id})
+        tax_id = tax_model.create(cr, uid, {'name': 'My Tax'})
+        product_id = product_model.create(cr, uid,
+                                          {'default_code': 'MyCode',
+                                           'name': 'My Product',
+                                           'weight': 15,
+                                           'taxes_id': [(6, 0, [tax_id])]})
+        shop_id = shop_model.create(cr, uid, {'name': 'My shop'})
 
         order_input = {
             'shop_id': shop_id,
