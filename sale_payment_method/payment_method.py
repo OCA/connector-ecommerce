@@ -43,7 +43,6 @@ class payment_method(orm.Model):
         'company_id': fields.many2one(
             'res.company',
             'Company',
-            required=True,
         ),
     }
 
