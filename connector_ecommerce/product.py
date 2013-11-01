@@ -143,7 +143,7 @@ class product_product(orm.Model):
 
     def create(self, cr, uid, vals, context=None):
         product_ids = super(product_product, self).create(
-            cr, uid, vals, context=None)
+            cr, uid, vals, context=context)
         self._price_changed(cr, uid, [product_ids], vals, context=context)
         return product_ids
 
