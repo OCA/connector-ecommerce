@@ -416,6 +416,14 @@ class ExtraOrderLineBuilder(ConnectorUnit):
     a line for the shipping costs or the gift coupons.
 
     It can be subclassed to customize the way the lines are created.
+
+    Usage::
+
+        builder = self.get_connector_for_unit(ShippingLineBuilder,
+                                              model='sale.order.line')
+        builder.price_unit = 100
+        builder.get_line()
+
     """
     _model_name = None
 
