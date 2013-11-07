@@ -355,6 +355,16 @@ class sale_order(orm.Model):
             },
         ]
 
+    def _get_order_extra_line_vals(self, cr, uid, vals, option, product,
+                                   price_unit, context=None):
+        return {
+            'product_id': product.id,
+            'name': product.name,
+            'product_uom': product.uom_id.id,
+            'product_uom_qty': 1,
+            'price_unit': price_unit
+        }
+
     def _add_order_extra_line(self, cr, uid, vals, option, context=None):
         """ Add or substract amount on order as a separate line item
         with single quantity for each type of amounts like: shipping,
@@ -372,31 +382,30 @@ class sale_order(orm.Model):
         elif vals.get(option['price_unit_tax_excluded']):
             price_unit = vals.pop(option['price_unit_tax_excluded']) * sign
         else:
-            for key in ['price_unit_tax_excluded',
-                        'price_unit_tax_included',
-                        'tax_rate_field']:
-                if option.get(key) and option[key] in vals:
-                    del vals[option[key]]
-            return vals  # if there is no price, we have nothing to import
-
+            return self._clean_special_fields(option, vals)
         model_data_obj = self.pool.get('ir.model.data')
         product_obj = self.pool.get('product.product')
         __, product_id = model_data_obj.get_object_reference(
-                cr, uid, *option['product_ref'])
+            cr, uid, *option['product_ref'])
         product = product_obj.browse(cr, uid, product_id, context=context)
 
-        extra_line = {'product_id': product.id,
-                      'name': product.name,
-                      'product_uom': product.uom_id.id,
-                      'product_uom_qty': 1,
-                      'price_unit': price_unit}
+        extra_line = self._get_order_extra_line_vals(
+            cr, uid, vals, option, product, price_unit, context=context)
 
         ext_code_field = option.get('code_field')
         if ext_code_field and vals.get(ext_code_field):
             extra_line['name'] = "%s [%s]" % (extra_line['name'],
                                               vals[ext_code_field])
         vals['order_line'].append((0, 0, extra_line))
-        return vals
+        return self._clean_special_fields(option, vals)
+
+    def _clean_special_fields(self, option, vals):
+        for key in ['price_unit_tax_excluded',
+                    'price_unit_tax_included',
+                    'tax_rate_field']:
+            if option.get(key) and option[key] in vals:
+                del vals[option[key]]
+        return vals  # if there is no price, we have nothing to import
 
 
 class ExtraOrderLineBuilder(ConnectorUnit):
@@ -436,6 +445,7 @@ class ExtraOrderLineBuilder(ConnectorUnit):
 
 
 class ShippingLineBuilder(ExtraOrderLineBuilder):
+    """ Return values for a Shipping line """
     _model_name = None
 
     def __init__(self, environment):
@@ -444,6 +454,8 @@ class ShippingLineBuilder(ExtraOrderLineBuilder):
 
 
 class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
+    """ Return values for a Cash on Delivery line """
+    _model_name = None
     _model_name = None
 
     def __init__(self, environment):
@@ -453,6 +465,7 @@ class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
 
 
 class GiftOrderLineBuilder(ExtraOrderLineBuilder):
+    """ Return values for a Gift line """
     _model_name = None
 
     def __init__(self, environment):
