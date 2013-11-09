@@ -408,7 +408,7 @@ class sale_order(orm.Model):
         return vals  # if there is no price, we have nothing to import
 
 
-class ExtraOrderLineBuilder(ConnectorUnit):
+class SpecialOrderLineBuilder(ConnectorUnit):
     """ Base class to build a sale order line for a sale order
 
     Used when extra order lines have to be added in a sale order
@@ -428,7 +428,7 @@ class ExtraOrderLineBuilder(ConnectorUnit):
     _model_name = None
 
     def __init__(self, environment):
-        super(ExtraOrderLineCreator, self).__init__(environment)
+        super(SpecialOrderLineBuilder, self).__init__(environment)
         self.product_ref = None  # tuple (module, xmlid)
         self.price_unit = None
         self.quantity = 1
@@ -452,7 +452,7 @@ class ExtraOrderLineBuilder(ConnectorUnit):
                 'price_unit': self.price_unit * self.sign}
 
 
-class ShippingLineBuilder(ExtraOrderLineBuilder):
+class ShippingLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Shipping line """
     _model_name = None
 
@@ -461,7 +461,7 @@ class ShippingLineBuilder(ExtraOrderLineBuilder):
         self.product_ref = ('connector_ecommerce', 'product_product_shipping')
 
 
-class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
+class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Cash on Delivery line """
     _model_name = None
     _model_name = None
@@ -472,7 +472,7 @@ class CashOnDeliveryLineBuilder(ExtraOrderLineBuilder):
                             'product_product_cash_on_delivery')
 
 
-class GiftOrderLineBuilder(ExtraOrderLineBuilder):
+class GiftOrderLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Gift line """
     _model_name = None
 
