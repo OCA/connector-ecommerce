@@ -21,10 +21,14 @@
 #
 ##############################################################################
 
+import logging
+
 from openerp.osv import orm, fields, osv
 from openerp.tools.translate import _
 from openerp import netsvc
 from openerp.addons.connector.connector import ConnectorUnit
+
+_logger = logging.getLogger(__name__)
 
 
 class sale_shop(orm.Model):
@@ -302,6 +306,9 @@ class sale_order(orm.Model):
         :return: the value for the sale order with the special field converted
         :rtype: dict
         """
+        _logger.warning('sale_order._convert_special_fields() has been '
+                        'deprecated. Use a specialized '
+                        'SpecialOrderLineBuilder class instead.')
         shipping_fields = ['shipping_amount_tax_excluded',
                            'shipping_amount_tax_included',
                            'shipping_tax_amount']
