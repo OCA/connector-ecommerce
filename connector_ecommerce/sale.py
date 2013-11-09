@@ -438,13 +438,13 @@ class SpecialOrderLineBuilder(ConnectorUnit):
         assert self.product_ref
         assert self.price_unit is not None
         line = {}
+        session = self.session
 
-        model_data_obj = self.pool.get('ir.model.data')
-        product_obj = self.pool.get('product.product')
+        model_data_obj = session.pool.get('ir.model.data')
         __, product_id = model_data_obj.get_object_reference(
-            cr, uid, *self.product_ref)
-        product = product_obj.browse(cr, uid, product_id, context=context)
+            session.cr, session.uid, *self.product_ref)
 
+        product = session.browse('product.product', product_id)
         return {'product_id': product.id,
                 'name': product.name,
                 'product_uom': product.uom_id.id,
