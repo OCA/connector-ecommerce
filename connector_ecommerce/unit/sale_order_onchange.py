@@ -214,11 +214,10 @@ class SaleOrderOnChange(OnChangeManager):
                 # line_list format:[(0, 0, {...}), (0, 0, {...})]
                 if command_line[0] in (0, 1):  # create or update values
                     # keeps command number and ID (or 0)
-                    command_part = command_line[:2]
                     old_line_data = command_line[2]
                     new_line_data = self._play_line_onchange(
                         old_line_data, processed_order_lines, order)
-                    new_line = (command_part[0], command_part[1], new_line_data)
+                    new_line = (command_line[0], command_line[1], new_line_data)
                     processed_order_lines.append(new_line)
                     # in place modification of the sale order line in the list
                     line_list[idx] = new_line
