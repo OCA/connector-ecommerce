@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
-#   sale_quick_payment for OpenERP                                  #
-#   Copyright (C) 2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>   #
-#   Copyright 2013 Camptocamp SA (Guewen Baconnier)
+#   sale_quick_payment for OpenERP                                            #
+#   Copyright (C) 2011 Akretion Sébastien BEAU <sebastien.beau@akretion.com>  #
+#   Copyright 2013 Camptocamp SA (Guewen Baconnier)                           #
 #                                                                             #
 #   This program is free software: you can redistribute it and/or modify      #
 #   it under the terms of the GNU Affero General Public License as            #
@@ -39,5 +39,18 @@ class payment_method(orm.Model):
         'payment_term_id': fields.many2one(
             'account.payment.term',
             'Payment Term',
-             help="Default payment term of a sale order using this method."),
+            help="Default payment term of a sale order using this method."),
+        'company_id': fields.many2one(
+            'res.company',
+            'Company',
+        ),
+    }
+
+    def _default_company_id(self, cr, uid, context):
+        company_model = self.pool.get('res.company')
+        return company_model._company_default_get(cr, uid, 'payment.method',
+                                                  context=context)
+
+    _defaults = {
+        'company_id': _default_company_id,
     }
