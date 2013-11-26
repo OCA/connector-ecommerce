@@ -436,7 +436,7 @@ class SpecialOrderLineBuilder(ConnectorUnit):
 
     def __init__(self, environment):
         super(SpecialOrderLineBuilder, self).__init__(environment)
-        self.product_id = None  # id or browse_record
+        self.product = None  # id or browse_record
         # when no product_id, fallback to a product_ref
         self.product_ref = None  # tuple (module, xmlid)
         self.price_unit = None
@@ -444,12 +444,12 @@ class SpecialOrderLineBuilder(ConnectorUnit):
         self.sign = 1
 
     def get_line(self):
-        assert self.product_ref
+        assert self.product_ref or self.product
         assert self.price_unit is not None
         line = {}
         session = self.session
 
-        product = product_id = self.product_id
+        product = product_id = self.product
         if product_id is None:
             model_data_obj = session.pool.get('ir.model.data')
             __, product_id = model_data_obj.get_object_reference(
