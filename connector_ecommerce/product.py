@@ -134,6 +134,8 @@ class product_product(orm.Model):
     def write(self, cr, uid, ids, vals, context=None):
         if context is None:
             context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         context = context.copy()
         context['from_product_ids'] = ids
         result = super(product_product, self).write(
