@@ -82,6 +82,8 @@ class product_template(orm.Model):
                                               prod_id)
 
     def write(self, cr, uid, ids, vals, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         result = super(product_template, self).write(cr, uid, ids,
                                                      vals, context=context)
         self._price_changed(cr, uid, ids, vals, context=context)
