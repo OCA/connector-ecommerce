@@ -20,10 +20,10 @@
 ##############################################################################
 
 {'name': 'Connector for E-Commerce',
- 'version': '2.0.0',
+ 'version': '2.1.0',
  'category': 'Connector',
- 'author': 'MagentoERPConnect Core Editors',
- 'website': 'http://www.magentoerpconnect.com',
+ 'author': 'Connector Core Editors',
+ 'website': 'http://openerp-connector.com',
  'license': 'AGPL-3',
  'description': """
 Connector for E-Commerce
@@ -54,8 +54,8 @@ Data Model
     Add structures shared for e-commerce connectors
 
 
-.. _`connector`: https://code.launchpad.net/openerp-connector
-.. _`magentoerpconnect`: https://launchpad.net/magentoerpconnect
+ .. _`connector`: http://openerp-connector.com
+.. _`magentoerpconnect`: http://openerp-magento-connector.com
 .. _`prestashoperpconnect`: https://launchpad.net/prestashoperpconnect
 """,
  'depends': [
