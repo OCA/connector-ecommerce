@@ -63,6 +63,7 @@ Data Model
      'sale_automatic_workflow',
      'sale_exceptions',
      'delivery',
+     'connector_base_product',
  ],
  'data': [
      'security/security.xml',
