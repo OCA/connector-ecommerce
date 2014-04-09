@@ -442,7 +442,7 @@ class SpecialOrderLineBuilder(ConnectorUnit):
         self.price_unit = None
         self.quantity = 1
         self.sign = 1
-        self.sequence = 90
+        self.sequence = 980
 
     def get_line(self):
         assert self.product_ref or self.product
