@@ -434,7 +434,7 @@ class SpecialOrderLineBuilder(ConnectorUnit):
         self.price_unit = None
         self.quantity = 1
         self.sign = 1
-        self.sequence = 90
+        self.sequence = 980
 
     def get_line(self):
         assert self.product_ref or self.product
@@ -465,7 +465,7 @@ class ShippingLineBuilder(SpecialOrderLineBuilder):
     def __init__(self, environment):
         super(ShippingLineBuilder, self).__init__(environment)
         self.product_ref = ('connector_ecommerce', 'product_product_shipping')
-        self.sequence = 99
+        self.sequence = 999
 
 
 class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
@@ -476,7 +476,7 @@ class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
         super(CashOnDeliveryLineBuilder, self).__init__(environment)
         self.product_ref = ('connector_ecommerce',
                             'product_product_cash_on_delivery')
-        self.sequence = 98
+        self.sequence = 995
 
 
 class GiftOrderLineBuilder(SpecialOrderLineBuilder):
@@ -489,7 +489,7 @@ class GiftOrderLineBuilder(SpecialOrderLineBuilder):
                             'product_product_gift')
         self.sign = -1
         self.gift_code = None
-        self.sequence = 97
+        self.sequence = 990
 
     def get_line(self):
         line = super(GiftOrderLineBuilder, self).get_line()
