@@ -54,8 +54,10 @@ class stock_picking(orm.Model):
         return res
 
     def copy(self, cr, uid, id, default=None, context=None):
-        context = context or {}
-        default = default and default.copy() or {}
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
         default['related_backorder_ids'] = False
         return super(stock_picking, self).copy(cr, uid,
                                                id, default, context=context)
