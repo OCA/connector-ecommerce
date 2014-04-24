@@ -24,6 +24,7 @@ from openerp.osv import orm, fields
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
+
 class stock_picking(orm.Model):
     _inherit = 'stock.picking'
 
@@ -39,8 +40,8 @@ class stock_picking(orm.Model):
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
         picking_records = self.read(cr, uid, ids,
-                                 ['id', 'related_backorder_ids', 'type'],
-                                 context=context)
+                                    ['id', 'related_backorder_ids', 'type'],
+                                    context=context)
         for picking_vals in picking_records:
             if picking_vals['type'] != 'out':
                 continue
@@ -51,6 +52,15 @@ class stock_picking(orm.Model):
             on_picking_out_done.fire(session, self._name,
                                      picking_vals['id'], picking_method)
         return res
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        default['related_backorder_ids'] = False
+        return super(stock_picking, self).copy(cr, uid,
+                                               id, default, context=context)
 
 
 class stock_picking_out(orm.Model):
