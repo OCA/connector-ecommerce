@@ -32,6 +32,9 @@ class payment_method(orm.Model):
                 ('authorized', 'Authorized'),
                 ]
 
+    def __get_import_rules(self, cr, uid, context=None):
+        return self._get_import_rules(cr, uid, context=context)
+
     _columns = {
         # the logic around the 2 following fields has to be implemented
         # in the connectors (magentoerpconnect, prestashoperpconnect,...)
@@ -39,7 +42,7 @@ class payment_method(orm.Model):
             'Days before cancel',
             help="After 'n' days, if the 'Import Rule' is not fulfilled, the "
                  "import of the sale order will be canceled."),
-        'import_rule': fields.selection(_get_import_rules,
+        'import_rule': fields.selection(__get_import_rules,
                                         string="Import Rule",
                                         required=True)
     }
