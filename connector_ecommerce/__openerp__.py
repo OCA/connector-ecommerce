@@ -20,7 +20,7 @@
 ##############################################################################
 
 {'name': 'Connector for E-Commerce',
- 'version': '2.1.0',
+ 'version': '2.2.0',
  'category': 'Connector',
  'author': 'Connector Core Editors',
  'website': 'http://openerp-connector.com',
