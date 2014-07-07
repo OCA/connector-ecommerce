@@ -24,11 +24,22 @@ from openerp.addons.connector.connector import ConnectorUnit
 
 
 class OnChangeManager(ConnectorUnit):
-    def merge_values(self, record, on_change_result):
+
+    def merge_values(self, record, on_change_result, model=None):
+        record.update(self.get_new_values(record, on_change_result,
+                                          model=model))
+
+    def get_new_values(self, record, on_change_result, model=None):
         vals = on_change_result.get('value', {})
-        for key in vals:
-            if not key in record:
-                record[key] = vals[key]
+        new_values = {}
+        for fieldname, value in vals.iteritems():
+            if fieldname not in record:
+                if model:
+                    column = self.env[model]._fields[fieldname]
+                    if column.type == 'many2many':
+                        value = [(6, 0, value)]
+                new_values[fieldname] = value
+        return new_values
 
 
 class SaleOrderOnChange(OnChangeManager):
@@ -36,110 +47,102 @@ class SaleOrderOnChange(OnChangeManager):
 
     def _get_partner_id_onchange_param(self, order):
         """ Prepare the arguments for calling the partner_id change
-        on sale order. You can overwrite this method in your own
+        on sales order. You can overwrite this method in your own
         module if they modify the onchange signature
 
-        :param order: a dictionary of the value of your sale order
+        :param order: a dictionary of the value of your sales order
         :type: dict
 
         :return: a tuple of args and kwargs for the onchange
         :rtype: tuple
         """
         args = [
-            None, # sale order ids not needed
-            order['partner_id'],
+            order.get('partner_id'),
         ]
-        kwargs = {'context': self.session.context}
-        return args, kwargs
-
-    def _get_shop_id_onchange_param(self, order):
-        args = [None,
-                order['shop_id']]
-        kwargs = {'context': self.session.context}
-        return args, kwargs
-
-    def _get_payment_method_id_onchange_param(self, order):
-        args = [None,
-                order['payment_method_id']]
-        kwargs = {'context': self.session.context}
-        return args, kwargs
-
-    def _get_workflow_process_id_onchange_param(self, order):
-        args = [None,
-                order['workflow_process_id']]
-        kwargs = {'context': self.session.context}
+        kwargs = {}
         return args, kwargs
 
     def _play_order_onchange(self, order):
-        """ Play the onchange of the sale order
+        """ Play the onchange of the sales order
 
-        :param order: a dictionary of the value of your sale order
+        :param order: a dictionary of the value of your sales order
         :type: dict
 
-        :return: the value of the sale order updated with the onchange result
+        :return: the value of the sales order updated with the onchange result
         :rtype: dict
         """
-        sale_model = self.session.pool.get('sale.order')
+        sale_model = self.env['sale.order']
+        onchange_specs = sale_model._onchange_spec()
 
-        #Play partner_id onchange
-        args, kwargs = self._get_shop_id_onchange_param(order)
-        res = sale_model.onchange_shop_id(self.session.cr,
-                                          self.session.uid,
-                                          *args,
-                                          **kwargs)
-        self.merge_values(order, res)
+        # we need all fields in the dict even the empty ones
+        # otherwise 'onchange()' will not apply changes to them
+        all_values = order.copy()
+        for field in sale_model._fields:
+            if field not in all_values:
+                all_values[field] = False
 
+        # we work on a temporary record
+        order_record = sale_model.new(all_values)
+
+        new_values = {}
+
+        # Play partner_id onchange
         args, kwargs = self._get_partner_id_onchange_param(order)
-        res = sale_model.onchange_partner_id(self.session.cr,
-                                             self.session.uid,
-                                             *args,
-                                             **kwargs)
-        self.merge_values(order, res)
+        values = order_record.onchange_partner_id(*args, **kwargs)
+        new_values.update(self.get_new_values(order, values,
+                                              model='sale.order'))
+        all_values.update(new_values)
 
-        if order.get('payment_method_id'):
-            # apply payment method
-            args, kwargs = self._get_payment_method_id_onchange_param(order)
-            res = sale_model.onchange_payment_method_id(self.session.cr,
-                                                        self.session.uid,
-                                                        *args,
-                                                        **kwargs)
-        self.merge_values(order, res)
+        values = order_record.onchange(all_values,
+                                       'payment_method_id',
+                                       onchange_specs)
+        new_values.update(self.get_new_values(order, values,
+                                              model='sale.order'))
+        all_values.update(new_values)
 
-        if order.get('workflow_process_id'):
-            # apply default values from the workflow
-            args, kwargs = self._get_workflow_process_id_onchange_param(order)
-            res = sale_model.onchange_workflow_process_id(self.session.cr,
-                                                        self.session.uid,
-                                                        *args,
-                                                        **kwargs)
-        self.merge_values(order, res)
-        return order
+        values = order_record.onchange(all_values,
+                                       'workflow_process_id',
+                                       onchange_specs)
+        new_values.update(self.get_new_values(order, values,
+                                              model='sale.order'))
+        all_values.update(new_values)
+
+        res = {f: v for f, v in all_values.iteritems()
+               if f in order or f in new_values}
+        return res
 
     def _get_product_id_onchange_param(self, line, previous_lines, order):
         """ Prepare the arguments for calling the product_id change
-        on sale order line. You can overwrite this method in your own
+        on sales order line. You can overwrite this method in your own
         module if they modify the onchange signature
 
-        :param line: the sale order line to process
+        :param line: the sales order line to process
         :type: dict
         :param previous_lines: list of dict of the previous lines processed
         :type: list
-        :param order: data of the sale order
+        :param order: data of the sales order
         :type: dict
 
         :return: a tuple of args and kwargs for the onchange
         :rtype: tuple
         """
         args = [
-            None, # sale order line ids not needed
             order.get('pricelist_id'),
-            line.get('product_id')
-            ]
+            line.get('product_id'),
+        ]
+
+        # used in sale_markup: this is to ensure the unit price
+        # sent by the e-commerce connector is used for markup calculation
+        onchange_context = self.env.context.copy()
+        if line.get('price_unit'):
+            onchange_context.update({'unit_price': line.get('price_unit'),
+                                     'force_unit_price': True})
+
         uos_qty = float(line.get('product_uos_qty', 0))
         if not uos_qty:
             uos_qty = float(line.get('product_uom_qty', 0))
 
-        kwargs ={
+        kwargs = {
             'qty': float(line.get('product_uom_qty', 0)),
             'uom': line.get('product_uom'),
             'qty_uos': uos_qty,
@@ -152,56 +155,54 @@ class SaleOrderOnChange(OnChangeManager):
             'packaging': line.get('product_packaging'),
             'fiscal_position': order.get('fiscal_position'),
             'flag': False,
-            'context': self.session.context,
-            }
+            'context': onchange_context,
+        }
         return args, kwargs
 
     def _play_line_onchange(self, line, previous_lines, order):
-        """ Play the onchange of the sale order line
+        """ Play the onchange of the sales order line
 
-        :param line: the sale order line to process
+        :param line: the sales order line to process
         :type: dict
         :param previous_lines: list of dict of the previous line processed
         :type: list
-        :param order: data of the sale order
+        :param order: data of the sales order
         :type: dict
 
-        :return: the value of the sale order updated with the onchange result
+        :return: the value of the sales order updated with the onchange result
         :rtype: dict
         """
-        sale_line_model = self.session.pool.get('sale.order.line')
-
-        #Play product_id onchange
+        line_model = self.env['sale.order.line']
+        # Play product_id onchange
         args, kwargs = self._get_product_id_onchange_param(line,
                                                            previous_lines,
                                                            order)
-        res = sale_line_model.product_id_change(self.session.cr,
-                                                self.session.uid,
-                                                *args,
-                                                **kwargs)
-        # TODO refactor this with merge_values
-        vals = res.get('value', {})
-        for key in vals:
-            if not key in line:
-                if sale_line_model._columns[key]._type == 'many2many':
-                    line[key] = [(6, 0, vals[key])]
-                else:
-                    line[key] = vals[key]
+        context = kwargs.pop('context', {})
+        values = line_model.with_context(context).product_id_change(*args,
+                                                                    **kwargs)
+        self.merge_values(line, values, model='sale.order.line')
         return line
 
     def play(self, order, order_lines):
-        """ Play the onchange of the sale order and it's lines
+        """ Play the onchange of the sales order and it's lines
 
-        :param order: data of the sale order
-        :type: dict
+        It expects to receive a recordset containing one sales order.
+        It could have been generated with
+        ``self.env['sale.order'].new(values)`` or
+        ``self.env['sale.order'].create(values)``.
 
-        :return: the value of the sale order updated with the onchange result
-        :rtype: dict
+        :param order: data of the sales order
+        :type: recordset
+        :param order_lines: data of the sales order lines
+        :type: recordset
+
+        :return: the sales order updated by the onchanges
+        :rtype: recordset
         """
-        #play onchange on sale order
-        with self.session.change_context(dict(shop_id=order.get('shop_id'))):
-            order = self._play_order_onchange(order)
-        #play onchanfe on sale order line
+        # play onchange on sales order
+        order = self._play_order_onchange(order)
+
+        # play onchange on sales order line
         processed_order_lines = []
         line_lists = [order_lines]
         if 'order_line' in order and order['order_line'] is not order_lines:
@@ -218,8 +219,10 @@ class SaleOrderOnChange(OnChangeManager):
                     old_line_data = command_line[2]
                     new_line_data = self._play_line_onchange(
                         old_line_data, processed_order_lines, order)
-                    new_line = (command_line[0], command_line[1], new_line_data)
+                    new_line = (command_line[0],
+                                command_line[1],
+                                new_line_data)
                     processed_order_lines.append(new_line)
-                    # in place modification of the sale order line in the list
+                    # in place modification of the sales order line in the list
                     line_list[idx] = new_line
         return order
