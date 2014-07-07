@@ -19,28 +19,20 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 
-class sale_ignore_cancel(orm.TransientModel):
+class SaleIgnoreCancel(models.TransientModel):
     _name = 'sale.ignore.cancel'
     _description = 'Ignore Sales Order Cancel'
 
-    _columns = {
-        'reason': fields.html('Reason', required=True),
-    }
+    reason = fields.Html(required=True)
 
-    def confirm_ignore_cancel(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        if isinstance(ids, (list, tuple)):
-            assert len(ids) == 1
-            ids = ids[0]
-        order_ids = context.get('active_ids')
-        if order_ids is None:
-            return
-        form = self.browse(cr, uid, ids, context=context)
-        self.pool.get('sale.order').ignore_cancellation(cr, uid, order_ids,
-                                                        form.reason,
-                                                        context=context)
+    @api.multi
+    def confirm_ignore_cancel(self):
+        self.ensure_one()
+        sale_ids = self.env.context.get('active_ids')
+        assert sale_ids
+        sales = self.env['sale.order'].browse(sale_ids)
+        sales.ignore_cancellation(self.reason)
         return {'type': 'ir.actions.act_window_close'}
