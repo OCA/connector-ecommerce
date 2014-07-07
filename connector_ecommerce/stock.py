@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Joel Grand-Guillaume
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2013-2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,60 +19,74 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
 
-class stock_picking(orm.Model):
+class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    _columns = {
-        'related_backorder_ids': fields.one2many(
-            'stock.picking', 'backorder_id',
-            string="Related backorders"),
-    }
+    related_backorder_ids = fields.One2many(
+        comodel_name='stock.picking',
+        inverse_name='backorder_id',
+        string="Related backorders",
+    )
 
-    def action_done(self, cr, uid, ids, context=None):
-        res = super(stock_picking, self).action_done(cr, uid,
-                                                     ids, context=context)
-        session = ConnectorSession(cr, uid, context=context)
-        # Look if it exists a backorder, in that case call for partial
-        picking_records = self.read(cr, uid, ids,
-                                    ['id', 'related_backorder_ids', 'type'],
-                                    context=context)
-        for picking_vals in picking_records:
-            if picking_vals['type'] != 'out':
-                continue
-            if picking_vals['related_backorder_ids']:
-                picking_method = 'partial'
-            else:
-                picking_method = 'complete'
-            on_picking_out_done.fire(session, self._name,
-                                     picking_vals['id'], picking_method)
-        return res
-
-    def copy(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        else:
-            default = default.copy()
-        default['related_backorder_ids'] = False
-        return super(stock_picking, self).copy(cr, uid,
-                                               id, default, context=context)
-
-
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
-
-    def write(self, cr, uid, ids, vals, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        res = super(stock_picking_out, self).write(cr, uid, ids,
-                                                   vals, context=context)
+    @api.multi
+    def write(self, vals):
+        res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(cr, uid, context=context)
-            for record_id in ids:
+            session = ConnectorSession(self.env.cr, self.env.uid,
+                                       context=self.env.context)
+            for record_id in self.ids:
                 on_tracking_number_added.fire(session, self._name, record_id)
         return res
+
+    @api.multi
+    def do_transfer(self):
+        # The key in the context avoid the event to be fired in
+        # StockMove.action_done(). Allow to handle the partial pickings
+        self_context = self.with_context(__no_on_event_out_done=True)
+        result = super(StockPicking, self_context).do_transfer()
+        session = ConnectorSession(self.env.cr, self.env.uid,
+                                   context=self.env.context)
+        for picking in self:
+            if picking.picking_type_id.code != 'outgoing':
+                continue
+            if picking.related_backorder_ids:
+                method = 'partial'
+            else:
+                method = 'complete'
+            on_picking_out_done.fire(session, 'stock.picking',
+                                     picking.id, method)
+
+        return result
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    @api.multi
+    def action_done(self):
+        fire_event = not self.env.context.get('__no_on_event_out_done')
+        if fire_event:
+            pickings = self.mapped('picking_id')
+            states = {p.id: p.state for p in pickings}
+
+        result = super(StockMove, self).action_done()
+
+        if fire_event:
+            session = ConnectorSession(self.env.cr, self.env.uid,
+                                       context=self.env.context)
+            for picking in pickings:
+                if states[picking.id] != 'done' and picking.state == 'done':
+                    if picking.picking_type_id.code != 'outgoing':
+                        continue
+                    # partial pickings are handled in
+                    # StockPicking.do_transfer()
+                    on_picking_out_done.fire(session, 'stock.picking',
+                                             picking.id, 'complete')
+
+        return result

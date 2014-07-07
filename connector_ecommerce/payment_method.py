@@ -19,54 +19,44 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 
-class payment_method(orm.Model):
+class PaymentMethod(models.Model):
     _inherit = "payment.method"
 
-    def _get_import_rules(self, cr, uid, context=None):
+    @api.model
+    def _get_import_rules(self):
         return [('always', 'Always'),
                 ('never', 'Never'),
                 ('paid', 'Paid'),
                 ('authorized', 'Authorized'),
                 ]
 
-    def __get_import_rules(self, cr, uid, context=None):
-        return self._get_import_rules(cr, uid, context=context)
+    # the logic around the 2 following fields has to be implemented
+    # in the connectors (magentoerpconnect, prestashoperpconnect,...)
+    days_before_cancel = fields.Integer(
+        string='Days before cancel',
+        default=30,
+        help="After 'n' days, if the 'Import Rule' is not fulfilled, the "
+             "import of the sales order will be canceled.",
+    )
+    import_rule = fields.Selection(selection='_get_import_rules',
+                                   string="Import Rule",
+                                   default='always',
+                                   required=True)
 
-    _columns = {
-        # the logic around the 2 following fields has to be implemented
-        # in the connectors (magentoerpconnect, prestashoperpconnect,...)
-        'days_before_cancel': fields.integer(
-            'Days before cancel',
-            help="After 'n' days, if the 'Import Rule' is not fulfilled, the "
-                 "import of the sale order will be canceled."),
-        'import_rule': fields.selection(__get_import_rules,
-                                        string="Import Rule",
-                                        required=True)
-    }
+    @api.model
+    def get_or_create_payment_method(self, payment_method):
+        """ Try to get a payment method or create if it doesn't exist
 
-    _defaults = {
-        'import_rule': 'always',
-        'days_before_cancel': 30,
-    }
-
-    def get_or_create_payment_method(self, cr, uid, payment_method, context=None):
+        :param payment_method: payment method like PayPal, etc.
+        :type payment_method: str
+        :return: required payment method
+        :rtype: recordset
         """
-        try to get id of 'payment_method' or create if not exists
-        :param str payment_method: payment method like PayPal, etc.
-        :rtype: int
-        :return: id of required payment method
-        """
-        pay_method_obj = self.pool.get('payment.method')
-        method_ids = pay_method_obj.search(cr, uid,
-                                           [('name', '=ilike', payment_method)],
-                                           context=context)
-        if method_ids:
-            method_id = method_ids[0]
-        else:
-            method_id = pay_method_obj.create(cr, uid,
-                                              {'name': payment_method},
-                                              context=context)
-        return method_id
+        domain = [('name', '=ilike', payment_method)]
+        method = self.search(domain, limit=1)
+        if not method:
+            method = self.create({'name': payment_method})
+        return method

@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-import sale_order_onchange
+from . import sale_order_onchange

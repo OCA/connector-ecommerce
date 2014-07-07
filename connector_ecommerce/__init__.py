@@ -19,12 +19,12 @@
 #
 ##############################################################################
 
-import stock
-import account
-import product
-import invoice
-import payment_method
-import event
-import unit
-import sale
-import wizard
+from . import stock
+from . import account
+from . import product
+from . import invoice
+from . import payment_method
+from . import event
+from . import unit
+from . import sale
+from . import wizard
