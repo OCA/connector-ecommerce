@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-############################################################################### 
+###############################################################################
 #
 #   connector-ecommerce for OpenERP
 #   Copyright (C) 2013-TODAY Akretion <http://www.akretion.com>.
@@ -18,9 +18,8 @@
 #   You should have received a copy of the GNU Affero General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-############################################################################### 
+###############################################################################
 
-import unittest2
 import mock
 
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
@@ -53,8 +52,8 @@ class test_onchange(common.TransactionCase):
 
         partner_id = partner_model.create(cr, uid,
                                           {'name': 'seb',
-                                          'zip': '69100',
-                                          'city': 'Villeurbanne'})
+                                           'zip': '69100',
+                                           'city': 'Villeurbanne'})
         partner_invoice_id = partner_model.create(cr, uid,
                                                   {'name': 'Guewen',
                                                    'zip': '1015',
@@ -74,12 +73,12 @@ class test_onchange(common.TransactionCase):
             'name': 'mag_10000001',
             'partner_id': partner_id,
             'order_line': [
-                (0, 0, {
-                    'product_id': product_id,
-                    'price_unit': 20,
-                    'name': 'My Real Name',
-                    'product_uom_qty': 1,
-                }),
+                (0, 0, {'product_id': product_id,
+                        'price_unit': 20,
+                        'name': 'My Real Name',
+                        'product_uom_qty': 1,
+                        }
+                 ),
             ]
         }
 

@@ -19,17 +19,17 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm, osv
-from openerp.tools.translate import _
+from openerp.osv import fields, orm
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_invoice_paid, on_invoice_validated
 
 
 class account_invoice(orm.Model):
-    _inherit='account.invoice'
+    _inherit = 'account.invoice'
 
     _columns = {
-        'sale_order_ids': fields.many2many(  # TODO duplicate with 'sale_ids', replace
+        'sale_order_ids': fields.many2many(
+            # TODO duplicate with 'sale_ids', replace
             'sale.order',
             'sale_order_invoice_rel',
             'invoice_id',
@@ -40,7 +40,7 @@ class account_invoice(orm.Model):
 
     def confirm_paid(self, cr, uid, ids, context=None):
         res = super(account_invoice, self).confirm_paid(
-                cr, uid, ids, context=context)
+            cr, uid, ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         for record_id in ids:
             on_invoice_paid.fire(session, self._name, record_id)
@@ -48,7 +48,7 @@ class account_invoice(orm.Model):
 
     def invoice_validate(self, cr, uid, ids, context=None):
         res = super(account_invoice, self).invoice_validate(
-                cr, uid, ids, context=context)
+            cr, uid, ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         for record_id in ids:
             on_invoice_validated.fire(session, self._name, record_id)
