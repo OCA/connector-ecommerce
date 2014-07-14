@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import unittest2
 import mock
 from functools import partial
 

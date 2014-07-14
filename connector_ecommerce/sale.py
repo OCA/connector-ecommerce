@@ -42,7 +42,7 @@ class sale_shop(orm.Model):
         """
         data_obj = self.pool.get('ir.model.data')
         __, payment_id = data_obj.get_object_reference(
-                cr, uid, 'account', 'account_payment_term_immediate')
+            cr, uid, 'account', 'account_payment_term_immediate')
         return payment_id
 
     _defaults = {
@@ -101,7 +101,7 @@ class sale_order(orm.Model):
 
     _columns = {
         'canceled_in_backend': fields.boolean('Canceled in backend',
-                                               readonly=True),
+                                              readonly=True),
         # set to True when the cancellation from the backend is
         # resolved, either because the SO has been canceled or
         # because the user manually chosed to keep it open
@@ -323,13 +323,16 @@ class sale_order(orm.Model):
                     vals[field] = vals.get(field, 0.0) + line[2][field]
                     del line[2][field]
 
-        if not 'shipping_tax_rate' in vals and check_key(vals.keys()):
-            if not 'shipping_amount_tax_excluded' in vals:
-                vals['shipping_amount_tax_excluded'] = vals['shipping_amount_tax_included'] - vals['shipping_tax_amount']
-            elif not 'shipping_tax_amount' in vals:
-                vals['shipping_tax_amount'] = vals['shipping_amount_tax_included'] - vals['shipping_amount_tax_excluded']
+        if 'shipping_tax_rate' not in vals and check_key(vals.keys()):
+            if 'shipping_amount_tax_excluded' not in vals:
+                vals['shipping_amount_tax_excluded'] = (vals['shipping_amount_tax_included'] -
+                                                        vals['shipping_tax_amount'])
+            elif 'shipping_tax_amount' not in vals:
+                vals['shipping_tax_amount'] = (vals['shipping_amount_tax_included'] -
+                                               vals['shipping_amount_tax_excluded'])
             if vals['shipping_amount_tax_excluded']:
-                vals['shipping_tax_rate'] = vals['shipping_tax_amount'] / vals['shipping_amount_tax_excluded']
+                vals['shipping_tax_rate'] = (vals['shipping_tax_amount'] /
+                                             vals['shipping_amount_tax_excluded'])
             else:
                 vals['shipping_tax_rate'] = 0.
             del vals['shipping_tax_amount']
@@ -340,26 +343,23 @@ class sale_order(orm.Model):
 
     def _get_special_fields(self, cr, uid, context=None):
         return [
-            {
-            'price_unit_tax_excluded': 'shipping_amount_tax_excluded',
-            'price_unit_tax_included': 'shipping_amount_tax_included',
-            'tax_rate_field': 'shipping_tax_rate',
-            'product_ref': ('connector_ecommerce', 'product_product_shipping'),
-            },
-            {
-            'tax_rate_field': 'cash_on_delivery_taxe_rate',
-            'price_unit_tax_excluded': 'cash_on_delivery_amount_tax_excluded',
-            'price_unit_tax_included': 'cash_on_delivery_amount_tax_included',
-            'product_ref': ('connector_ecommerce', 'product_product_cash_on_delivery'),
-            },
-            {
-            #gift certificate doesn't have any tax
-            'price_unit_tax_excluded': 'gift_certificates_amount',
-            'price_unit_tax_included': 'gift_certificates_amount',
-            'product_ref': ('connector_ecommerce', 'product_product_gift'),
-            'code_field': 'gift_certificates_code',
-            'sign': -1,
-            },
+            {'price_unit_tax_excluded': 'shipping_amount_tax_excluded',
+             'price_unit_tax_included': 'shipping_amount_tax_included',
+             'tax_rate_field': 'shipping_tax_rate',
+             'product_ref': ('connector_ecommerce', 'product_product_shipping'),
+             },
+            {'tax_rate_field': 'cash_on_delivery_taxe_rate',
+             'price_unit_tax_excluded': 'cash_on_delivery_amount_tax_excluded',
+             'price_unit_tax_included': 'cash_on_delivery_amount_tax_included',
+             'product_ref': ('connector_ecommerce', 'product_product_cash_on_delivery'),
+             },
+            # gift certificate doesn't have any tax
+            {'price_unit_tax_excluded': 'gift_certificates_amount',
+             'price_unit_tax_included': 'gift_certificates_amount',
+             'product_ref': ('connector_ecommerce', 'product_product_gift'),
+             'code_field': 'gift_certificates_code',
+             'sign': -1,
+             },
         ]
 
     def _get_order_extra_line_vals(self, cr, uid, vals, option, product,
@@ -447,7 +447,6 @@ class SpecialOrderLineBuilder(ConnectorUnit):
     def get_line(self):
         assert self.product_ref or self.product
         assert self.price_unit is not None
-        line = {}
         session = self.session
 
         product = product_id = self.product

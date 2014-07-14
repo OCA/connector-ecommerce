@@ -27,7 +27,7 @@ class OnChangeManager(ConnectorUnit):
     def merge_values(self, record, on_change_result):
         vals = on_change_result.get('value', {})
         for key in vals:
-            if not key in record:
+            if key not in record:
                 record[key] = vals[key]
 
 
@@ -46,7 +46,7 @@ class SaleOrderOnChange(OnChangeManager):
         :rtype: tuple
         """
         args = [
-            None, # sale order ids not needed
+            None,  # sale order ids not needed
             order['partner_id'],
         ]
         kwargs = {'context': self.session.context}
@@ -81,7 +81,7 @@ class SaleOrderOnChange(OnChangeManager):
         """
         sale_model = self.session.pool.get('sale.order')
 
-        #Play partner_id onchange
+        # Play partner_id onchange
         args, kwargs = self._get_shop_id_onchange_param(order)
         res = sale_model.onchange_shop_id(self.session.cr,
                                           self.session.uid,
@@ -109,9 +109,9 @@ class SaleOrderOnChange(OnChangeManager):
             # apply default values from the workflow
             args, kwargs = self._get_workflow_process_id_onchange_param(order)
             res = sale_model.onchange_workflow_process_id(self.session.cr,
-                                                        self.session.uid,
-                                                        *args,
-                                                        **kwargs)
+                                                          self.session.uid,
+                                                          *args,
+                                                          **kwargs)
         self.merge_values(order, res)
         return order
 
@@ -131,15 +131,15 @@ class SaleOrderOnChange(OnChangeManager):
         :rtype: tuple
         """
         args = [
-            None, # sale order line ids not needed
+            None,  # sale order line ids not needed
             order.get('pricelist_id'),
             line.get('product_id')
-            ]
+        ]
         uos_qty = float(line.get('product_uos_qty', 0))
         if not uos_qty:
             uos_qty = float(line.get('product_uom_qty', 0))
 
-        kwargs ={
+        kwargs = {
             'qty': float(line.get('product_uom_qty', 0)),
             'uom': line.get('product_uom'),
             'qty_uos': uos_qty,
@@ -153,7 +153,7 @@ class SaleOrderOnChange(OnChangeManager):
             'fiscal_position': order.get('fiscal_position'),
             'flag': False,
             'context': self.session.context,
-            }
+        }
         return args, kwargs
 
     def _play_line_onchange(self, line, previous_lines, order):
@@ -171,7 +171,7 @@ class SaleOrderOnChange(OnChangeManager):
         """
         sale_line_model = self.session.pool.get('sale.order.line')
 
-        #Play product_id onchange
+        # Play product_id onchange
         args, kwargs = self._get_product_id_onchange_param(line,
                                                            previous_lines,
                                                            order)
@@ -182,7 +182,7 @@ class SaleOrderOnChange(OnChangeManager):
         # TODO refactor this with merge_values
         vals = res.get('value', {})
         for key in vals:
-            if not key in line:
+            if key not in line:
                 if sale_line_model._columns[key]._type == 'many2many':
                     line[key] = [(6, 0, vals[key])]
                 else:
@@ -198,10 +198,10 @@ class SaleOrderOnChange(OnChangeManager):
         :return: the value of the sale order updated with the onchange result
         :rtype: dict
         """
-        #play onchange on sale order
+        # play onchange on sale order
         with self.session.change_context(dict(shop_id=order.get('shop_id'))):
             order = self._play_order_onchange(order)
-        #play onchanfe on sale order line
+        # play onchange on sale order line
         processed_order_lines = []
         line_lists = [order_lines]
         if 'order_line' in order and order['order_line'] is not order_lines:

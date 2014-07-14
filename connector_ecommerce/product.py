@@ -27,7 +27,7 @@ from .event import on_product_price_changed
 class product_template(orm.Model):
     _inherit = 'product.template'
 
-    #TODO implement set function and also support multi tax
+    # TODO implement set function and also support multi tax
     def _get_tax_group_id(self, cr, uid, ids, field_name, args, context=None):
         result = {}
         for product in self.browse(cr, uid, ids, context=context):
@@ -37,13 +37,13 @@ class product_template(orm.Model):
 
     _columns = {
         'tax_group_id': fields.function(
-                            _get_tax_group_id,
-                            string='Tax Group',
-                            type='many2one',
-                            relation='account.tax.group',
-                            store=False,
-                            help='Tax group are used with some external '
-                                 'system like magento or prestashop'),
+            _get_tax_group_id,
+            string='Tax Group',
+            type='many2one',
+            relation='account.tax.group',
+            store=False,
+            help='Tax group are used with some external '
+                 'system like Prestashop'),
     }
 
     def _price_changed(self, cr, uid, ids, vals, context=None):
