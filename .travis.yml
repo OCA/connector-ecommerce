@@ -15,8 +15,7 @@ install:
  - git clone https://github.com/OCA/e-commerce-addons $HOME/e-commerce -b 7.0
 
 script:
-    # TODO: enable again when all the flake8 errors are corrected
-    # - travis_run_flake8
+    - travis_run_flake8
     - travis_run_tests 7.0 $HOME/connector $HOME/sale-workflow $HOME/e-commerce
 
 after_success:
