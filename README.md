@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/OCA/connector-ecommerce.svg?branch=master)](https://travis-ci.org/OCA/connector-ecommerce)
-[![Coverage Status](https://img.shields.io/coveralls/OCA/connector-ecommerce.svg)](https://coveralls.io/r/OCA/connector-ecommerce?branch=master)
+[![Build Status](https://travis-ci.org/OCA/connector-ecommerce.svg?branch=8.0)](https://travis-ci.org/OCA/connector-ecommerce)
+[![Coverage Status](https://coveralls.io/repos/OCA/connector-ecommerce/badge.png?branch=8.0)](https://coveralls.io/r/OCA/connector-ecommerce?branch=7.0)
 
 Odoo Connector Ecommerce Modules
 ================================

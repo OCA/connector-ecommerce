@@ -29,4 +29,3 @@ checks = [
     test_onchange,
     test_invoice_event,
 ]
-
