@@ -16,7 +16,6 @@ install:
   - git clone https://github.com/OCA/connector $HOME/connector -b 8.0
   - git clone https://github.com/OCA/sale-workflow $HOME/sale-workflow -b 8.0
   - git clone https://github.com/OCA/e-commerce $HOME/e-commerce -b 8.0
-  - git clone https://github.com/OCA/bank-statement-reconcile $HOME/bank-statement-reconcile -b 8.0
 
 script:
   - travis_run_flake8
