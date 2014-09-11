@@ -291,9 +291,12 @@ class sale_order(orm.Model):
         action['res_id'] = parent.id
         return action
 
-    # XXX the 3 next methods seems very specific to magento
-    def _convert_special_fields(self, cr, uid, vals, order_lines, context=None):
-        """ Convert the special 'fake' field into an order line.
+    # TODO: remove in odoo 8.0
+    def _convert_special_fields(self, cr, uid, vals, order_lines,
+                                context=None):
+        """ Deprecated! Replaced by LineBuilder classes
+
+        Convert the special 'fake' field into an order line.
 
         Special fields are:
         - shipping amount and shipping_tax_rate
@@ -325,14 +328,19 @@ class sale_order(orm.Model):
 
         if 'shipping_tax_rate' not in vals and check_key(vals.keys()):
             if 'shipping_amount_tax_excluded' not in vals:
-                vals['shipping_amount_tax_excluded'] = (vals['shipping_amount_tax_included'] -
-                                                        vals['shipping_tax_amount'])
+                amount_incl = vals['shipping_amount_tax_included']
+                tax_amount = vals['shipping_tax_amount']
+                tax_excl = (amount_incl - tax_amount)
+                vals['shipping_amount_tax_excluded'] = tax_excl
+
             elif 'shipping_tax_amount' not in vals:
-                vals['shipping_tax_amount'] = (vals['shipping_amount_tax_included'] -
-                                               vals['shipping_amount_tax_excluded'])
+                amount_incl = vals['shipping_amount_tax_included']
+                amount_excl = vals['shipping_amount_tax_excluded']
+                vals['shipping_tax_amount'] = (amount_incl - amount_excl)
             if vals['shipping_amount_tax_excluded']:
-                vals['shipping_tax_rate'] = (vals['shipping_tax_amount'] /
-                                             vals['shipping_amount_tax_excluded'])
+                tax_amount = vals['shipping_tax_amount']
+                tax_amount_excl = vals['shipping_amount_tax_excluded']
+                vals['shipping_tax_rate'] = (tax_amount / tax_amount_excl)
             else:
                 vals['shipping_tax_rate'] = 0.
             del vals['shipping_tax_amount']
@@ -341,17 +349,21 @@ class sale_order(orm.Model):
                                               option, context=context)
         return vals
 
+    # TODO: remove in odoo 8.0
     def _get_special_fields(self, cr, uid, context=None):
+        """ Deprecated! Replaced by LineBuilder classes """
         return [
             {'price_unit_tax_excluded': 'shipping_amount_tax_excluded',
              'price_unit_tax_included': 'shipping_amount_tax_included',
              'tax_rate_field': 'shipping_tax_rate',
-             'product_ref': ('connector_ecommerce', 'product_product_shipping'),
+             'product_ref': ('connector_ecommerce',
+                             'product_product_shipping'),
              },
             {'tax_rate_field': 'cash_on_delivery_taxe_rate',
              'price_unit_tax_excluded': 'cash_on_delivery_amount_tax_excluded',
              'price_unit_tax_included': 'cash_on_delivery_amount_tax_included',
-             'product_ref': ('connector_ecommerce', 'product_product_cash_on_delivery'),
+             'product_ref': ('connector_ecommerce',
+                             'product_product_cash_on_delivery'),
              },
             # gift certificate doesn't have any tax
             {'price_unit_tax_excluded': 'gift_certificates_amount',
@@ -362,8 +374,10 @@ class sale_order(orm.Model):
              },
         ]
 
+    # TODO: remove in odoo 8.0
     def _get_order_extra_line_vals(self, cr, uid, vals, option, product,
                                    price_unit, context=None):
+        """ Deprecated! Replaced by LineBuilder classes """
         return {
             'product_id': product.id,
             'name': product.name,
@@ -372,8 +386,11 @@ class sale_order(orm.Model):
             'price_unit': price_unit
         }
 
+    # TODO: remove in odoo 8.0
     def _add_order_extra_line(self, cr, uid, vals, option, context=None):
-        """ Add or substract amount on order as a separate line item
+        """  Deprecated! Replaced by LineBuilder classes
+
+        Add or substract amount on order as a separate line item
         with single quantity for each type of amounts like: shipping,
         cash on delivery, discount, gift certificates...
 
@@ -406,7 +423,9 @@ class sale_order(orm.Model):
         vals['order_line'].append((0, 0, extra_line))
         return self._clean_special_fields(option, vals)
 
+    # TODO: remove in odoo 8.0
     def _clean_special_fields(self, option, vals):
+        """  Deprecated! Replaced by LineBuilder classes """
         for key in ['price_unit_tax_excluded',
                     'price_unit_tax_included',
                     'tax_rate_field']:
