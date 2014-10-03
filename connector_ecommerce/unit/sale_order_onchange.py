@@ -229,29 +229,28 @@ class SaleOrderOnChange(OnChangeManager):
         :rtype: dict
         """
         # play onchange on sale order
-        with self.session.change_context(dict(shop_id=order.get('shop_id'))):
+        with self.session.change_context(dict(shop=order.get('shop_id'))):
             order = self._play_order_onchange(order)
-        # play onchange on sale order line
-        processed_order_lines = []
-        line_lists = [order_lines]
-        if 'order_line' in order and order['order_line'] is not order_lines:
-            # we have both backend-dependent and oerp-native order
-            # lines.
-            # oerp-native lines can have been added to map
-            # shipping fees with an OpenERP Product
-            line_lists.append(order['order_line'])
-        for line_list in line_lists:
-            for idx, command_line in enumerate(line_list):
-                # line_list format:[(0, 0, {...}), (0, 0, {...})]
-                if command_line[0] in (0, 1):  # create or update values
-                    # keeps command number and ID (or 0)
-                    old_line_data = command_line[2]
-                    new_line_data = self._play_line_onchange(
-                        old_line_data, processed_order_lines, order)
-                    new_line = (command_line[0],
-                                command_line[1],
-                                new_line_data)
-                    processed_order_lines.append(new_line)
-                    # in place modification of the sale order line in the list
-                    line_list[idx] = new_line
+
+            # play onchange on sale order line
+            processed_order_lines = []
+            line_lists = [order_lines]
+            if 'order_line' in order and order['order_line'] is not order_lines:
+                # we have both backend-dependent and oerp-native order
+                # lines.
+                # oerp-native lines can have been added to map
+                # shipping fees with an OpenERP Product
+                line_lists.append(order['order_line'])
+            for line_list in line_lists:
+                for idx, command_line in enumerate(line_list):
+                    # line_list format:[(0, 0, {...}), (0, 0, {...})]
+                    if command_line[0] in (0, 1):  # create or update values
+                        # keeps command number and ID (or 0)
+                        old_line_data = command_line[2]
+                        new_line_data = self._play_line_onchange(
+                            old_line_data, processed_order_lines, order)
+                        new_line = (command_line[0], command_line[1], new_line_data)
+                        processed_order_lines.append(new_line)
+                        # in place modification of the sale order line in the list
+                        line_list[idx] = new_line
         return order
