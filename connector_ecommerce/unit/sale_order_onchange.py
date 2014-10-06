@@ -70,6 +70,17 @@ class SaleOrderOnChange(OnChangeManager):
         kwargs = {'context': self.session.context}
         return args, kwargs
 
+    def _get_partner_address_id_onchange_param(self, order):
+        args = [
+            None,
+            order['partner_invoice_id'],
+            order['partner_shipping_id'],
+            order['partner_id'],
+            order['shop_id'],
+            ]
+        kwargs = {'context': self.session.context}
+        return args, kwargs
+
     def _play_order_onchange(self, order):
         """ Play the onchange of the sale order
 
@@ -103,6 +114,14 @@ class SaleOrderOnChange(OnChangeManager):
                                                         self.session.uid,
                                                         *args,
                                                         **kwargs)
+        # If the onchange return a False fiscal position
+        # We do not merge it, because the onchange on the address
+        # will not set correctly the fiscal position as the field
+        # already exists in the order dict
+        if res.get('value') and 'fiscal_position' in res['value']:
+            if not res['value']['fiscal_position']:
+                res['value'].pop('fiscal_position')
+
         self.merge_values(order, res)
 
         if order.get('workflow_process_id'):
@@ -113,6 +132,17 @@ class SaleOrderOnChange(OnChangeManager):
                                                           *args,
                                                           **kwargs)
         self.merge_values(order, res)
+
+        # Play onchange on address
+        if hasattr(sale_model, 'onchange_address_id'):
+            args, kwargs = self._get_partner_address_id_onchange_param(order)
+            res = sale_model.onchange_address_id(self.session.cr,
+                                                 self.session.uid,
+                                                 *args,
+                                                 **kwargs)
+            if res.get('value') and 'fiscal_position' in res['value']:
+                order['fiscal_position'] = res['value']['fiscal_position']
+            self.merge_values(order, res)
         return order
 
     def _get_product_id_onchange_param(self, line, previous_lines, order):
