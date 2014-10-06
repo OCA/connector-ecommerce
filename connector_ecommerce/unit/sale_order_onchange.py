@@ -114,10 +114,10 @@ class SaleOrderOnChange(OnChangeManager):
                                                         self.session.uid,
                                                         *args,
                                                         **kwargs)
-        # If the onchange return an False fiscal position
+        # If the onchange return a False fiscal position
         # We do not merge it, because the onchange on the address
         # will not set correctly the fiscal position as the field
-        # already exist in the order dict
+        # already exists in the order dict
         if res.get('value') and 'fiscal_position' in res['value']:
             if not res['value']['fiscal_position']:
                 res['value'].pop('fiscal_position')
