@@ -165,6 +165,14 @@ class SaleOrderOnChange(OnChangeManager):
             order.get('pricelist_id'),
             line.get('product_id')
         ]
+
+        # used in sale_markup: this is to ensure the unit price
+        # sent by the e-commerce connector is used for markup calculation
+        onchange_context = self.session.context.copy()
+        if line.get('unit_price', False):
+            onchange_context.update({'unit_price': line['unit_price'],
+                                     'force_unit_price': True})
+
         uos_qty = float(line.get('product_uos_qty', 0))
         if not uos_qty:
             uos_qty = float(line.get('product_uom_qty', 0))
@@ -182,7 +190,7 @@ class SaleOrderOnChange(OnChangeManager):
             'packaging': line.get('product_packaging'),
             'fiscal_position': order.get('fiscal_position'),
             'flag': False,
-            'context': self.session.context,
+            'context': onchange_context,
         }
         return args, kwargs
 
