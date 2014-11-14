@@ -19,8 +19,8 @@
 #
 ##############################################################################
 
-import test_onchange
-import test_invoice_event
+from . import test_onchange
+from . import test_invoice_event
 
 fast_suite = [
 ]
