@@ -24,6 +24,7 @@ from openerp.addons.connector.connector import ConnectorUnit
 
 
 class OnChangeManager(ConnectorUnit):
+
     def merge_values(self, record, on_change_result):
         vals = on_change_result.get('value', {})
         for key in vals:
@@ -77,7 +78,7 @@ class SaleOrderOnChange(OnChangeManager):
             order['partner_shipping_id'],
             order['partner_id'],
             order['shop_id'],
-            ]
+        ]
         kwargs = {'context': self.session.context}
         return args, kwargs
 
