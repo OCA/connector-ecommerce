@@ -52,6 +52,7 @@ class sale_shop(orm.Model):
 
 
 class sale_order(orm.Model):
+
     """ Add a cancellation mecanism in the sales orders
 
     When a sale order is canceled in a backend, the connectors can flag
@@ -435,6 +436,7 @@ class sale_order(orm.Model):
 
 
 class SpecialOrderLineBuilder(ConnectorUnit):
+
     """ Base class to build a sale order line for a sale order
 
     Used when extra order lines have to be added in a sale order
@@ -485,6 +487,7 @@ class SpecialOrderLineBuilder(ConnectorUnit):
 
 
 class ShippingLineBuilder(SpecialOrderLineBuilder):
+
     """ Return values for a Shipping line """
     _model_name = None
 
@@ -495,6 +498,7 @@ class ShippingLineBuilder(SpecialOrderLineBuilder):
 
 
 class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
+
     """ Return values for a Cash on Delivery line """
     _model_name = None
     _model_name = None
@@ -507,6 +511,7 @@ class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
 
 
 class GiftOrderLineBuilder(SpecialOrderLineBuilder):
+
     """ Return values for a Gift line """
     _model_name = None
 

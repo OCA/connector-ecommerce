@@ -33,6 +33,7 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class test_onchange(common.TransactionCase):
+
     """ Test if the onchanges are applied correctly on a sale order"""
 
     def setUp(self):

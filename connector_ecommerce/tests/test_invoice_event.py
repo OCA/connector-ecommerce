@@ -27,6 +27,7 @@ from openerp import netsvc
 
 
 class test_invoice_event(common.TransactionCase):
+
     """ Test if the events on the invoice are fired correctly """
 
     def setUp(self):
