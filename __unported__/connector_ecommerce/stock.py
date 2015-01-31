@@ -35,6 +35,8 @@ class stock_picking(orm.Model):
     }
 
     def action_done(self, cr, uid, ids, context=None):
+        import pdb
+        pdb.set_trace()
         res = super(stock_picking, self).action_done(cr, uid,
                                                      ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
@@ -63,16 +65,16 @@ class stock_picking(orm.Model):
                                                id, default, context=context)
 
 
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
+# class stock_picking_out(orm.Model):
+#     _inherit = 'stock.picking.out'
 
-    def write(self, cr, uid, ids, vals, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        res = super(stock_picking_out, self).write(cr, uid, ids,
-                                                   vals, context=context)
-        if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(cr, uid, context=context)
-            for record_id in ids:
-                on_tracking_number_added.fire(session, self._name, record_id)
-        return res
+#     def write(self, cr, uid, ids, vals, context=None):
+#         if not hasattr(ids, '__iter__'):
+#             ids = [ids]
+#         res = super(stock_picking_out, self).write(cr, uid, ids,
+#                                                    vals, context=context)
+#         if vals.get('carrier_tracking_ref'):
+#             session = ConnectorSession(cr, uid, context=context)
+#             for record_id in ids:
+#                 on_tracking_number_added.fire(session, self._name, record_id)
+#         return res

@@ -76,5 +76,5 @@ Data Model
      'payment_method_view.xml',
      'account_view.xml',
  ],
- 'installable': False,
+ 'installable': True,
  }

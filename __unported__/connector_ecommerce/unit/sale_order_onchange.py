@@ -218,7 +218,8 @@ class SaleOrderOnChange(OnChangeManager):
                     old_line_data = command_line[2]
                     new_line_data = self._play_line_onchange(
                         old_line_data, processed_order_lines, order)
-                    new_line = (command_line[0], command_line[1], new_line_data)
+                    new_line = (command_line[0],
+                                command_line[1], new_line_data)
                     processed_order_lines.append(new_line)
                     # in place modification of the sale order line in the list
                     line_list[idx] = new_line
