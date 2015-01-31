@@ -25,7 +25,7 @@ from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
 
-class stock_picking(orm.Model):
+class StockPicking(orm.Model):
     _inherit = 'stock.picking'
 
     _columns = {
@@ -35,8 +35,8 @@ class stock_picking(orm.Model):
     }
 
     def action_done(self, cr, uid, ids, context=None):
-        res = super(stock_picking, self).action_done(cr, uid,
-                                                     ids, context=context)
+        res = super(StockPicking, self).action_done(
+            cr, uid, ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
         picking_records = self.read(cr, uid, ids,
@@ -59,20 +59,20 @@ class stock_picking(orm.Model):
         else:
             default = default.copy()
         default['related_backorder_ids'] = False
-        return super(stock_picking, self).copy(cr, uid,
-                                               id, default, context=context)
+        return super(StockPicking, self).copy(
+            cr, uid, id, default, context=context)
 
 
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
+# class stock_picking_out(orm.Model):
+#     _inherit = 'stock.picking.out'
 
-    def write(self, cr, uid, ids, vals, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        res = super(stock_picking_out, self).write(cr, uid, ids,
-                                                   vals, context=context)
-        if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(cr, uid, context=context)
-            for record_id in ids:
-                on_tracking_number_added.fire(session, self._name, record_id)
-        return res
+#     def write(self, cr, uid, ids, vals, context=None):
+#         if not hasattr(ids, '__iter__'):
+#             ids = [ids]
+#         res = super(stock_picking_out, self).write(cr, uid, ids,
+#                                                    vals, context=context)
+#         if vals.get('carrier_tracking_ref'):
+#             session = ConnectorSession(cr, uid, context=context)
+#             for record_id in ids:
+#                 on_tracking_number_added.fire(session, self._name, record_id)
+#         return res

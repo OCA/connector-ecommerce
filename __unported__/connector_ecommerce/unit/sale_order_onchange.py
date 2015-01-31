@@ -82,12 +82,12 @@ class SaleOrderOnChange(OnChangeManager):
         sale_model = self.session.pool.get('sale.order')
 
         # Play partner_id onchange
-        args, kwargs = self._get_shop_id_onchange_param(order)
-        res = sale_model.onchange_shop_id(self.session.cr,
-                                          self.session.uid,
-                                          *args,
-                                          **kwargs)
-        self.merge_values(order, res)
+        # args, kwargs = self._get_shop_id_onchange_param(order)
+        # res = sale_model.onchange_shop_id(self.session.cr,
+        #                                   self.session.uid,
+        #                                   *args,
+        #                                   **kwargs)
+        # self.merge_values(order, res)
 
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
@@ -218,7 +218,8 @@ class SaleOrderOnChange(OnChangeManager):
                     old_line_data = command_line[2]
                     new_line_data = self._play_line_onchange(
                         old_line_data, processed_order_lines, order)
-                    new_line = (command_line[0], command_line[1], new_line_data)
+                    new_line = (command_line[0],
+                                command_line[1], new_line_data)
                     processed_order_lines.append(new_line)
                     # in place modification of the sale order line in the list
                     line_list[idx] = new_line
