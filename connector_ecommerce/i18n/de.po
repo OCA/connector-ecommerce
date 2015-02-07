@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: openerp-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
-"PO-Revision-Date: 2015-02-07 10:57+0100\n"
+"PO-Revision-Date: 2015-02-07 10:59+0100\n"
 "Last-Translator: Rudolf Schnapka <rs@techno-flex.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #. module: connector_ecommerce
 #: field:sale.order,cancellation_resolved:0
 msgid "Cancellation from the backend resolved"
-msgstr "Storno aus dem Backen aufglöst"
+msgstr "Storno aus dem Backend aufgelöst"
 
 #. module: connector_ecommerce
 #: model:sale.exception,description:connector_ecommerce.excep_product_has_checkpoint
