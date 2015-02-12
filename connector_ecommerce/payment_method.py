@@ -61,8 +61,11 @@ class payment_method(orm.Model):
         :return: id of required payment method
         """
         pay_method_obj = self.pool.get('payment.method')
-        domain = [('name', '=ilike', payment_method)]
-        method_ids = pay_method_obj.search(cr, uid, domain, context=context)
+        method_ids = pay_method_obj.search(cr,
+                                           uid,
+                                           [('name',
+                                             '=ilike',
+                                             payment_method)], context=context)
         if method_ids:
             method_id = method_ids[0]
         else:
