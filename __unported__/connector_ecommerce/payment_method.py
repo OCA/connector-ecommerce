@@ -52,7 +52,8 @@ class payment_method(orm.Model):
         'days_before_cancel': 30,
     }
 
-    def get_or_create_payment_method(self, cr, uid, payment_method, context=None):
+    def get_or_create_payment_method(self, cr, uid, payment_method,
+                                     context=None):
         """
         try to get id of 'payment_method' or create if not exists
         :param str payment_method: payment method like PayPal, etc.
@@ -60,9 +61,8 @@ class payment_method(orm.Model):
         :return: id of required payment method
         """
         pay_method_obj = self.pool.get('payment.method')
-        method_ids = pay_method_obj.search(cr, uid,
-                                           [('name', '=ilike', payment_method)],
-                                           context=context)
+        domain = [('name', '=ilike', payment_method)]
+        method_ids = pay_method_obj.search(cr, uid, domain, context=context)
         if method_ids:
             method_id = method_ids[0]
         else:
