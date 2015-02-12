@@ -330,12 +330,12 @@ class sale_order(orm.Model):
                     (vals['shipping_amount_tax_included'] -
                      vals['shipping_tax_amount'])
             elif 'shipping_tax_amount' not in vals:
-                vals['shipping_tax_amount'] =\
-                    (vals['shipping_amount_tax_included'] -
+                vals['shipping_tax_amount'] = (
+                    vals['shipping_amount_tax_included'] -
                     vals['shipping_amount_tax_excluded'])
             if vals['shipping_amount_tax_excluded']:
-                vals['shipping_tax_rate'] =\
-                    (vals['shipping_tax_amount'] /
+                vals['shipping_tax_rate'] = (
+                    vals['shipping_tax_amount'] /
                     vals['shipping_amount_tax_excluded'])
             else:
                 vals['shipping_tax_rate'] = 0.

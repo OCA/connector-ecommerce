@@ -65,8 +65,8 @@ class stock_picking(orm.Model):
     def write(self, cr, uid, ids, vals, context=None):
         if not hasattr(ids, '__iter__'):
             ids = [ids]
-        res = super(stock_picking, self).write(cr, uid, ids,
-                                                   vals, context=context)
+        res = super(stock_picking, self).write(cr, uid, ids, vals,
+                                               context=context)
         if vals.get('carrier_tracking_ref'):
             session = ConnectorSession(cr, uid, context=context)
             for record_id in ids:
