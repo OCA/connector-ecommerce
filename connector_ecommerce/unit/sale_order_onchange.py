@@ -70,17 +70,6 @@ class SaleOrderOnChange(OnChangeManager):
         kwargs = {'context': self.session.context}
         return args, kwargs
 
-    def _get_partner_address_id_onchange_param(self, order):
-        args = [
-            None,
-            order['partner_invoice_id'],
-            order['partner_shipping_id'],
-            order['partner_id'],
-            order['shop_id'],
-            ]
-        kwargs = {'context': self.session.context}
-        return args, kwargs
-
     def _play_order_onchange(self, order):
         """ Play the onchange of the sale order
 
@@ -114,14 +103,6 @@ class SaleOrderOnChange(OnChangeManager):
                                                         self.session.uid,
                                                         *args,
                                                         **kwargs)
-        # If the onchange return a False fiscal position
-        # We do not merge it, because the onchange on the address
-        # will not set correctly the fiscal position as the field
-        # already exists in the order dict
-        if res.get('value') and 'fiscal_position' in res['value']:
-            if not res['value']['fiscal_position']:
-                res['value'].pop('fiscal_position')
-
         self.merge_values(order, res)
 
         if order.get('workflow_process_id'):
@@ -132,17 +113,6 @@ class SaleOrderOnChange(OnChangeManager):
                                                           *args,
                                                           **kwargs)
         self.merge_values(order, res)
-
-        # Play onchange on address
-        if hasattr(sale_model, 'onchange_address_id'):
-            args, kwargs = self._get_partner_address_id_onchange_param(order)
-            res = sale_model.onchange_address_id(self.session.cr,
-                                                 self.session.uid,
-                                                 *args,
-                                                 **kwargs)
-            if res.get('value') and 'fiscal_position' in res['value']:
-                order['fiscal_position'] = res['value']['fiscal_position']
-            self.merge_values(order, res)
         return order
 
     def _get_product_id_onchange_param(self, line, previous_lines, order):
@@ -165,14 +135,6 @@ class SaleOrderOnChange(OnChangeManager):
             order.get('pricelist_id'),
             line.get('product_id')
         ]
-
-        # used in sale_markup: this is to ensure the unit price
-        # sent by the e-commerce connector is used for markup calculation
-        onchange_context = self.session.context.copy()
-        if line.get('unit_price', False):
-            onchange_context.update({'unit_price': line['unit_price'],
-                                     'force_unit_price': True})
-
         uos_qty = float(line.get('product_uos_qty', 0))
         if not uos_qty:
             uos_qty = float(line.get('product_uom_qty', 0))
@@ -190,7 +152,7 @@ class SaleOrderOnChange(OnChangeManager):
             'packaging': line.get('product_packaging'),
             'fiscal_position': order.get('fiscal_position'),
             'flag': False,
-            'context': onchange_context,
+            'context': self.session.context,
         }
         return args, kwargs
 
@@ -256,9 +218,7 @@ class SaleOrderOnChange(OnChangeManager):
                     old_line_data = command_line[2]
                     new_line_data = self._play_line_onchange(
                         old_line_data, processed_order_lines, order)
-                    new_line = (command_line[0],
-                                command_line[1],
-                                new_line_data)
+                    new_line = (command_line[0], command_line[1], new_line_data)
                     processed_order_lines.append(new_line)
                     # in place modification of the sale order line in the list
                     line_list[idx] = new_line

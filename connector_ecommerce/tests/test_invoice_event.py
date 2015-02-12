@@ -57,8 +57,7 @@ class test_invoice_event(common.TransactionCase):
         cr, uid = self.cr, self.uid
         assert self.invoice, "The invoice has not been created"
         wf_service = netsvc.LocalService('workflow')
-        event = ('openerp.addons.connector_ecommerce.'
-                 'invoice.on_invoice_validated')
+        event = 'openerp.addons.connector_ecommerce.invoice.on_invoice_validated'
         with mock.patch(event) as event_mock:
             wf_service.trg_validate(uid, 'account.invoice',
                                     self.invoice.id, 'invoice_open', cr)

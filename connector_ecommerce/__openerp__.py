@@ -64,6 +64,7 @@ Data Model
      'sale_exceptions',
      'delivery',
      'connector_base_product',
+     'sale_payment_method'
  ],
  'data': [
      'security/security.xml',
@@ -76,5 +77,5 @@ Data Model
      'payment_method_view.xml',
      'account_view.xml',
  ],
- 'installable': False,
+ 'installable': True,
  }
