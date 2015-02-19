@@ -52,12 +52,6 @@ class SaleOrderOnChange(OnChangeManager):
         kwargs = {'context': self.session.context}
         return args, kwargs
 
-    def _get_shop_id_onchange_param(self, order):
-        args = [None,
-                order['shop_id']]
-        kwargs = {'context': self.session.context}
-        return args, kwargs
-
     def _get_payment_method_id_onchange_param(self, order):
         args = [None,
                 order['payment_method_id']]
@@ -93,13 +87,6 @@ class SaleOrderOnChange(OnChangeManager):
         sale_model = self.session.pool.get('sale.order')
 
         # Play partner_id onchange
-        args, kwargs = self._get_shop_id_onchange_param(order)
-        res = sale_model.onchange_shop_id(self.session.cr,
-                                          self.session.uid,
-                                          *args,
-                                          **kwargs)
-        self.merge_values(order, res)
-
         args, kwargs = self._get_partner_id_onchange_param(order)
         res = sale_model.onchange_partner_id(self.session.cr,
                                              self.session.uid,
@@ -237,8 +224,7 @@ class SaleOrderOnChange(OnChangeManager):
         :rtype: dict
         """
         # play onchange on sale order
-        with self.session.change_context(dict(shop_id=order.get('shop_id'))):
-            order = self._play_order_onchange(order)
+        order = self._play_order_onchange(order)
         # play onchange on sale order line
         processed_order_lines = []
         line_lists = [order_lines]

@@ -43,7 +43,6 @@ class test_onchange(common.TransactionCase):
         """ Play the onchange ConnectorUnit on a sale order """
         product_model = self.registry('product.product')
         partner_model = self.registry('res.partner')
-        shop_model = self.registry('sale.shop')
         tax_model = self.registry('account.tax')
         cr, uid = self.cr, self.uid
 
@@ -66,10 +65,8 @@ class test_onchange(common.TransactionCase):
                                            'name': 'My Product',
                                            'weight': 15,
                                            'taxes_id': [(6, 0, [tax_id])]})
-        shop_id = shop_model.create(cr, uid, {'name': 'My shop'})
 
         order_input = {
-            'shop_id': shop_id,
             'name': 'mag_10000001',
             'partner_id': partner_id,
             'order_line': [
