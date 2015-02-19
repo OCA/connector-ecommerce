@@ -21,6 +21,7 @@
 ###############################################################################
 
 import mock
+from operator import attrgetter
 
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
@@ -41,50 +42,73 @@ class test_onchange(common.TransactionCase):
 
     def test_play_onchange(self):
         """ Play the onchange ConnectorUnit on a sale order """
-        product_model = self.registry('product.product')
-        partner_model = self.registry('res.partner')
-        tax_model = self.registry('account.tax')
-        cr, uid = self.cr, self.uid
+        product_model = self.env['product.product']
+        partner_model = self.env['res.partner']
+        tax_model = self.env['account.tax']
+        sale_model = self.env['sale.order']
+        sale_line_model = self.env['sale.order.line']
+        payment_method_model = self.env['payment.method']
 
         backend_record = mock.Mock()
         env = Environment(backend_record, self.session, 'sale.order')
 
-        partner_id = partner_model.create(cr, uid,
-                                          {'name': 'seb',
-                                           'zip': '69100',
-                                           'city': 'Villeurbanne'})
-        partner_invoice_id = partner_model.create(cr, uid,
-                                                  {'name': 'Guewen',
-                                                   'zip': '1015',
-                                                   'city': 'Lausanne',
-                                                   'type': 'invoice',
-                                                   'parent_id': partner_id})
-        tax_id = tax_model.create(cr, uid, {'name': 'My Tax'})
-        product_id = product_model.create(cr, uid,
-                                          {'default_code': 'MyCode',
-                                           'name': 'My Product',
-                                           'weight': 15,
-                                           'taxes_id': [(6, 0, [tax_id])]})
+        partner = partner_model.create({'name': 'seb',
+                                        'zip': '69100',
+                                        'city': 'Villeurbanne'})
+        partner_invoice = partner_model.create({'name': 'Guewen',
+                                                'zip': '1015',
+                                                'city': 'Lausanne',
+                                                'type': 'invoice',
+                                                'parent_id': partner.id})
+        tax = tax_model.create({'name': 'My Tax'})
+        product = product_model.create({'default_code': 'MyCode',
+                                        'name': 'My Product',
+                                        'weight': 15,
+                                        'taxes_id': [(6, 0, [tax.id])]})
+        payment_term = self.env.ref('account.account_payment_term_advance')
+        payment_method = payment_method_model.create({
+            'name': 'Cash',
+            'payment_term_id': payment_term.id,
+        })
 
-        order_input = {
+        order_vals = {
             'name': 'mag_10000001',
-            'partner_id': partner_id,
+            'partner_id': partner.id,
+            'payment_method_id': payment_method.id,
             'order_line': [
-                (0, 0, {'product_id': product_id,
+                (0, 0, {'product_id': product.id,
                         'price_unit': 20,
                         'name': 'My Real Name',
                         'product_uom_qty': 1,
+                        'sequence': 1,
                         }
                  ),
-            ]
+            ],
+            # fake field for the lines coming from a backend
+            'backend_order_line': [
+                (0, 0, {'product_id': product.id,
+                        'price_unit': 10,
+                        'name': 'Line 2',
+                        'product_uom_qty': 2,
+                        'sequence': 2,
+                        }
+                 ),
+            ],
         }
 
-        onchange = SaleOrderOnChange(env)
-        order = onchange.play(order_input,
-                              order_input['order_line'])
+        extra_lines = order_vals['backend_order_line']
 
-        self.assertEqual(order['partner_invoice_id'], partner_invoice_id)
+        onchange = SaleOrderOnChange(env)
+        order = onchange.play(order_vals, extra_lines)
+
+        self.assertEqual(order['partner_invoice_id'], partner_invoice.id)
+        self.assertEqual(order['payment_term'], payment_term.id)
+        self.assertEqual(len(order['order_line']), 1)
         line = order['order_line'][0][2]
         self.assertEqual(line['name'], 'My Real Name')
         self.assertEqual(line['th_weight'], 15)
-        self.assertEqual(line['tax_id'][0][2][0], tax_id)
+        self.assertEqual(line['tax_id'], [(6, 0, [tax.id])])
+        line = order['backend_order_line'][0][2]
+        self.assertEqual(line['name'], 'Line 2')
+        self.assertEqual(line['th_weight'], 30)
+        self.assertEqual(line['tax_id'], [(6, 0, [tax.id])])
