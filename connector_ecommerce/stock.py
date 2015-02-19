@@ -39,18 +39,16 @@ class stock_picking(orm.Model):
                                                      ids, context=context)
         session = ConnectorSession(cr, uid, context=context)
         # Look if it exists a backorder, in that case call for partial
-        picking_records = self.read(cr, uid, ids,
-                                    ['id', 'related_backorder_ids', 'type'],
-                                    context=context)
-        for picking_vals in picking_records:
-            if picking_vals['type'] != 'out':
+        pickings = self.browse(cr, uid, ids, context=context)
+        for picking in pickings:
+            if picking.picking_type_id.code != 'outgoing':
                 continue
-            if picking_vals['related_backorder_ids']:
+            if picking.related_backorder_ids:
                 picking_method = 'partial'
             else:
                 picking_method = 'complete'
             on_picking_out_done.fire(session, self._name,
-                                     picking_vals['id'], picking_method)
+                                     picking.id, picking_method)
         return res
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -62,15 +60,11 @@ class stock_picking(orm.Model):
         return super(stock_picking, self).copy(cr, uid,
                                                id, default, context=context)
 
-
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
-
     def write(self, cr, uid, ids, vals, context=None):
         if not hasattr(ids, '__iter__'):
             ids = [ids]
-        res = super(stock_picking_out, self).write(cr, uid, ids,
-                                                   vals, context=context)
+        res = super(stock_picking, self).write(cr, uid, ids,
+                                               vals, context=context)
         if vals.get('carrier_tracking_ref'):
             session = ConnectorSession(cr, uid, context=context)
             for record_id in ids:
