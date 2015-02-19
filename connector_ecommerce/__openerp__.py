@@ -20,44 +20,11 @@
 ##############################################################################
 
 {'name': 'Connector for E-Commerce',
- 'version': '2.2.0',
- 'category': 'Connector',
- 'author': "Connector Core Editors,Odoo Community Association (OCA)",
+ 'version': '3.0.0',
+ 'category': 'Hidden',
+ 'author': "Camptocamp,Akretion,Odoo Community Association (OCA)",
  'website': 'http://openerp-connector.com',
  'license': 'AGPL-3',
- 'description': """
-Connector for E-Commerce
-========================
-
-This modules aims to be a common layer for the connectors dealing with
-e-commerce.
-
-It sits on top of the `connector`_ framework and is used by the
-e-commerce connectors, like `magentoerpconnect`_ or
-`prestashoperpconnect`_.
-
-That's a technical module, which include amongst other things:
-
-Events
-
-    On which the connectors can subscribe consumers
-    (tracking number added, invoice paid, picking sent, ...)
-
-
-ConnectorUnit
-
-    A piece of code which allows to play all the ``onchanges`` required
-    when we create a sale order.
-
-Data Model
-
-    Add structures shared for e-commerce connectors
-
-
- .. _`connector`: http://openerp-connector.com
-.. _`magentoerpconnect`: http://openerp-magento-connector.com
-.. _`prestashoperpconnect`: https://launchpad.net/prestashoperpconnect
-""",
  'depends': [
      'connector',
      'sale_payment_method_automatic_workflow',
