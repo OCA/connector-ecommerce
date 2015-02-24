@@ -292,8 +292,8 @@ class SpecialOrderLineBuilder(ConnectorUnit):
     """
     _model_name = None
 
-    def __init__(self, environment):
-        super(SpecialOrderLineBuilder, self).__init__(environment)
+    def __init__(self, connector_env):
+        super(SpecialOrderLineBuilder, self).__init__(connector_env)
         self.product = None  # id or browse_record
         # when no product_id, fallback to a product_ref
         self.product_ref = None  # tuple (module, xmlid)
@@ -324,8 +324,8 @@ class ShippingLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Shipping line """
     _model_name = None
 
-    def __init__(self, environment):
-        super(ShippingLineBuilder, self).__init__(environment)
+    def __init__(self, connector_env):
+        super(ShippingLineBuilder, self).__init__(connector_env)
         self.product_ref = ('connector_ecommerce', 'product_product_shipping')
         self.sequence = 999
 
@@ -335,8 +335,8 @@ class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
     _model_name = None
     _model_name = None
 
-    def __init__(self, environment):
-        super(CashOnDeliveryLineBuilder, self).__init__(environment)
+    def __init__(self, connector_env):
+        super(CashOnDeliveryLineBuilder, self).__init__(connector_env)
         self.product_ref = ('connector_ecommerce',
                             'product_product_cash_on_delivery')
         self.sequence = 995
@@ -346,8 +346,8 @@ class GiftOrderLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Gift line """
     _model_name = None
 
-    def __init__(self, environment):
-        super(GiftOrderLineBuilder, self).__init__(environment)
+    def __init__(self, connector_env):
+        super(GiftOrderLineBuilder, self).__init__(connector_env)
         self.product_ref = ('connector_ecommerce',
                             'product_product_gift')
         self.sign = -1
