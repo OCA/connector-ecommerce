@@ -23,6 +23,7 @@
 
 import logging
 
+from openerp import models
 from openerp.osv import orm, fields, osv
 from openerp.tools.translate import _
 from openerp import netsvc
@@ -304,16 +305,13 @@ class SpecialOrderLineBuilder(ConnectorUnit):
     def get_line(self):
         assert self.product_ref or self.product
         assert self.price_unit is not None
-        session = self.session
 
-        product = product_id = self.product
-        if product_id is None:
-            model_data_obj = session.pool.get('ir.model.data')
-            __, product_id = model_data_obj.get_object_reference(
-                session.cr, session.uid, *self.product_ref)
+        product = self.product
+        if product is None:
+            product = self.env.ref('.'.join(self.product_ref))
 
-        if not isinstance(product_id, orm.browse_record):
-            product = session.browse('product.product', product_id)
+        if not isinstance(product, models.BaseModel):
+            product = self.env['product.product'].browse(product)
         return {'product_id': product.id,
                 'name': product.name,
                 'product_uom': product.uom_id.id,
