@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Author: Joel Grand-Guillaume
-#    Copyright 2013 Camptocamp SA
+#    Copyright 2013-2015 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,28 +19,28 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api
 
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
 
-class stock_picking(orm.Model):
+class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    _columns = {
-        'related_backorder_ids': fields.one2many(
-            'stock.picking', 'backorder_id',
-            string="Related backorders"),
-    }
+    related_backorder_ids = fields.One2many(
+        comodel_name='stock.picking',
+        inverse_name='backorder_id',
+        string="Related backorders",
+    )
 
-    def action_done(self, cr, uid, ids, context=None):
-        res = super(stock_picking, self).action_done(cr, uid,
-                                                     ids, context=context)
-        session = ConnectorSession(cr, uid, context=context)
+    @api.multi
+    def action_done(self):
+        res = super(StockPicking, self).action_done()
+        session = ConnectorSession(self.env.cr, self.env.uid,
+                                   context=self.env.context)
         # Look if it exists a backorder, in that case call for partial
-        pickings = self.browse(cr, uid, ids, context=context)
-        for picking in pickings:
+        for picking in self:
             if picking.picking_type_id.code != 'outgoing':
                 continue
             if picking.related_backorder_ids:
@@ -51,22 +51,12 @@ class stock_picking(orm.Model):
                                      picking.id, picking_method)
         return res
 
-    def copy(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        else:
-            default = default.copy()
-        default['related_backorder_ids'] = False
-        return super(stock_picking, self).copy(cr, uid,
-                                               id, default, context=context)
-
-    def write(self, cr, uid, ids, vals, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        res = super(stock_picking, self).write(cr, uid, ids,
-                                               vals, context=context)
+    @api.multi
+    def write(self, vals):
+        res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(cr, uid, context=context)
-            for record_id in ids:
+            session = ConnectorSession(self.env.cr, self.env.uid,
+                                       context=self.env.context)
+            for record_id in self.ids:
                 on_tracking_number_added.fire(session, self._name, record_id)
         return res

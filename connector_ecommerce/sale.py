@@ -23,16 +23,13 @@
 
 import logging
 
-from openerp import models
-from openerp.osv import orm, fields, osv
-from openerp.tools.translate import _
-from openerp import netsvc
+from openerp import models, fields, api, exceptions, _, osv
 from openerp.addons.connector.connector import ConnectorUnit
 
 _logger = logging.getLogger(__name__)
 
 
-class sale_order(orm.Model):
+class SaleOrder(models.Model):
     """ Add a cancellation mecanism in the sales orders
 
     When a sale order is canceled in a backend, the connectors can flag
@@ -55,80 +52,65 @@ class sale_order(orm.Model):
     """
     _inherit = 'sale.order'
 
-    def _get_parent_id(self, cr, uid, ids, name, arg, context=None):
-        return self.get_parent_id(cr, uid, ids, context=context)
+    canceled_in_backend = fields.Boolean(string='Canceled in backend',
+                                         readonly=True)
+    # set to True when the cancellation from the backend is
+    # resolved, either because the SO has been canceled or
+    # because the user manually chosed to keep it open
+    cancellation_resolved = fields.Boolean(string='Cancellation from the '
+                                                  'backend resolved')
+    parent_id = fields.Many2one(comodel_name='sale.order',
+                                compute='get_parent_id',
+                                string='Parent Order',
+                                help='A parent sales order is a sales '
+                                     'order replaced by this one.')
+    need_cancel = fields.Boolean(compute='_need_cancel',
+                                 string='Need to be canceled',
+                                 help='Has been canceled on the backend'
+                                      ', need to be canceled.')
+    parent_need_cancel = fields.Boolean(
+        compute='_parent_need_cancel',
+        string='A parent sales orders needs cancel',
+        help='A parent sales orders has been canceled on the backend'
+             ' and needs to be canceled.',
+    )
 
-    def get_parent_id(self, cr, uid, ids, context=None):
+    @api.one
+    @api.depends()
+    def get_parent_id(self):
         """ Need to be inherited in the connectors to implement the
         parent logic.
 
         See an implementation example in ``magentoerpconnect``.
         """
-        return dict.fromkeys(ids, False)
+        self.parent_id = False
 
-    def _get_need_cancel(self, cr, uid, ids, name, arg, context=None):
-        result = {}
-        for order in self.browse(cr, uid, ids, context=context):
-            result[order.id] = self._need_cancel(cr, uid, order,
-                                                 context=context)
-        return result
-
-    def _get_parent_need_cancel(self, cr, uid, ids, name, arg, context=None):
-        result = {}
-        for order in self.browse(cr, uid, ids, context=context):
-            result[order.id] = self._parent_need_cancel(cr, uid, order,
-                                                        context=context)
-        return result
-
-    _columns = {
-        'canceled_in_backend': fields.boolean('Canceled in backend',
-                                              readonly=True),
-        # set to True when the cancellation from the backend is
-        # resolved, either because the SO has been canceled or
-        # because the user manually chosed to keep it open
-        'cancellation_resolved': fields.boolean('Cancellation from the '
-                                                'backend resolved'),
-        'parent_id': fields.function(_get_parent_id,
-                                     string='Parent Order',
-                                     type='many2one',
-                                     help='A parent sales order is a sales '
-                                          'order replaced by this one.',
-                                     relation='sale.order'),
-        'need_cancel': fields.function(_get_need_cancel,
-                                       string='Need to be canceled',
-                                       type='boolean',
-                                       help='Has been canceled on the backend'
-                                            ', need to be canceled.'),
-        'parent_need_cancel': fields.function(
-            _get_parent_need_cancel,
-            string='A parent sales orders needs cancel',
-            type='boolean',
-            help='A parent sales orders has been canceled on the backend'
-                 ' and needs to be canceled.'),
-    }
-
-    def _need_cancel(self, cr, uid, order, context=None):
+    @api.one
+    @api.depends('canceled_in_backend', 'cancellation_resolved')
+    def _need_cancel(self):
         """ Return True if the sales order need to be canceled
-        (has been canceled on the Backend) """
-        return order.canceled_in_backend and not order.cancellation_resolved
+        (has been canceled on the Backend)
+        """
+        self.need_cancel = (self.canceled_in_backend and
+                            not self.cancellation_resolved)
 
-    def _parent_need_cancel(self, cr, uid, order, context=None):
+    @api.one
+    @api.depends('need_cancel', 'parent_id',
+                 'parent_id.need_cancel', 'parent_id.parent_need_cancel')
+    def _parent_need_cancel(self):
         """ Return True if at least one parent sales order need to
         be canceled (has been canceled on the backend).
         Follows all the parent sales orders.
         """
-        def need_cancel(order):
-            if self._need_cancel(cr, uid, order, context=context):
-                return True
-            if order.parent_id:
-                return need_cancel(order.parent_id)
-            else:
-                return False
-        if not order.parent_id:
-            return False
-        return need_cancel(order.parent_id)
+        self.parent_need_cancel = False
+        order = self.parent_id
+        while order:
+            if order.need_cancel:
+                self.parent_need_cancel = True
+            order = order.parent_id
 
-    def _try_auto_cancel(self, cr, uid, ids, context=None):
+    @api.multi
+    def _try_auto_cancel(self):
         """ Try to automatically cancel a sales order canceled
         in a backend.
 
@@ -136,15 +118,13 @@ class sale_order(orm.Model):
         """
         wkf_states = ('draft', 'sent')
         action_states = ('manual', 'progress')
-        wf_service = netsvc.LocalService("workflow")
         resolution_msg = _("<p>Resolution:<ol>"
                            "<li>Cancel the linked invoices, delivery "
                            "orders, automatic payments.</li>"
                            "<li>Cancel the sales order manually.</li>"
                            "</ol></p>")
-        for order_id in ids:
-            state = self.read(cr, uid, order_id,
-                              ['state'], context=context)['state']
+        for order in self:
+            state = order.state
             if state == 'cancel':
                 continue
             elif state == 'done':
@@ -156,13 +136,13 @@ class sale_order(orm.Model):
                     # the sales order view: quotations use the workflow
                     # action, sales orders use the action_cancel method.
                     if state in wkf_states:
-                        wf_service.trg_validate(uid, 'sale.order',
-                                                order_id, 'cancel', cr)
+                        order.signal_workflow('cancel')
                     elif state in action_states:
-                        self.action_cancel(cr, uid, order_id, context=context)
+                        order.action_cancel()
                     else:
                         raise ValueError('%s should not fall here.' % state)
-                except osv.except_osv:
+                except (osv.except_osv, osv.orm.except_orm,
+                        exceptions.Warning):
                     # the 'cancellation_resolved' flag will stay to False
                     message = _("The sales order could not be automatically "
                                 "canceled.") + resolution_msg
@@ -176,58 +156,48 @@ class sale_order(orm.Model):
                 # resolve
                 message = _("The sales order could not be automatically "
                             "canceled for this status.") + resolution_msg
-            self.message_post(cr, uid, [order_id], body=message,
-                              context=context)
+            order.message_post(body=message)
 
-    def _log_canceled_in_backend(self, cr, uid, ids, context=None):
+    @api.multi
+    def _log_canceled_in_backend(self):
         message = _("The sales order has been canceled on the backend.")
-        self.message_post(cr, uid, ids, body=message, context=context)
-        for order in self.browse(cr, uid, ids, context=context):
+        self.message_post(body=message)
+        for order in self:
             message = _("Warning: the origin sales order %s has been canceled "
                         "on the backend.") % order.name
             if order.picking_ids:
-                picking_obj = self.pool.get('stock.picking')
-                picking_obj.message_post(cr, uid, order.picking_ids,
-                                         body=message, context=context)
+                order.picking_ids.message_post(body=message)
             if order.invoice_ids:
-                picking_obj = self.pool.get('account.invoice')
-                picking_obj.message_post(cr, uid, order.invoice_ids,
-                                         body=message, context=context)
+                order.invoice_ids.message_post(body=message)
 
-    def create(self, cr, uid, values, context=None):
-        order_id = super(sale_order, self).create(cr, uid, values,
-                                                  context=context)
+    @api.model
+    def create(self, values):
+        order = super(SaleOrder, self).create(values)
         if values.get('canceled_in_backend'):
-            self._log_canceled_in_backend(cr, uid, [order_id], context=context)
-            self._try_auto_cancel(cr, uid, [order_id], context=context)
-        return order_id
+            order._log_canceled_in_backend()
+            order._try_auto_cancel()
+        return order
 
-    def write(self, cr, uid, ids, values, context=None):
-        result = super(sale_order, self).write(cr, uid, ids, values,
-                                               context=context)
+    @api.multi
+    def write(self, values):
+        result = super(SaleOrder, self).write(values)
         if values.get('canceled_in_backend'):
-            self._log_canceled_in_backend(cr, uid, ids, context=context)
-            self._try_auto_cancel(cr, uid, ids, context=context)
+            self._log_canceled_in_backend()
+            self._try_auto_cancel()
         return result
 
-    def action_cancel(self, cr, uid, ids, context=None):
-        if not hasattr(ids, '__iter__'):
-            ids = [ids]
-        super(sale_order, self).action_cancel(cr, uid, ids, context=context)
-        sales = self.read(cr, uid, ids,
-                          ['canceled_in_backend',
-                           'cancellation_resolved'],
-                          context=context)
-        for sale in sales:
+    @api.multi
+    def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        for sale in self:
             # the sale order is canceled => considered as resolved
-            if (sale['canceled_in_backend'] and
-                    not sale['cancellation_resolved']):
-                self.write(cr, uid, sale['id'],
-                           {'cancellation_resolved': True},
-                           context=context)
-        return True
+            if (sale.canceled_in_backend and
+                    not sale.cancellation_resolved):
+                sale.write({'cancellation_resolved': True})
+        return res
 
-    def ignore_cancellation(self, cr, uid, ids, reason, context=None):
+    @api.multi
+    def ignore_cancellation(self, reason):
         """ Manually set the cancellation from the backend as resolved.
 
         The user can choose to keep the sale order active for some reason,
@@ -236,39 +206,29 @@ class sale_order(orm.Model):
         message = (_("Despite the cancellation of the sales order on the "
                      "backend, it should stay open.<br/><br/>Reason: %s") %
                    reason)
-        self.message_post(cr, uid, ids, body=message, context=context)
-        self.write(cr, uid, ids,
-                   {'cancellation_resolved': True},
-                   context=context)
+        self.message_post(body=message)
+        self.write({'cancellation_resolved': True})
         return True
 
-    def action_view_parent(self, cr, uid, ids, context=None):
+    @api.multi
+    def action_view_parent(self):
         """ Return an action to display the parent sale order """
-        if isinstance(ids, (list, tuple)):
-            assert len(ids) == 1
-            ids = ids[0]
+        self.ensure_one()
 
-        mod_obj = self.pool.get('ir.model.data')
-        act_obj = self.pool.get('ir.actions.act_window')
-
-        parent = self.browse(cr, uid, ids, context=context).parent_id
+        parent = self.parent_id
         if not parent:
             return
 
-        view_xmlid = ('sale', 'view_order_form')
+        view_xmlid = 'sale.view_order_form'
         if parent.state in ('draft', 'sent', 'cancel'):
-            action_xmlid = ('sale', 'action_quotations')
+            action_xmlid = 'sale.action_quotations'
         else:
-            action_xmlid = ('sale', 'action_orders')
+            action_xmlid = 'sale.action_orders'
 
-        ref = mod_obj.get_object_reference(cr, uid, *action_xmlid)
-        action_id = False
-        if ref:
-            __, action_id = ref
-        action = act_obj.read(cr, uid, [action_id], context=context)[0]
+        action = self.env.ref(action_xmlid).read()[0]
 
-        ref = mod_obj.get_object_reference(cr, uid, *view_xmlid)
-        action['views'] = [(ref[1] if ref else False, 'form')]
+        view = self.env.ref(view_xmlid)
+        action['views'] = [(view.id if view else False, 'form')]
         action['res_id'] = parent.id
         return action
 

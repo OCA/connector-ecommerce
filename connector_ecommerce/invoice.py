@@ -19,37 +19,28 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
+from openerp import models, api
 from openerp.addons.connector.session import ConnectorSession
 from .event import on_invoice_paid, on_invoice_validated
 
 
-class account_invoice(orm.Model):
+class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    _columns = {
-        'sale_order_ids': fields.many2many(
-            # TODO duplicate with 'sale_ids', replace
-            'sale.order',
-            'sale_order_invoice_rel',
-            'invoice_id',
-            'order_id',
-            string='Sale Orders', readonly=True,
-            help="This is the list of sale orders related to this invoice."),
-    }
-
-    def confirm_paid(self, cr, uid, ids, context=None):
-        res = super(account_invoice, self).confirm_paid(
-            cr, uid, ids, context=context)
-        session = ConnectorSession(cr, uid, context=context)
-        for record_id in ids:
+    @api.multi
+    def confirm_paid(self):
+        res = super(AccountInvoice, self).confirm_paid()
+        session = ConnectorSession(self.env.cr, self.env.uid,
+                                   context=self.env.context)
+        for record_id in self.ids:
             on_invoice_paid.fire(session, self._name, record_id)
         return res
 
-    def invoice_validate(self, cr, uid, ids, context=None):
-        res = super(account_invoice, self).invoice_validate(
-            cr, uid, ids, context=context)
-        session = ConnectorSession(cr, uid, context=context)
-        for record_id in ids:
+    @api.multi
+    def invoice_validate(self):
+        res = super(AccountInvoice, self).invoice_validate()
+        session = ConnectorSession(self.env.cr, self.env.uid,
+                                   context=self.env.context)
+        for record_id in self.ids:
             on_invoice_validated.fire(session, self._name, record_id)
         return res

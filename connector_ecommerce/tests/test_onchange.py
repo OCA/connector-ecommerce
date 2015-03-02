@@ -21,7 +21,6 @@
 ###############################################################################
 
 import mock
-from operator import attrgetter
 
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
@@ -33,11 +32,11 @@ DB = common.DB
 ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
-class test_onchange(common.TransactionCase):
+class TestOnchange(common.TransactionCase):
     """ Test if the onchanges are applied correctly on a sale order"""
 
     def setUp(self):
-        super(test_onchange, self).setUp()
+        super(TestOnchange, self).setUp()
         self.session = ConnectorSession(self.cr, self.uid)
 
     def test_play_onchange(self):
@@ -45,8 +44,6 @@ class test_onchange(common.TransactionCase):
         product_model = self.env['product.product']
         partner_model = self.env['res.partner']
         tax_model = self.env['account.tax']
-        sale_model = self.env['sale.order']
-        sale_line_model = self.env['sale.order.line']
         payment_method_model = self.env['payment.method']
 
         backend_record = mock.Mock()

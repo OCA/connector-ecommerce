@@ -20,48 +20,39 @@
 ##############################################################################
 
 import mock
-from functools import partial
 
 import openerp.tests.common as common
-from openerp import netsvc
 
 
-class test_invoice_event(common.TransactionCase):
+class TestInvoiceEvent(common.TransactionCase):
     """ Test if the events on the invoice are fired correctly """
 
     def setUp(self):
-        super(test_invoice_event, self).setUp()
-        cr, uid = self.cr, self.uid
-        self.invoice_model = self.registry('account.invoice')
-        partner_model = self.registry('res.partner')
-        partner_id = partner_model.create(cr, uid, {'name': 'Hodor'})
-        data_model = self.registry('ir.model.data')
-        self.get_ref = partial(data_model.get_object_reference, cr, uid)
-        product_id = self.get_ref('product', 'product_product_6')[1]
-        invoice_vals = {'partner_id': partner_id,
+        super(TestInvoiceEvent, self).setUp()
+        self.invoice_model = self.env['account.invoice']
+        partner_model = self.env['res.partner']
+        partner = partner_model.create({'name': 'Hodor'})
+        product = self.env.ref('product.product_product_6')
+        invoice_vals = {'partner_id': partner.id,
                         'type': 'out_invoice',
                         'invoice_line': [(0, 0, {'name': "LCD Screen",
-                                                 'product_id': product_id,
+                                                 'product_id': product.id,
                                                  'quantity': 5,
                                                  'price_unit': 200})],
                         }
-        onchange_res = self.invoice_model.onchange_partner_id(
-            cr, uid, [], 'out_invoice', partner_id)
+        onchange_res = self.invoice_model.onchange_partner_id('out_invoice',
+                                                              partner.id)
         invoice_vals.update(onchange_res['value'])
-        invoice_id = self.invoice_model.create(cr, uid, invoice_vals)
-        self.invoice = self.invoice_model.browse(cr, uid, invoice_id)
+        self.invoice = self.invoice_model.create(invoice_vals)
 
     def test_event_validated(self):
         """ Test if the ``on_invoice_validated`` event is fired
         when an invoice is validated """
-        cr, uid = self.cr, self.uid
         assert self.invoice, "The invoice has not been created"
-        wf_service = netsvc.LocalService('workflow')
         event = ('openerp.addons.connector_ecommerce.'
                  'invoice.on_invoice_validated')
         with mock.patch(event) as event_mock:
-            wf_service.trg_validate(uid, 'account.invoice',
-                                    self.invoice.id, 'invoice_open', cr)
+            self.invoice.signal_workflow('invoice_open')
             self.assertEqual(self.invoice.state, 'open')
             event_mock.fire.assert_called_with(mock.ANY,
                                                'account.invoice',
@@ -70,27 +61,23 @@ class test_invoice_event(common.TransactionCase):
     def test_event_paid(self):
         """ Test if the ``on_invoice_paid`` event is fired
         when an invoice is paid """
-        cr, uid = self.cr, self.uid
         assert self.invoice, "The invoice has not been created"
-        wf_service = netsvc.LocalService('workflow')
-        wf_service.trg_validate(uid, 'account.invoice',
-                                self.invoice.id, 'invoice_open', cr)
+        self.invoice.signal_workflow('invoice_open')
         self.assertEqual(self.invoice.state, 'open')
-        journal_id = self.get_ref('account', 'bank_journal')[1]
-        pay_account_id = self.get_ref('account', 'cash')[1]
-        period_id = self.get_ref('account', 'period_10')[1]
+        journal = self.env.ref('account.bank_journal')
+        pay_account = self.env.ref('account.cash')
+        period = self.env.ref('account.period_10')
         event = 'openerp.addons.connector_ecommerce.invoice.on_invoice_paid'
         with mock.patch(event) as event_mock:
             self.invoice.pay_and_reconcile(
                 pay_amount=self.invoice.amount_total,
-                pay_account_id=pay_account_id,
-                period_id=period_id,
-                pay_journal_id=journal_id,
-                writeoff_acc_id=pay_account_id,
-                writeoff_period_id=period_id,
-                writeoff_journal_id=journal_id,
+                pay_account_id=pay_account.id,
+                period_id=period.id,
+                pay_journal_id=journal.id,
+                writeoff_acc_id=pay_account.id,
+                writeoff_period_id=period.id,
+                writeoff_journal_id=journal.id,
                 name="Payment for test of the event on_invoice_paid")
-            self.invoice.refresh()
             self.assertEqual(self.invoice.state, 'paid')
             event_mock.fire.assert_called_with(mock.ANY,
                                                'account.invoice',
