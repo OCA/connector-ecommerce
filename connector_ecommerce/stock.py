@@ -35,23 +35,6 @@ class StockPicking(models.Model):
     )
 
     @api.multi
-    def action_done(self):
-        res = super(StockPicking, self).action_done()
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
-        # Look if it exists a backorder, in that case call for partial
-        for picking in self:
-            if picking.picking_type_id.code != 'outgoing':
-                continue
-            if picking.related_backorder_ids:
-                picking_method = 'partial'
-            else:
-                picking_method = 'complete'
-            on_picking_out_done.fire(session, self._name,
-                                     picking.id, picking_method)
-        return res
-
-    @api.multi
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
@@ -60,3 +43,27 @@ class StockPicking(models.Model):
             for record_id in self.ids:
                 on_tracking_number_added.fire(session, self._name, record_id)
         return res
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    @api.multi
+    def action_done(self):
+        pickings = self.mapped('picking_id')
+        states = {p.id: p.state for p in pickings}
+        result = super(StockMove, self).action_done()
+        session = ConnectorSession(self.env.cr, self.env.uid,
+                                   context=self.env.context)
+        for picking in pickings:
+            if states[picking.id] != 'done' and picking.state == 'done':
+                if picking.picking_type_id.code != 'outgoing':
+                    continue
+                if picking.related_backorder_ids:
+                    picking_method = 'partial'
+                else:
+                    picking_method = 'complete'
+                on_picking_out_done.fire(session, 'stock.picking',
+                                         picking.id, picking_method)
+
+        return result
