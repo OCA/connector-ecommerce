@@ -69,6 +69,23 @@ class TestPickingEvent(common.TransactionCase):
                                                self.picking.id,
                                                'complete')
 
+    def test_event_on_picking_out_done_partial(self):
+        """ Test if the ``on_picking_out_done`` informs of the partial
+        pickings """
+        self.picking.force_assign()
+        self.picking.do_prepare_partial()
+        for operation in self.picking.pack_operation_ids:
+            operation.product_qty = 1
+        event = ('openerp.addons.connector_ecommerce.'
+                 'stock.on_picking_out_done')
+        with mock.patch(event) as event_mock:
+            self.picking.do_transfer()
+            self.assertEquals(self.picking.state, 'done')
+            event_mock.fire.assert_called_with(mock.ANY,
+                                               'stock.picking',
+                                               self.picking.id,
+                                               'partial')
+
     def test_event_on_tracking_number_added(self):
         """ Test if the ``on_tracking_number_added`` event is fired
         when a tracking number is added """
