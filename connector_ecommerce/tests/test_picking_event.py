@@ -68,3 +68,14 @@ class TestPickingEvent(common.TransactionCase):
                                                'stock.picking',
                                                self.picking.id,
                                                'complete')
+
+    def test_event_on_tracking_number_added(self):
+        """ Test if the ``on_tracking_number_added`` event is fired
+        when a tracking number is added """
+        event = ('openerp.addons.connector_ecommerce.'
+                 'stock.on_tracking_number_added')
+        with mock.patch(event) as event_mock:
+            self.picking.carrier_tracking_ref = 'XYZ'
+            event_mock.fire.assert_called_with(mock.ANY,
+                                               'stock.picking',
+                                               self.picking.id)
