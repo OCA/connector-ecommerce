@@ -22,7 +22,7 @@
 {'name': 'Connector for E-Commerce',
  'version': '2.2.0',
  'category': 'Connector',
- 'author': "Connector Core Editors,Odoo Community Association (OCA)",
+ 'author': "Camptocamp,Akretion,Odoo Community Association (OCA)",
  'website': 'http://openerp-connector.com',
  'license': 'AGPL-3',
  'description': """
