@@ -21,7 +21,7 @@ Events
 ConnectorUnit
 
   A piece of code which allows to play all the ``onchanges`` required
-  when we create a sale order.
+  when we create a sales order.
 
   Another one which allows to add special lines in imported sales orders
   such as Shipping fees, Cash on Delivery or Discounts.

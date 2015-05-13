@@ -196,7 +196,7 @@ msgstr "Lignes de liste de prix"
 
 #. module: connector_ecommerce
 #: field:sale.order,parent_need_cancel:0
-msgid "A parent sales orders needs cancel"
+msgid "A parent sales order needs cancel"
 msgstr "Une commande parente doit être annulée"
 
 #. module: connector_ecommerce
@@ -248,7 +248,7 @@ msgstr "Doit être annulée"
 #. module: connector_ecommerce
 #: help:sale.order,parent_need_cancel:0
 msgid ""
-"A parent sales orders has been canceled on the backend and needs to be "
+"A parent sales order has been canceled on the backend and needs to be "
 "canceled."
 msgstr ""
 "Une commande parente a été annulée sur le backend et doit être annulée."
@@ -288,7 +288,7 @@ msgstr "Bon de commande"
 #: help:payment.method,days_before_cancel:0
 msgid ""
 "After 'n' days, if the 'Import Rule' is not fulfilled, the import of the "
-"sale order will be canceled."
+"sales order will be canceled."
 msgstr ""
 "Après \"n\" jours, si la règle d'import n'est pas satisfaite, l'import de la "
 "commande sera annulé."
@@ -320,7 +320,7 @@ msgstr "Annulée dans le backend"
 
 #. module: connector_ecommerce
 #: help:account.invoice,sale_order_ids:0
-msgid "This is the list of sale orders related to this invoice."
+msgid "This is the list of sales orders related to this invoice."
 msgstr "Liste des commandes liées à cette facture."
 
 #. module: connector_ecommerce
@@ -368,7 +368,7 @@ msgstr "Nom"
 
 #. module: connector_ecommerce
 #: field:account.invoice,sale_order_ids:0
-msgid "Sale Orders"
+msgid "Sales Orders"
 msgstr "Bons de commande"
 
 #. module: connector_ecommerce

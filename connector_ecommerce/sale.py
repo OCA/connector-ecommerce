@@ -32,7 +32,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     """ Add a cancellation mecanism in the sales orders
 
-    When a sale order is canceled in a backend, the connectors can flag
+    When a sales order is canceled in a backend, the connectors can flag
     the 'canceled_in_backend' flag. It will:
 
     * try to automatically cancel the sales order
@@ -42,9 +42,9 @@ class SaleOrder(models.Model):
     to 'keep it open', the flag 'cancellation_resolved' is set to True.
 
     The second axe which can be used by the connectors is the 'parent'
-    sale order. When a sales order has a parent sales order (logic to
+    sales order. When a sales order has a parent sales order (logic to
     link with the parent to be defined by each connector), it will be
-    blocked until the cancellation of the sale order is resolved.
+    blocked until the cancellation of the sales order is resolved.
 
     This is used by, for instance, the magento connector, when one
     modifies a sales order, Magento cancels it and create a new one with
@@ -56,7 +56,7 @@ class SaleOrder(models.Model):
                                          readonly=True)
     # set to True when the cancellation from the backend is
     # resolved, either because the SO has been canceled or
-    # because the user manually chosed to keep it open
+    # because the user manually chose to keep it open
     cancellation_resolved = fields.Boolean(string='Cancellation from the '
                                                   'backend resolved')
     parent_id = fields.Many2one(comodel_name='sale.order',
@@ -70,8 +70,8 @@ class SaleOrder(models.Model):
                                       ', need to be canceled.')
     parent_need_cancel = fields.Boolean(
         compute='_parent_need_cancel',
-        string='A parent sales orders needs cancel',
-        help='A parent sales orders has been canceled on the backend'
+        string='A parent sales order needs cancel',
+        help='A parent sales order has been canceled on the backend'
              ' and needs to be canceled.',
     )
 
@@ -190,7 +190,7 @@ class SaleOrder(models.Model):
     def action_cancel(self):
         res = super(SaleOrder, self).action_cancel()
         for sale in self:
-            # the sale order is canceled => considered as resolved
+            # the sales order is canceled => considered as resolved
             if (sale.canceled_in_backend and
                     not sale.cancellation_resolved):
                 sale.write({'cancellation_resolved': True})
@@ -200,8 +200,8 @@ class SaleOrder(models.Model):
     def ignore_cancellation(self, reason):
         """ Manually set the cancellation from the backend as resolved.
 
-        The user can choose to keep the sale order active for some reason,
-        so it just push a button to keep it alive.
+        The user can choose to keep the sales order active for some reason,
+        it only requires to push a button to keep it alive.
         """
         message = (_("Despite the cancellation of the sales order on the "
                      "backend, it should stay open.<br/><br/>Reason: %s") %
@@ -212,7 +212,7 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_view_parent(self):
-        """ Return an action to display the parent sale order """
+        """ Return an action to display the parent sales order """
         self.ensure_one()
 
         parent = self.parent_id
@@ -234,9 +234,9 @@ class SaleOrder(models.Model):
 
 
 class SpecialOrderLineBuilder(ConnectorUnit):
-    """ Base class to build a sale order line for a sale order
+    """ Base class to build a sales order line for a sales order
 
-    Used when extra order lines have to be added in a sale order
+    Used when extra order lines have to be added in a sales order
     but we only know some parameters (product, price, ...), for instance,
     a line for the shipping costs or the gift coupons.
 

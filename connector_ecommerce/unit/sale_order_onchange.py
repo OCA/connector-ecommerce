@@ -47,10 +47,10 @@ class SaleOrderOnChange(OnChangeManager):
 
     def _get_partner_id_onchange_param(self, order):
         """ Prepare the arguments for calling the partner_id change
-        on sale order. You can overwrite this method in your own
+        on sales order. You can overwrite this method in your own
         module if they modify the onchange signature
 
-        :param order: a dictionary of the value of your sale order
+        :param order: a dictionary of the value of your sales order
         :type: dict
 
         :return: a tuple of args and kwargs for the onchange
@@ -63,12 +63,12 @@ class SaleOrderOnChange(OnChangeManager):
         return args, kwargs
 
     def _play_order_onchange(self, order):
-        """ Play the onchange of the sale order
+        """ Play the onchange of the sales order
 
-        :param order: a dictionary of the value of your sale order
+        :param order: a dictionary of the value of your sales order
         :type: dict
 
-        :return: the value of the sale order updated with the onchange result
+        :return: the value of the sales order updated with the onchange result
         :rtype: dict
         """
         sale_model = self.env['sale.order']
@@ -113,14 +113,14 @@ class SaleOrderOnChange(OnChangeManager):
 
     def _get_product_id_onchange_param(self, line, previous_lines, order):
         """ Prepare the arguments for calling the product_id change
-        on sale order line. You can overwrite this method in your own
+        on sales order line. You can overwrite this method in your own
         module if they modify the onchange signature
 
-        :param line: the sale order line to process
+        :param line: the sales order line to process
         :type: dict
         :param previous_lines: list of dict of the previous lines processed
         :type: list
-        :param order: data of the sale order
+        :param order: data of the sales order
         :type: dict
 
         :return: a tuple of args and kwargs for the onchange
@@ -160,16 +160,16 @@ class SaleOrderOnChange(OnChangeManager):
         return args, kwargs
 
     def _play_line_onchange(self, line, previous_lines, order):
-        """ Play the onchange of the sale order line
+        """ Play the onchange of the sales order line
 
-        :param line: the sale order line to process
+        :param line: the sales order line to process
         :type: dict
         :param previous_lines: list of dict of the previous line processed
         :type: list
-        :param order: data of the sale order
+        :param order: data of the sales order
         :type: dict
 
-        :return: the value of the sale order updated with the onchange result
+        :return: the value of the sales order updated with the onchange result
         :rtype: dict
         """
         line_model = self.env['sale.order.line']
@@ -184,25 +184,25 @@ class SaleOrderOnChange(OnChangeManager):
         return line
 
     def play(self, order, order_lines):
-        """ Play the onchange of the sale order and it's lines
+        """ Play the onchange of the sales order and it's lines
 
-        It expects to receive a recordset containing one sale order.
+        It expects to receive a recordset containing one sales order.
         It could have been generated with
         ``self.env['sale.order'].new(values)`` or
         ``self.env['sale.order'].create(values)``.
 
-        :param order: data of the sale order
+        :param order: data of the sales order
         :type: recordset
-        :param order_lines: data of the sale order lines
+        :param order_lines: data of the sales order lines
         :type: recordset
 
-        :return: the sale order updated by the onchanges
+        :return: the sales order updated by the onchanges
         :rtype: recordset
         """
-        # play onchange on sale order
+        # play onchange on sales order
         order = self._play_order_onchange(order)
 
-        # play onchange on sale order line
+        # play onchange on sales order line
         processed_order_lines = []
         line_lists = [order_lines]
         if 'order_line' in order and order['order_line'] is not order_lines:
@@ -223,6 +223,6 @@ class SaleOrderOnChange(OnChangeManager):
                                 command_line[1],
                                 new_line_data)
                     processed_order_lines.append(new_line)
-                    # in place modification of the sale order line in the list
+                    # in place modification of the sales order line in the list
                     line_list[idx] = new_line
         return order

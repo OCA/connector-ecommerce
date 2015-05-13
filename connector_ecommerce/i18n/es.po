@@ -197,7 +197,7 @@ msgstr "Listado de Precios de Artículos"
 
 #. module: connector_ecommerce
 #: field:sale.order,parent_need_cancel:0
-msgid "A parent sales orders needs cancel"
+msgid "A parent sales order needs cancel"
 msgstr "Una orden de venta padre debe cancelar"
 
 #. module: connector_ecommerce
@@ -248,7 +248,7 @@ msgstr "Debe ser cancelado"
 #. module: connector_ecommerce
 #: help:sale.order,parent_need_cancel:0
 msgid ""
-"A parent sales orders has been canceled on the backend and needs to be "
+"A parent sales order has been canceled on the backend and needs to be "
 "canceled."
 msgstr ""
 "Una orden de venta padre ha sido cancelada en el área de administración y "
@@ -289,7 +289,7 @@ msgstr "Pedidos de venta"
 #: help:payment.method,days_before_cancel:0
 msgid ""
 "After 'n' days, if the 'Import Rule' is not fulfilled, the import of the "
-"sale order will be canceled."
+"sales order will be canceled."
 msgstr ""
 "Después de 'n' días, si la 'Regla de Importación' no está realizada, la "
 "importación de la orden de venta será cancelada."
@@ -321,7 +321,7 @@ msgstr "Cancelado en el área de administración"
 
 #. module: connector_ecommerce
 #: help:account.invoice,sale_order_ids:0
-msgid "This is the list of sale orders related to this invoice."
+msgid "This is the list of sales orders related to this invoice."
 msgstr "Esta es la lista de pedidos de venta relacionados con esta factura."
 
 #. module: connector_ecommerce
@@ -370,7 +370,7 @@ msgstr "Nombre"
 
 #. module: connector_ecommerce
 #: field:account.invoice,sale_order_ids:0
-msgid "Sale Orders"
+msgid "Sales Orders"
 msgstr "Pedido de Venta"
 
 #. module: connector_ecommerce

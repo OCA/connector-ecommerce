@@ -197,7 +197,7 @@ msgstr "Preislistenartikel"
 
 #. module: connector_ecommerce
 #: field:sale.order,parent_need_cancel:0
-msgid "A parent sales orders needs cancel"
+msgid "A parent sales order needs cancel"
 msgstr "Eine übergeordnete"
 
 #. module: connector_ecommerce
@@ -246,7 +246,7 @@ msgstr ""
 #. module: connector_ecommerce
 #: help:sale.order,parent_need_cancel:0
 msgid ""
-"A parent sales orders has been canceled on the backend and needs to be "
+"A parent sales order has been canceled on the backend and needs to be "
 "canceled."
 msgstr ""
 "Ein übergeordneter VK-Auftrag wurde im Backend abgebrochen und muss "
@@ -287,7 +287,7 @@ msgstr "VK-Auftrag"
 #: help:payment.method,days_before_cancel:0
 msgid ""
 "After 'n' days, if the 'Import Rule' is not fulfilled, the import of the "
-"sale order will be canceled."
+"sales order will be canceled."
 msgstr ""
 "Nach 'n' Tagen, wenn die 'Import Regel' nicht erfüllt ist, wird der Import "
 "abgebrochen."
@@ -319,7 +319,7 @@ msgstr "Im Backend abgebrochen"
 
 #. module: connector_ecommerce
 #: help:account.invoice,sale_order_ids:0
-msgid "This is the list of sale orders related to this invoice."
+msgid "This is the list of sales orders related to this invoice."
 msgstr ""
 "Dies ist die Liste der VK-Aufträge welche mit dieser Rechnung in beziehung "
 "stehen."
@@ -369,7 +369,7 @@ msgstr "Name"
 
 #. module: connector_ecommerce
 #: field:account.invoice,sale_order_ids:0
-msgid "Sale Orders"
+msgid "Sales Orders"
 msgstr "VK-Aufträge"
 
 #. module: connector_ecommerce

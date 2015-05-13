@@ -33,14 +33,14 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class TestOnchange(common.TransactionCase):
-    """ Test if the onchanges are applied correctly on a sale order"""
+    """ Test if the onchanges are applied correctly on a sales order"""
 
     def setUp(self):
         super(TestOnchange, self).setUp()
         self.session = ConnectorSession(self.cr, self.uid)
 
     def test_play_onchange(self):
-        """ Play the onchange ConnectorUnit on a sale order """
+        """ Play the onchange ConnectorUnit on a sales order """
         product_model = self.env['product.product']
         partner_model = self.env['res.partner']
         tax_model = self.env['account.tax']

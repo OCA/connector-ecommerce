@@ -39,7 +39,7 @@ class PaymentMethod(models.Model):
         string='Days before cancel',
         default=30,
         help="After 'n' days, if the 'Import Rule' is not fulfilled, the "
-             "import of the sale order will be canceled.",
+             "import of the sales order will be canceled.",
     )
     import_rule = fields.Selection(selection='_get_import_rules',
                                    string="Import Rule",
