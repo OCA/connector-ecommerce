@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
-#    Copyright 2012 Camptocamp SA
+#    Copyright 2013 Camptocamp SA
+#    Copyright 2013 Akretion
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,13 +19,29 @@
 #
 ##############################################################################
 
-import test_onchange
-import test_invoice_event
-
-fast_suite = [
-]
-
-checks = [
-    test_onchange,
-    test_invoice_event,
-]
+{'name': 'Connector for E-Commerce',
+ 'version': '3.0.0',
+ 'category': 'Hidden',
+ 'author': "Camptocamp,Akretion,Odoo Community Association (OCA)",
+ 'website': 'http://openerp-connector.com',
+ 'license': 'AGPL-3',
+ 'depends': [
+     'connector',
+     'sale_payment_method_automatic_workflow',
+     'sale_exceptions',
+     'delivery',
+     'connector_base_product',
+ ],
+ 'data': [
+     'security/security.xml',
+     'security/ir.model.access.csv',
+     'wizard/sale_ignore_cancel_view.xml',
+     'sale_view.xml',
+     'invoice_view.xml',
+     'ecommerce_data.xml',
+     'stock_view.xml',
+     'payment_method_view.xml',
+     'account_view.xml',
+ ],
+ 'installable': True,
+ }
