@@ -163,7 +163,7 @@ msgstr ""
 
 #. module: connector_ecommerce
 #: help:product.template,tax_group_id:0
-msgid "Tax group are used with some external system like magento or prestashop"
+msgid "Tax groups are used with some external system like magento or prestashop"
 msgstr ""
 
 #. module: connector_ecommerce

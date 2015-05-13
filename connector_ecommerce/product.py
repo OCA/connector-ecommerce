@@ -38,7 +38,7 @@ class ProductTemplate(models.Model):
         comodel_name='account.tax.group',
         compute='_get_tax_group_id',
         string='Tax Group',
-        help='Tax group are used with some external '
+        help='Tax groups are used with some external '
              'system like Prestashop',
     )
 
