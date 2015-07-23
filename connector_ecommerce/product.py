@@ -133,7 +133,7 @@ class ProductProduct(models.Model):
     @api.model
     def create(self, vals):
         product = super(ProductProduct, self).create(vals)
-        self._price_changed(vals)
+        product._price_changed(vals)
         return product
 
 
