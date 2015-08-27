@@ -141,7 +141,7 @@ class SaleOrder(models.Model):
                         order.action_cancel()
                     else:
                         raise ValueError('%s should not fall here.' % state)
-                except (osv.except_osv, osv.orm.except_orm,
+                except (osv.osv.except_osv, osv.orm.except_orm,
                         exceptions.Warning):
                     # the 'cancellation_resolved' flag will stay to False
                     message = _("The sales order could not be automatically "
