@@ -162,9 +162,16 @@ class sale_order(orm.Model):
                            "<li>Cancel the sales order manually.</li>"
                            "</ol></p>")
         for order_id in ids:
-            state = self.read(cr, uid, order_id,
-                              ['state'], context=context)['state']
+            order = self.read(cr, uid, order_id,
+                              ['state', 'cancellation_resolved'],
+                              context=context)
+            state = order['state']
             if state == 'cancel':
+                if not order['cancellation_resolved']:
+                    # the sale order has been manually cancelled in the erp.
+                    self.write(
+                        cr, uid, order_id, {'cancellation_resolved': True},
+                        context=context)
                 continue
             elif state == 'done':
                 message = _("The sales order cannot be automatically "
