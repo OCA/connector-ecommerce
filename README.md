@@ -17,3 +17,12 @@ The project for the **Connector** framework is: https://github.com/OCA/connector
 
 Documentation:
 http://www.openerp-connector.com
+
+[//]: # (addons)
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[connector_ecommerce](connector_ecommerce/) | 3.0.0 | Connector for E-Commerce
+
+[//]: # (end addons)
