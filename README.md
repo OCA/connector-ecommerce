@@ -23,6 +23,6 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 3.0.0 | Connector for E-Commerce
+[connector_ecommerce](connector_ecommerce/) | 8.0.3.0.0 | Connector for E-Commerce
 
 [//]: # (end addons)

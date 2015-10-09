@@ -20,7 +20,7 @@
 ##############################################################################
 
 {'name': 'Connector for E-Commerce',
- 'version': '3.0.0',
+ 'version': '8.0.3.0.0',
  'category': 'Hidden',
  'author': "Camptocamp,Akretion,Odoo Community Association (OCA)",
  'website': 'http://openerp-connector.com',
