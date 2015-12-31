@@ -126,6 +126,9 @@ class SaleOrder(models.Model):
         for order in self:
             state = order.state
             if state == 'cancel':
+                # the sale order has been manually cancelled.
+                if not order.cancellation_resolved:
+                    order.cancellation_resolved = True
                 continue
             elif state == 'done':
                 message = _("The sales order cannot be automatically "
