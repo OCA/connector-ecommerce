@@ -10,8 +10,8 @@
 
         <!-- VIEW FOR THE OBJECT : payment_method -->
         <record id="payment_method_view_form" model="ir.ui.view">
-            <field name="name">payment.method.connector_ecommerce.form</field>
-            <field name="model">payment.method</field>
+            <field name="name">sale.payment.method.connector_ecommerce.form</field>
+            <field name="model">sale.payment.method</field>
             <field name="inherit_id" ref="sale_payment_method_automatic_workflow.payment_method_view_form" />
             <field name="arch" type="xml">
                 <group name="general" position="after">
@@ -38,8 +38,8 @@
         </record>
 
         <record id="payment_method_view_tree" model="ir.ui.view">
-            <field name="name">payment.method.connector_ecommerce.tree</field>
-            <field name="model">payment.method</field>
+            <field name="name">sale.payment.method.connector_ecommerce.tree</field>
+            <field name="model">sale.payment.method</field>
             <field name="inherit_id" ref="sale_payment_method_automatic_workflow.payment_method_view_tree" />
             <field name="arch" type="xml">
                 <field name="workflow_process_id" position="after">
