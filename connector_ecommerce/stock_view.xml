@@ -6,12 +6,12 @@
       <field name="model">stock.picking</field>
       <field name="inherit_id" ref="stock.view_picking_form"/>
       <field name="arch" type="xml">
-        <page string="Additional Info" position="after">
+        <xpath expr="//notebook" position="inside">
           <!-- change the invisible attribute to 0 when used
                in submodules -->
           <page name="connector" string="Connectors" invisible="1">
           </page>
-        </page>
+       </xpath>
       </field>
     </record>
   </data>
