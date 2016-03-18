@@ -43,7 +43,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_tax_group_form" id="menu_action_tax_group_form" parent="account.next_id_27"/>
+        <menuitem action="action_tax_group_form" id="menu_action_tax_group_form" parent="account.menu_action_tax_form"/>
 
     </data>
 </openerp>
