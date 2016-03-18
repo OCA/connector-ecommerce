@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.view_tax_form" />
             <field name="arch" type="xml">
                 <field name="active" position="after">
-                    <field name="group_id"/>
+                    <field name="group_id" />
                 </field>
             </field>
         </record>
@@ -19,8 +19,8 @@
             <field name="model">account.tax.group</field>
             <field name="arch" type="xml">
                 <tree string="Account Tax Group">
-                    <field name="name"/>
-                    <field name="tax_ids"/>
+                    <field name="name" />
+                    <field name="tax_ids" />
                 </tree>
             </field>
         </record>
@@ -30,8 +30,8 @@
             <field name="model">account.tax.group</field>
             <field name="arch" type="xml">
                 <form string="Account Tax Group">
-                    <field name="name" colspan="4"/>
-                    <field name="tax_ids" colspan="4"/>
+                    <field name="name" colspan="4" />
+                    <field name="tax_ids" colspan="4" />
                 </form>
             </field>
         </record>
@@ -43,7 +43,8 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_tax_group_form" id="menu_action_tax_group_form" parent="account.next_id_27"/>
+        <menuitem action="action_tax_group_form" id="menu_action_tax_group_form"
+            parent="account.menu_action_tax_form" />
 
     </data>
 </openerp>

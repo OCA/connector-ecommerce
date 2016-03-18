@@ -23,7 +23,7 @@ from openerp import models, fields, api
 
 
 class PaymentMethod(models.Model):
-    _inherit = "payment.method"
+    _inherit = "sale.payment.method"
 
     @api.model
     def _get_import_rules(self):

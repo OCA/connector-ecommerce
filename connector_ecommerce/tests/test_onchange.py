@@ -44,7 +44,7 @@ class TestOnchange(common.TransactionCase):
         product_model = self.env['product.product']
         partner_model = self.env['res.partner']
         tax_model = self.env['account.tax']
-        payment_method_model = self.env['payment.method']
+        payment_method_model = self.env['sale.payment.method']
 
         backend_record = mock.Mock()
         env = Environment(backend_record, self.session, 'sale.order')
