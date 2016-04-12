@@ -30,8 +30,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def confirm_paid(self):
         res = super(AccountInvoice, self).confirm_paid()
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
+        session = ConnectorSession.from_env(self.env)
         for record_id in self.ids:
             on_invoice_paid.fire(session, self._name, record_id)
         return res
@@ -39,8 +38,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def invoice_validate(self):
         res = super(AccountInvoice, self).invoice_validate()
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
+        session = ConnectorSession.from_env(self.env)
         for record_id in self.ids:
             on_invoice_validated.fire(session, self._name, record_id)
         return res
