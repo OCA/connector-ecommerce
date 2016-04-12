@@ -116,8 +116,6 @@ class SaleOrder(models.Model):
 
         If it can't cancel it, does nothing.
         """
-        wkf_states = ('draft', 'sent')
-        action_states = ('manual', 'progress')
         resolution_msg = _("<p>Resolution:<ol>"
                            "<li>Cancel the linked invoices, delivery "
                            "orders, automatic payments.</li>"
@@ -130,17 +128,9 @@ class SaleOrder(models.Model):
             elif state == 'done':
                 message = _("The sales order cannot be automatically "
                             "canceled because it is already done.")
-            elif state in wkf_states + action_states:
+            else:
                 try:
-                    # respect the same cancellation methods than
-                    # the sales order view: quotations use the workflow
-                    # action, sales orders use the action_cancel method.
-                    if state in wkf_states:
-                        order.signal_workflow('cancel')
-                    elif state in action_states:
-                        order.action_cancel()
-                    else:
-                        raise ValueError('%s should not fall here.' % state)
+                    order.action_cancel()
                 except (osv.osv.except_osv, osv.orm.except_orm,
                         exceptions.Warning):
                     # the 'cancellation_resolved' flag will stay to False
@@ -149,13 +139,6 @@ class SaleOrder(models.Model):
                 else:
                     message = _("The sales order has been automatically "
                                 "canceled.")
-            else:
-                # shipping_except, invoice_except, ...
-                # can not be canceled from the view, so assume that it
-                # should not be canceled here neiter, exception to
-                # resolve
-                message = _("The sales order could not be automatically "
-                            "canceled for this status.") + resolution_msg
             order.message_post(body=message)
 
     @api.multi
