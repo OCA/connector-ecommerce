@@ -60,8 +60,7 @@ class ProductTemplate(models.Model):
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
             product_model = self.env['product.product']
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             products = product_model.search(
                 [('product_tmpl_id', 'in', self.ids)]
             )
@@ -119,8 +118,7 @@ class ProductProduct(models.Model):
         """
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             for prod_id in self.ids:
                 on_product_price_changed.fire(session, self._name, prod_id)
 
