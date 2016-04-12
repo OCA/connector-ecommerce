@@ -42,6 +42,10 @@ class ProductTemplate(models.Model):
              'system like Prestashop',
     )
 
+    @api.model
+    def _price_changed_fields(self):
+        return {'list_price', 'lst_price', 'standard_price'}
+
     @api.multi
     def _price_changed(self, vals):
         """ Fire the ``on_product_price_changed`` on all the variants of
@@ -53,30 +57,23 @@ class ProductTemplate(models.Model):
         There is no guarantee that's the price actually changed,
         because it depends on the pricelists.
         """
-#         type_model = self.env['product.price.type']
-#         price_fields = type_model.sale_price_fields()
-        # restrict the fields to the template ones only, so if
-        # the write has been done on product.product, we won't
-        # update all the variants if a price field of the
-        # variant has been changed
-#         tmpl_fields = [field for field in vals if field in self._fields]
-#         if any(field in price_fields for field in tmpl_fields):
-        product_model = self.env['product.product']
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
-        products = product_model.search(
-            [('product_tmpl_id', 'in', self.ids)]
-        )
-        # when the write is done on the product.product, avoid
-        # to fire the event 2 times
-        if self.env.context.get('from_product_ids'):
-            from_product_ids = self.env.context['from_product_ids']
-            remove_products = product_model.browse(from_product_ids)
-            products -= remove_products
-        for product in products:
-            on_product_price_changed.fire(session,
-                                          product_model._name,
-                                          product.id)
+        price_fields = self._price_changed_fields()
+        if any(field in vals for field in price_fields):
+            product_model = self.env['product.product']
+            session = ConnectorSession.from_env(self.env)
+            products = product_model.search(
+                [('product_tmpl_id', 'in', self.ids)]
+            )
+            # when the write is done on the product.product, avoid
+            # to fire the event 2 times
+            if self.env.context.get('from_product_ids'):
+                from_product_ids = self.env.context['from_product_ids']
+                remove_products = product_model.browse(from_product_ids)
+                products -= remove_products
+            for product in products:
+                on_product_price_changed.fire(session,
+                                              product_model._name,
+                                              product.id)
 
     @api.multi
     def write(self, vals):
@@ -104,6 +101,10 @@ class ProductProduct(models.Model):
     has_checkpoint = fields.Boolean(compute='_get_checkpoint',
                                     string='Has Checkpoint')
 
+    @api.model
+    def _price_changed_fields(self):
+        return {'lst_price', 'standard_price', 'price', 'price_extra'}
+
     @api.multi
     def _price_changed(self, vals):
         """ Fire the ``on_product_price_changed`` if the price
@@ -115,13 +116,11 @@ class ProductProduct(models.Model):
         There is no guarantee that's the price actually changed,
         because it depends on the pricelists.
         """
-#         type_model = self.env['product.price.type']
-#         price_fields = type_model.sale_price_fields()
-#         if any(field in price_fields for field in vals):
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
-        for prod_id in self.ids:
-            on_product_price_changed.fire(session, self._name, prod_id)
+        price_fields = self._price_changed_fields()
+        if any(field in vals for field in price_fields):
+            session = ConnectorSession.from_env(self.env)
+            for prod_id in self.ids:
+                on_product_price_changed.fire(session, self._name, prod_id)
 
     @api.multi
     def write(self, vals):
@@ -135,27 +134,3 @@ class ProductProduct(models.Model):
         product = super(ProductProduct, self).create(vals)
         product._price_changed(vals)
         return product
-
-
-# class ProductPriceType(models.Model):
-#     _inherit = 'product.price.type'
-# 
-#     pricelist_item_ids = fields.One2many(
-#         comodel_name='product.pricelist.item',
-#         inverse_name='base',
-#         string='Pricelist Items',
-#         readonly=True,
-#     )
-# 
-#     @api.model
-#     def sale_price_fields(self):
-#         """ Returns a list of fields used by sale pricelists.
-#         Used to know if the sale price could have changed
-#         when one of these fields has changed.
-#         """
-#         item_model = self.env['product.pricelist.item']
-#         items = item_model.search(
-#             [('price_version_id.pricelist_id.type', '=', 'sale')],
-#         )
-#         types = self.search([('pricelist_item_ids', 'in', items.ids)])
-#         return [t.field for t in types]

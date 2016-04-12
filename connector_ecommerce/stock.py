@@ -38,8 +38,7 @@ class StockPicking(models.Model):
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             for record_id in self.ids:
                 on_tracking_number_added.fire(session, self._name, record_id)
         return res
@@ -50,8 +49,7 @@ class StockPicking(models.Model):
         # StockMove.action_done(). Allow to handle the partial pickings
         self_context = self.with_context(__no_on_event_out_done=True)
         result = super(StockPicking, self_context).do_transfer()
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
+        session = ConnectorSession.from_env(self.env)
         for picking in self:
             if picking.picking_type_id.code != 'outgoing':
                 continue
@@ -78,8 +76,7 @@ class StockMove(models.Model):
         result = super(StockMove, self).action_done()
 
         if fire_event:
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             for picking in pickings:
                 if states[picking.id] != 'done' and picking.state == 'done':
                     if picking.picking_type_id.code != 'outgoing':
