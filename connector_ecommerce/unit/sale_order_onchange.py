@@ -32,13 +32,13 @@ class OnChangeManager(ConnectorUnit):
             if fieldname not in record:
                 if model:
                     column = self.env[model]._fields[fieldname]
-                    if column.type == 'many2many':
-                        value = [(6, 0, value)]
+                    if column.type == 'many2one':
+                        value = value[0]  # many2one are tuple (id, name)
                 new_values[fieldname] = value
         return new_values
 
     def play_onchanges(self, model, values, onchange_fields):
-        model = self.env['model']
+        model = self.env[model]
         onchange_specs = model._onchange_spec()
 
         # we need all fields in the dict even the empty ones
@@ -88,7 +88,7 @@ class SaleOrderOnChange(OnChangeManager):
         line_onchange_fields = [
             'product_id',
         ]
-        order = self.play_onchanges(order, order_onchange_fields)
+        order = self.play_onchanges('sale.order', order, order_onchange_fields)
 
         # play onchange on sales order line
         processed_order_lines = []
@@ -99,6 +99,7 @@ class SaleOrderOnChange(OnChangeManager):
             # oerp-native lines can have been added to map
             # shipping fees with an OpenERP Product
             line_lists.append(order['order_line'])
+
         for line_list in line_lists:
             for idx, command_line in enumerate(line_list):
                 # line_list format:[(0, 0, {...}), (0, 0, {...})]
@@ -106,7 +107,7 @@ class SaleOrderOnChange(OnChangeManager):
                     # keeps command number and ID (or 0)
                     old_line_data = command_line[2]
                     new_line_data = self.play_onchanges(
-                        old_line_data, line_onchange_fields
+                        'sale.order.line', old_line_data, line_onchange_fields
                     )
                     new_line = (command_line[0],
                                 command_line[1],
