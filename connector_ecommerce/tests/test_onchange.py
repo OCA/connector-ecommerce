@@ -44,7 +44,7 @@ class TestOnchange(common.TransactionCase):
         product_model = self.env['product.product']
         partner_model = self.env['res.partner']
         tax_model = self.env['account.tax']
-        payment_method_model = self.env['sale.payment.method']
+        payment_mode_model = self.env['account.payment.mode']
 
         backend_record = mock.Mock()
         env = Environment(backend_record, self.session, 'sale.order')
@@ -63,7 +63,7 @@ class TestOnchange(common.TransactionCase):
                                         'weight': 15,
                                         'taxes_id': [(6, 0, [tax.id])]})
         payment_term = self.env.ref('account.account_payment_term_advance')
-        payment_method = payment_method_model.create({
+        payment_method = payment_mode_model.create({
             'name': 'Cash',
             'payment_term_id': payment_term.id,
         })
