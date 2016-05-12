@@ -22,7 +22,7 @@
 from openerp.osv import orm, fields
 
 
-class account_tax_code(orm.Model):
+class AccountTaxCode(orm.Model):
     _inherit = 'account.tax'
 
     def get_tax_from_rate(self, cr, uid, rate, is_tax_included=False,
@@ -51,7 +51,7 @@ class account_tax_code(orm.Model):
         return False
 
 
-class account_tax_group(orm.Model):
+class AccountTaxGroup(orm.Model):
     _name = 'account.tax.group'
     _description = 'account tax group'
 
@@ -61,7 +61,7 @@ class account_tax_group(orm.Model):
     }
 
 
-class account_tax(orm.Model):
+class AccountTax(orm.Model):
     _inherit = 'account.tax'
 
     _columns = {
