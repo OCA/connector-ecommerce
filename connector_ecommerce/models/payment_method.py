@@ -22,8 +22,8 @@
 from openerp import models, fields, api
 
 
-class PaymentMethod(models.Model):
-    _inherit = "sale.payment.method"
+class AccountPaymentMode(models.Model):
+    _inherit = "account.payment.mode"
 
     @api.model
     def _get_import_rules(self):
