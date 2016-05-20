@@ -40,7 +40,7 @@
      'views/sale_view.xml',
      'views/invoice_view.xml',
      'views/stock_view.xml',
-     'views/payment_method_view.xml',
+     'views/payment_mode_view.xml',
      'views/account_view.xml',
  ],
  'installable': True,
