@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from . import stock
 from . import account
-from . import product
+from . import event
 from . import invoice
 from . import payment_method
-from . import event
+from . import product
 from . import sale
+from . import stock
