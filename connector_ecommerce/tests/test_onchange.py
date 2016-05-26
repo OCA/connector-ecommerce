@@ -7,7 +7,7 @@ import mock
 from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
 from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.connector import Environment
+from openerp.addons.connector.connector import ConnectorEnvironment
 import openerp.tests.common as common
 
 DB = common.DB
@@ -29,7 +29,7 @@ class TestOnchange(common.TransactionCase):
         payment_mode_model = self.env['account.payment.mode']
 
         backend_record = mock.Mock()
-        env = Environment(backend_record, self.session, 'sale.order')
+        env = ConnectorEnvironment(backend_record, self.session, 'sale.order')
 
         partner = partner_model.create({'name': 'seb',
                                         'zip': '69100',
