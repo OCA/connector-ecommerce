@@ -35,23 +35,26 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     canceled_in_backend = fields.Boolean(string='Canceled in backend',
-                                         readonly=True)
+                                         readonly=True,
+                                         copy=False)
     # set to True when the cancellation from the backend is
     # resolved, either because the SO has been canceled or
     # because the user manually chose to keep it open
     cancellation_resolved = fields.Boolean(string='Cancellation from the '
-                                                  'backend resolved')
+                                                  'backend resolved',
+                                           copy=False)
     parent_id = fields.Many2one(comodel_name='sale.order',
-                                compute='get_parent_id',
+                                compute='_compute_parent_id',
                                 string='Parent Order',
                                 help='A parent sales order is a sales '
                                      'order replaced by this one.')
-    need_cancel = fields.Boolean(compute='_need_cancel',
+    need_cancel = fields.Boolean(compute='_compute_need_cancel',
                                  string='Need to be canceled',
+                                 copy=False,
                                  help='Has been canceled on the backend'
                                       ', need to be canceled.')
     parent_need_cancel = fields.Boolean(
-        compute='_parent_need_cancel',
+        compute='_compute_parent_need_cancel',
         string='A parent sales order needs cancel',
         help='A parent sales order has been canceled on the backend'
              ' and needs to be canceled.',
@@ -59,7 +62,7 @@ class SaleOrder(models.Model):
 
     @api.one
     @api.depends()
-    def get_parent_id(self):
+    def _compute_parent_id(self):
         """ Need to be inherited in the connectors to implement the
         parent logic.
 
@@ -69,7 +72,7 @@ class SaleOrder(models.Model):
 
     @api.one
     @api.depends('canceled_in_backend', 'cancellation_resolved')
-    def _need_cancel(self):
+    def _compute_need_cancel(self):
         """ Return True if the sales order need to be canceled
         (has been canceled on the Backend)
         """
@@ -79,7 +82,7 @@ class SaleOrder(models.Model):
     @api.one
     @api.depends('need_cancel', 'parent_id',
                  'parent_id.need_cancel', 'parent_id.parent_need_cancel')
-    def _parent_need_cancel(self):
+    def _compute_parent_need_cancel(self):
         """ Return True if at least one parent sales order need to
         be canceled (has been canceled on the backend).
         Follows all the parent sales orders.
