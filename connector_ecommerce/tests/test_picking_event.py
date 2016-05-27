@@ -35,14 +35,14 @@ class TestPickingEvent(common.TransactionCase):
             'product_uom': self.env.ref('product.product_uom_unit').id,
             'price_unit': 405,
         })
-        self.sale.signal_workflow('order_confirm')
+        self.sale.action_confirm()
         self.picking = self.sale.picking_ids
 
     def test_event_on_picking_out_done(self):
         """ Test if the ``on_picking_out_done`` event is fired
         when an outgoing picking is done """
         self.picking.force_assign()
-        event = ('openerp.addons.connector_ecommerce.'
+        event = ('openerp.addons.connector_ecommerce.models.'
                  'stock.on_picking_out_done')
         with mock.patch(event) as event_mock:
             self.picking.action_done()
@@ -59,7 +59,7 @@ class TestPickingEvent(common.TransactionCase):
         self.picking.do_prepare_partial()
         for operation in self.picking.pack_operation_ids:
             operation.product_qty = 1
-        event = ('openerp.addons.connector_ecommerce.'
+        event = ('openerp.addons.connector_ecommerce.models.'
                  'stock.on_picking_out_done')
         with mock.patch(event) as event_mock:
             self.picking.do_transfer()
@@ -72,7 +72,7 @@ class TestPickingEvent(common.TransactionCase):
     def test_event_on_tracking_number_added(self):
         """ Test if the ``on_tracking_number_added`` event is fired
         when a tracking number is added """
-        event = ('openerp.addons.connector_ecommerce.'
+        event = ('openerp.addons.connector_ecommerce.models.'
                  'stock.on_tracking_number_added')
         with mock.patch(event) as event_mock:
             self.picking.carrier_tracking_ref = 'XYZ'
