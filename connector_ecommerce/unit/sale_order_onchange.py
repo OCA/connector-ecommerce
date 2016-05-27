@@ -65,7 +65,7 @@ class SaleOrderOnChange(OnChangeManager):
         order_onchange_fields = [
             'partner_id',
             'partner_shipping_id',
-            'payment_method_id',
+            'payment_mode_id',
             'workflow_process_id',
         ]
         line_onchange_fields = [
