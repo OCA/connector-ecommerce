@@ -13,27 +13,38 @@ class TestInvoiceEvent(common.TransactionCase):
     def setUp(self):
         super(TestInvoiceEvent, self).setUp()
         self.invoice_model = self.env['account.invoice']
+        invoice_line_model = self.env['account.invoice.line']
         partner_model = self.env['res.partner']
         partner = partner_model.create({'name': 'Hodor'})
         product = self.env.ref('product.product_product_6')
         invoice_vals = {'partner_id': partner.id,
                         'type': 'out_invoice',
-                        'invoice_line': [(0, 0, {'name': "LCD Screen",
-                                                 'product_id': product.id,
-                                                 'quantity': 5,
-                                                 'price_unit': 200})],
                         }
-        onchange_res = self.invoice_model.onchange_partner_id('out_invoice',
-                                                              partner.id)
-        invoice_vals.update(onchange_res['value'])
-        self.invoice = self.invoice_model.create(invoice_vals)
+        invoice = self.invoice_model.new(invoice_vals)
+        invoice._onchange_partner_id()
+
+        self.invoice = self.invoice_model.create(
+            invoice._convert_to_write(invoice._cache)
+        )
+
+        line_vals = {'name': "LCD Screen",
+                     'product_id': product,
+                     'quantity': 5,
+                     'price_unit': 200,
+                     'invoice_id': self.invoice,
+                     }
+        line = invoice_line_model.new(line_vals)
+        line._onchange_product_id()
+        invoice_line_model.create(
+            line._convert_to_write(line._cache)
+        )
 
     def test_event_validated(self):
         """ Test if the ``on_invoice_validated`` event is fired
         when an invoice is validated """
         assert self.invoice, "The invoice has not been created"
         event = ('openerp.addons.connector_ecommerce.'
-                 'invoice.on_invoice_validated')
+                 'models.invoice.on_invoice_validated')
         with mock.patch(event) as event_mock:
             self.invoice.signal_workflow('invoice_open')
             self.assertEqual(self.invoice.state, 'open')
@@ -47,20 +58,14 @@ class TestInvoiceEvent(common.TransactionCase):
         assert self.invoice, "The invoice has not been created"
         self.invoice.signal_workflow('invoice_open')
         self.assertEqual(self.invoice.state, 'open')
-        journal = self.env.ref('account.bank_journal')
-        pay_account = self.env.ref('account.cash')
-        period = self.env.ref('account.period_10')
-        event = 'openerp.addons.connector_ecommerce.invoice.on_invoice_paid'
+        journal = self.env['account.journal'].search([], limit=1)
+        event = ('openerp.addons.connector_ecommerce.models.'
+                 'invoice.on_invoice_paid')
         with mock.patch(event) as event_mock:
             self.invoice.pay_and_reconcile(
+                journal,
                 pay_amount=self.invoice.amount_total,
-                pay_account_id=pay_account.id,
-                period_id=period.id,
-                pay_journal_id=journal.id,
-                writeoff_acc_id=pay_account.id,
-                writeoff_period_id=period.id,
-                writeoff_journal_id=journal.id,
-                name="Payment for test of the event on_invoice_paid")
+            )
             self.assertEqual(self.invoice.state, 'paid')
             event_mock.fire.assert_called_with(mock.ANY,
                                                'account.invoice',
