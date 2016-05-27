@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="0">
+<odoo>
         <record id="view_sale_ignore_cancel" model="ir.ui.view">
             <field name="name">Sale Ignore Cancel</field>
             <field name="model">sale.ignore.cancel</field>
@@ -40,5 +39,4 @@
             <field name="view_id" ref="view_sale_ignore_cancel" />
             <field name="target">new</field>
         </record>
-    </data>
-</openerp>
+</odoo>
