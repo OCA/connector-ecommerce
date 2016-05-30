@@ -11,7 +11,7 @@
             <field name="list_price">0.0</field>
             <field name="standard_price">0.0</field>
             <field name="type">service</field>
-            <field name="name">Shipping costs</field>
+            <field name="name">Shipping Costs</field>
             <field name="categ_id" ref="product_categ_services" />
         </record>
 
@@ -20,7 +20,7 @@
             <field name="list_price">0.0</field>
             <field name="standard_price">0.0</field>
             <field name="type">service</field>
-            <field name="name">Cash on delivery</field>
+            <field name="name">Cash on Delivery</field>
             <field name="categ_id" ref="product_categ_services" />
         </record>
 
@@ -74,8 +74,7 @@
                 Go to Connectors > Checkpoint and review the new products.</field>
             <field name="sequence">20</field>
             <field name="model">sale.order.line</field>
-            <field name="code">if object.product_id and
-                object.product_id.has_checkpoint:
+            <field name="code">if object.product_id and object.product_id.has_checkpoint:
                 failed = True</field>
             <field name="active" eval="True" />
         </record>
