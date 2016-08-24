@@ -4,8 +4,7 @@
             <field name="name">Sale Ignore Cancel</field>
             <field name="model">sale.ignore.cancel</field>
             <field name="arch" type="xml">
-                <form string="Ignore the cancellation on the Backend"
-                    version="7.0">
+                <form string="Ignore the cancellation on the Backend">
                     <p class="oe_grey">
                         This sales order has been canceled from the backend.
                         The usual action would be to cancel it in OpenERP along
