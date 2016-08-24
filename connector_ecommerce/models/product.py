@@ -15,8 +15,8 @@ class ProductTemplate(models.Model):
     @api.depends('taxes_id.tax_group_id')
     def _compute_tax_group_id(self):
         taxes = self.taxes_id
-        self.tax_group_id = taxes[0].tax_group_id.id if taxes else False
-
+        self.tax_group_id = taxes[:-1].tax_group_id.id
+        
     tax_group_id = fields.Many2one(
         comodel_name='account.tax.group',
         compute='_compute_tax_group_id',
