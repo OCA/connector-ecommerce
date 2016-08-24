@@ -66,7 +66,6 @@ class ShippingLineBuilder(SpecialOrderLineBuilder):
 class CashOnDeliveryLineBuilder(SpecialOrderLineBuilder):
     """ Return values for a Cash on Delivery line """
     _model_name = None
-    _model_name = None
 
     def __init__(self, connector_env):
         super(CashOnDeliveryLineBuilder, self).__init__(connector_env)
