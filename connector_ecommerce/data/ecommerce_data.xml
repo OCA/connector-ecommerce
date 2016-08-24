@@ -62,8 +62,7 @@
                 backend.</field>
             <field name="sequence">20</field>
             <field name="model">sale.order</field>
-            <field name="code">if order.need_cancel:
-                failed = True</field>
+            <field name="code">if order.need_cancel: failed = True</field>
             <field name="active" eval="True" />
         </record>
 
@@ -74,8 +73,7 @@
                 Go to Connectors > Checkpoint and review the new products.</field>
             <field name="sequence">20</field>
             <field name="model">sale.order.line</field>
-            <field name="code">if object.product_id and object.product_id.has_checkpoint:
-                failed = True</field>
+            <field name="code">if object.product_id and object.product_id.has_checkpoint: failed = True</field>
             <field name="active" eval="True" />
         </record>
 
