@@ -12,7 +12,7 @@ class ProductTemplate(models.Model):
 
     # TODO implement set function and also support multi tax
     @api.one
-    @api.depends('taxes_id', 'taxes_id.tax_group_id')
+    @api.depends('taxes_id.tax_group_id')
     def _compute_tax_group_id(self):
         taxes = self.taxes_id
         self.tax_group_id = taxes[0].tax_group_id.id if taxes else False
