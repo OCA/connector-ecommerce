@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Sébastien BEAU
-#    Copyright 2011-2013 Akretion
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2011-2013 Akretion (Sébastien Beau)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp import models, fields, api
 from openerp.addons.connector.session import ConnectorSession
@@ -29,18 +12,21 @@ class ProductTemplate(models.Model):
 
     # TODO implement set function and also support multi tax
     @api.one
-    @api.depends('taxes_id', 'taxes_id.group_id')
-    def _get_tax_group_id(self):
+    @api.depends('taxes_id.tax_group_id')
+    def _compute_tax_group_id(self):
         taxes = self.taxes_id
-        self.tax_group_id = taxes[0].group_id.id if taxes else False
-
+        self.tax_group_id = taxes[:-1].tax_group_id.id
     tax_group_id = fields.Many2one(
         comodel_name='account.tax.group',
-        compute='_get_tax_group_id',
+        compute='_compute_tax_group_id',
         string='Tax Group',
         help='Tax groups are used with some external '
              'system like Prestashop',
     )
+
+    @api.model
+    def _price_changed_fields(self):
+        return {'list_price', 'lst_price', 'standard_price'}
 
     @api.multi
     def _price_changed(self, vals):
@@ -53,17 +39,10 @@ class ProductTemplate(models.Model):
         There is no guarantee that's the price actually changed,
         because it depends on the pricelists.
         """
-        type_model = self.env['product.price.type']
-        price_fields = type_model.sale_price_fields()
-        # restrict the fields to the template ones only, so if
-        # the write has been done on product.product, we won't
-        # update all the variants if a price field of the
-        # variant has been changed
-        tmpl_fields = [field for field in vals if field in self._fields]
-        if any(field in price_fields for field in tmpl_fields):
+        price_fields = self._price_changed_fields()
+        if any(field in vals for field in price_fields):
             product_model = self.env['product.product']
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             products = product_model.search(
                 [('product_tmpl_id', 'in', self.ids)]
             )
@@ -89,7 +68,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.depends()
-    def _get_checkpoint(self):
+    def _compute_has_checkpoint(self):
         checkpoint_model = self.env['connector.checkpoint']
         model_model = self.env['ir.model']
         model = model_model.search([('model', '=', 'product.product')])
@@ -101,8 +80,12 @@ class ProductProduct(models.Model):
                                              )
             product.has_checkpoint = bool(points)
 
-    has_checkpoint = fields.Boolean(compute='_get_checkpoint',
+    has_checkpoint = fields.Boolean(compute='_compute_has_checkpoint',
                                     string='Has Checkpoint')
+
+    @api.model
+    def _price_changed_fields(self):
+        return {'lst_price', 'standard_price', 'price', 'price_extra'}
 
     @api.multi
     def _price_changed(self, vals):
@@ -115,11 +98,9 @@ class ProductProduct(models.Model):
         There is no guarantee that's the price actually changed,
         because it depends on the pricelists.
         """
-        type_model = self.env['product.price.type']
-        price_fields = type_model.sale_price_fields()
-        if any(field in price_fields for field in vals):
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+        price_fields = self._price_changed_fields()
+        if any(field in vals for field in price_fields):
+            session = ConnectorSession.from_env(self.env)
             for prod_id in self.ids:
                 on_product_price_changed.fire(session, self._name, prod_id)
 
@@ -135,27 +116,3 @@ class ProductProduct(models.Model):
         product = super(ProductProduct, self).create(vals)
         product._price_changed(vals)
         return product
-
-
-class ProductPriceType(models.Model):
-    _inherit = 'product.price.type'
-
-    pricelist_item_ids = fields.One2many(
-        comodel_name='product.pricelist.item',
-        inverse_name='base',
-        string='Pricelist Items',
-        readonly=True,
-    )
-
-    @api.model
-    def sale_price_fields(self):
-        """ Returns a list of fields used by sale pricelists.
-        Used to know if the sale price could have changed
-        when one of these fields has changed.
-        """
-        item_model = self.env['product.pricelist.item']
-        items = item_model.search(
-            [('price_version_id.pricelist_id.type', '=', 'sale')],
-        )
-        types = self.search([('pricelist_item_ids', 'in', items.ids)])
-        return [t.field for t in types]

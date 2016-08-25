@@ -1,23 +1,6 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Author: Joel Grand-Guillaume
-#    Copyright 2013-2015 Camptocamp SA
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# © 2013-2015 Camptocamp
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp import models, fields, api
 
@@ -38,8 +21,7 @@ class StockPicking(models.Model):
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             for record_id in self.ids:
                 on_tracking_number_added.fire(session, self._name, record_id)
         return res
@@ -50,8 +32,7 @@ class StockPicking(models.Model):
         # StockMove.action_done(). Allow to handle the partial pickings
         self_context = self.with_context(__no_on_event_out_done=True)
         result = super(StockPicking, self_context).do_transfer()
-        session = ConnectorSession(self.env.cr, self.env.uid,
-                                   context=self.env.context)
+        session = ConnectorSession.from_env(self.env)
         for picking in self:
             if picking.picking_type_id.code != 'outgoing':
                 continue
@@ -78,8 +59,7 @@ class StockMove(models.Model):
         result = super(StockMove, self).action_done()
 
         if fire_event:
-            session = ConnectorSession(self.env.cr, self.env.uid,
-                                       context=self.env.context)
+            session = ConnectorSession.from_env(self.env)
             for picking in pickings:
                 if states[picking.id] != 'done' and picking.state == 'done':
                     if picking.picking_type_id.code != 'outgoing':
