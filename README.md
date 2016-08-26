@@ -19,10 +19,10 @@ Documentation:
 http://www.openerp-connector.com
 
 [//]: # (addons)
-Unported addons
----------------
+Available addons
+----------------
 addon | version | summary
 --- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 8.0.3.0.0 (unported) | Connector for E-Commerce
+[connector_ecommerce](connector_ecommerce/) | 9.0.1.0.0 | Connector for E-Commerce
 
 [//]: # (end addons)
