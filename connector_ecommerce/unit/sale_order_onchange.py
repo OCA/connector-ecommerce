@@ -50,6 +50,17 @@ class OnChangeManager(ConnectorUnit):
 class SaleOrderOnChange(OnChangeManager):
     _model_name = None
 
+    order_onchange_fields = [
+        'partner_id',
+        'partner_shipping_id',
+        'payment_mode_id',
+        'workflow_process_id',
+    ]
+
+    line_onchange_fields = [
+        'product_id',
+    ]
+
     def play(self, order, order_lines):
         """ Play the onchange of the sales order and it's lines
 
@@ -62,16 +73,8 @@ class SaleOrderOnChange(OnChangeManager):
         :rtype: dict
         """
         # play onchange on sales order
-        order_onchange_fields = [
-            'partner_id',
-            'partner_shipping_id',
-            'payment_mode_id',
-            'workflow_process_id',
-        ]
-        line_onchange_fields = [
-            'product_id',
-        ]
-        order = self.play_onchanges('sale.order', order, order_onchange_fields)
+        order = self.play_onchanges('sale.order', order,
+                                    self.order_onchange_fields)
 
         # play onchange on sales order line
         processed_order_lines = []
@@ -90,7 +93,9 @@ class SaleOrderOnChange(OnChangeManager):
                     # keeps command number and ID (or 0)
                     old_line_data = command_line[2]
                     new_line_data = self.play_onchanges(
-                        'sale.order.line', old_line_data, line_onchange_fields
+                        'sale.order.line',
+                        old_line_data,
+                        self.line_onchange_fields
                     )
                     new_line = (command_line[0],
                                 command_line[1],
