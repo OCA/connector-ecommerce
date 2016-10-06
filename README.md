@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/OCA/connector-ecommerce.svg?branch=9.0)](https://travis-ci.org/OCA/connector-ecommerce)
-[![Coverage Status](https://coveralls.io/repos/OCA/connector-ecommerce/badge.png?branch=9.0)](https://coveralls.io/r/OCA/connector-ecommerce?branch=7.0)
+[![Build Status](https://travis-ci.org/OCA/connector-ecommerce.svg?branch=10.0)](https://travis-ci.org/OCA/connector-ecommerce)
+[![Coverage Status](https://coveralls.io/repos/OCA/connector-ecommerce/badge.png?branch=10.0)](https://coveralls.io/r/OCA/connector-ecommerce?branch=7.0)
 
 Odoo Connector Ecommerce Modules
 ================================
@@ -19,10 +19,4 @@ Documentation:
 http://www.openerp-connector.com
 
 [//]: # (addons)
-Available addons
-----------------
-addon | version | summary
---- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 9.0.1.0.0 | Connector for E-Commerce
-
 [//]: # (end addons)
