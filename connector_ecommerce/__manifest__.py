@@ -26,5 +26,5 @@
      'views/stock_view.xml',
      'views/payment_mode_view.xml',
  ],
- 'installable': True,
+ 'installable': False,
  }
