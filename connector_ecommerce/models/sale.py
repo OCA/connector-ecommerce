@@ -6,7 +6,7 @@
 
 import logging
 
-from openerp import models, fields, api, exceptions, _, osv
+from odoo import models, fields, api, exceptions, _, osv
 
 _logger = logging.getLogger(__name__)
 
