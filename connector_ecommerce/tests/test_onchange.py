@@ -4,11 +4,11 @@
 
 import mock
 
-from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
+from odoo.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
-from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.connector import ConnectorEnvironment
-import openerp.tests.common as common
+from odoo.addons.connector.session import ConnectorSession
+from odoo.addons.connector.connector import ConnectorEnvironment
+import odoo.tests.common as common
 
 DB = common.DB
 ADMIN_USER_ID = common.ADMIN_USER_ID

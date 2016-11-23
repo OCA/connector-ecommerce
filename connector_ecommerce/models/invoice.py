@@ -2,8 +2,8 @@
 # © 2013 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, api
-from openerp.addons.connector.session import ConnectorSession
+from odoo import models, api
+from odoo.addons.connector.session import ConnectorSession
 from .event import on_invoice_paid, on_invoice_validated
 
 
