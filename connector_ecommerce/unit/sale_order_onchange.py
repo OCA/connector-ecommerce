@@ -3,7 +3,7 @@
 # © 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.addons.connector.connector import ConnectorUnit
+from odoo.addons.connector.connector import ConnectorUnit
 
 
 class OnChangeManager(ConnectorUnit):
@@ -83,7 +83,7 @@ class SaleOrderOnChange(OnChangeManager):
             # we have both backend-dependent and oerp-native order
             # lines.
             # oerp-native lines can have been added to map
-            # shipping fees with an OpenERP Product
+            # shipping fees with an Odoo Product
             line_lists.append(order['order_line'])
 
         for line_list in line_lists:

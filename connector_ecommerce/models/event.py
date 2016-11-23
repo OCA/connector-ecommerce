@@ -2,7 +2,7 @@
 # © 2013 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.addons.connector.event import Event
+from odoo.addons.connector.event import Event
 
 
 on_picking_out_done = Event()

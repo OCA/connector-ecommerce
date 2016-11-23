@@ -1,11 +1,11 @@
-# German translation for openerp-connector-ecommerce
+# German translation for odoo-connector-ecommerce
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
-# This file is distributed under the same license as the openerp-connector-ecommerce package.
+# This file is distributed under the same license as the odoo-connector-ecommerce package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: openerp-connector-ecommerce\n"
+"Project-Id-Version: odoo-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
 "PO-Revision-Date: 2014-01-24 09:54+0000\n"
@@ -79,12 +79,12 @@ msgstr ""
 #: view:sale.ignore.cancel:0
 msgid ""
 "This sales order has been canceled from the backend.\n"
-"                    The usual action would be to cancel it in OpenERP along\n"
+"                    The usual action would be to cancel it in Odoo along\n"
 "                    all the documents generated (delivery orders, invoices, "
 "...)."
 msgstr ""
 "Dieser VK-Auftrag wurde vom Backend abgebrochen.\n"
-"Die übliche Aktion wäre das Abbrechen von allen OpenERP\n"
+"Die übliche Aktion wäre das Abbrechen von allen Odoo\n"
 "Belegen (Lieferaufträge, Rechnungen, ...)."
 
 #. module: connector_ecommerce
@@ -213,7 +213,7 @@ msgstr "Importregeln"
 #. module: connector_ecommerce
 #: view:sale.ignore.cancel:0
 msgid ""
-"However, if for any reason you need to keep it open in OpenERP,\n"
+"However, if for any reason you need to keep it open in Odoo,\n"
 "                    write the reason here and it will stay open."
 msgstr ""
 
