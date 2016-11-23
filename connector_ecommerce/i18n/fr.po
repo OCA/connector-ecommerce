@@ -1,10 +1,10 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* connector_ecommerce
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
 "PO-Revision-Date: 2014-01-14 09:42+0000\n"
@@ -77,12 +77,12 @@ msgstr ""
 #: view:sale.ignore.cancel:0
 msgid ""
 "This sales order has been canceled from the backend.\n"
-"                    The usual action would be to cancel it in OpenERP along\n"
+"                    The usual action would be to cancel it in Odoo along\n"
 "                    all the documents generated (delivery orders, invoices, "
 "...)."
 msgstr ""
 "Cette commande a été annulée sur son backend.\n"
-"                    L'action standard est d'annuler la commande dans OpenERP "
+"                    L'action standard est d'annuler la commande dans Odoo "
 "ainsi\n"
 "                    que tous les documents qu'elle a générés (bons de "
 "livraison, factures, ...)."
@@ -212,11 +212,11 @@ msgstr "Règle d'import"
 #. module: connector_ecommerce
 #: view:sale.ignore.cancel:0
 msgid ""
-"However, if for any reason you need to keep it open in OpenERP,\n"
+"However, if for any reason you need to keep it open in Odoo,\n"
 "                    write the reason here and it will stay open."
 msgstr ""
 "Cependant, si pour une raison donnée vous devez la laisser ouverte dans "
-"OpenERP,\n"
+"Odoo,\n"
 "                    écrivez la raison ici et confirmez.."
 
 #. module: connector_ecommerce
