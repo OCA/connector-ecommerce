@@ -4,7 +4,7 @@
 
 import mock
 
-import openerp.tests.common as common
+import odoo.tests.common as common
 
 
 class TestInvoiceEvent(common.TransactionCase):
@@ -43,7 +43,7 @@ class TestInvoiceEvent(common.TransactionCase):
         """ Test if the ``on_invoice_validated`` event is fired
         when an invoice is validated """
         assert self.invoice, "The invoice has not been created"
-        event = ('openerp.addons.connector_ecommerce.'
+        event = ('odoo.addons.connector_ecommerce.'
                  'models.invoice.on_invoice_validated')
         with mock.patch(event) as event_mock:
             self.invoice.signal_workflow('invoice_open')
@@ -59,7 +59,7 @@ class TestInvoiceEvent(common.TransactionCase):
         self.invoice.signal_workflow('invoice_open')
         self.assertEqual(self.invoice.state, 'open')
         journal = self.env['account.journal'].search([], limit=1)
-        event = ('openerp.addons.connector_ecommerce.models.'
+        event = ('odoo.addons.connector_ecommerce.models.'
                  'invoice.on_invoice_paid')
         with mock.patch(event) as event_mock:
             self.invoice.pay_and_reconcile(

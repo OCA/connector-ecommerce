@@ -2,9 +2,9 @@
 # © 2013-2015 Camptocamp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
-from openerp.addons.connector.session import ConnectorSession
+from odoo.addons.connector.session import ConnectorSession
 from .event import on_picking_out_done, on_tracking_number_added
 
 

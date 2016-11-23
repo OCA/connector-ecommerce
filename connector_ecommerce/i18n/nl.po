@@ -1,11 +1,11 @@
-# Dutch translation for openerp-connector-ecommerce
+# Dutch translation for odoo-connector-ecommerce
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
-# This file is distributed under the same license as the openerp-connector-ecommerce package.
+# This file is distributed under the same license as the odoo-connector-ecommerce package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: openerp-connector-ecommerce\n"
+"Project-Id-Version: odoo-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
 "PO-Revision-Date: 2014-02-12 08:22+0000\n"
@@ -76,12 +76,12 @@ msgstr "De verkooporder met deze betaalwijze zal altijd worden geïmporteerd."
 #: view:sale.ignore.cancel:0
 msgid ""
 "This sales order has been canceled from the backend.\n"
-"                    The usual action would be to cancel it in OpenERP along\n"
+"                    The usual action would be to cancel it in Odoo along\n"
 "                    all the documents generated (delivery orders, invoices, "
 "...)."
 msgstr ""
 "Deze verkooporder is geannuleerd in de backend.\n"
-"                    De normale actie is om deze order ook in OpenERP te "
+"                    De normale actie is om deze order ook in Odoo te "
 "annuleren,\n"
 "                    tezamen met de overige documenten, zoals uitgaande "
 "levering en factuur."
@@ -211,10 +211,10 @@ msgstr "Import regel"
 #. module: connector_ecommerce
 #: view:sale.ignore.cancel:0
 msgid ""
-"However, if for any reason you need to keep it open in OpenERP,\n"
+"However, if for any reason you need to keep it open in Odoo,\n"
 "                    write the reason here and it will stay open."
 msgstr ""
-"Indien u, voor welke reden dan ook, deze open wilt houden in OpenERP,\n"
+"Indien u, voor welke reden dan ook, deze open wilt houden in Odoo,\n"
 "                    schrijf dan hier de reden en hij blijft open."
 
 #. module: connector_ecommerce
