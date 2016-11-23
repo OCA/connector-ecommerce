@@ -7,11 +7,11 @@
                 <form string="Ignore the cancellation on the Backend">
                     <p class="oe_grey">
                         This sales order has been canceled from the backend.
-                        The usual action would be to cancel it in OpenERP along
+                        The usual action would be to cancel it in Odoo along
                         all the documents generated (delivery orders, invoices, ...).
                     </p>
                     <p class="oe_grey">
-                        However, if for any reason you need to keep it open in OpenERP,
+                        However, if for any reason you need to keep it open in Odoo,
                         write the reason here and it will stay open.
                     </p>
                     <group>
