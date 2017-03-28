@@ -19,6 +19,7 @@ Documentation:
 http://www.openerp-connector.com
 
 [//]: # (addons)
+
 Unported addons
 ---------------
 addon | version | summary
