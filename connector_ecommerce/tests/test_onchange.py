@@ -6,8 +6,6 @@ import mock
 
 from odoo.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange)
-from odoo.addons.connector.session import ConnectorSession
-from odoo.addons.connector.connector import ConnectorEnvironment
 import odoo.tests.common as common
 
 DB = common.DB
@@ -17,18 +15,11 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 class TestOnchange(common.TransactionCase):
     """ Test if the onchanges are applied correctly on a sales order"""
 
-    def setUp(self):
-        super(TestOnchange, self).setUp()
-        self.session = ConnectorSession.from_env(self.env)
-
     def test_play_onchange(self):
         """ Play the onchange ConnectorUnit on a sales order """
         product_model = self.env['product.product']
         partner_model = self.env['res.partner']
         tax_model = self.env['account.tax']
-
-        backend_record = mock.Mock()
-        env = ConnectorEnvironment(backend_record, self.session, 'sale.order')
 
         partner = partner_model.create({'name': 'seb',
                                         'zip': '69100',
@@ -73,6 +64,7 @@ class TestOnchange(common.TransactionCase):
 
         extra_lines = order_vals['backend_order_line']
 
+        env = mock.MagicMock(env=self.env)
         onchange = SaleOrderOnChange(env)
         order = onchange.play(order_vals, extra_lines)
 
