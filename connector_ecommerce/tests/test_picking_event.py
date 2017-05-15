@@ -21,16 +21,16 @@ class TestPickingEvent(common.TransactionCase):
         self.sale = self.sale_model.create({'partner_id': partner.id})
         self.sale_line_model.create({
             'order_id': self.sale.id,
-            'product_id': self.env.ref('product.product_product_33').id,
-            'name': "[HEAD-USB] Headset USB",
+            'product_id': self.env.ref('product.product_product_6').id,
+            'name': "iPad Mini",
             'product_uom_qty': 42,
             'product_uom': self.env.ref('product.product_uom_unit').id,
             'price_unit': 65,
         })
         self.sale_line_model.create({
             'order_id': self.sale.id,
-            'product_id': self.env.ref('product.product_product_28').id,
-            'name': "[EXT-HDD] External Hard disk",
+            'product_id': self.env.ref('product.product_product_7').id,
+            'name': "Apple In-Ear Headphones",
             'product_uom_qty': 2,
             'product_uom': self.env.ref('product.product_uom_unit').id,
             'price_unit': 405,
