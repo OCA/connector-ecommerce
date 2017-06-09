@@ -133,10 +133,10 @@ class SaleOrder(models.Model):
         for order in self:
             message = _("Warning: the origin sales order %s has been canceled "
                         "on the backend.") % order.name
-            if order.picking_ids:
-                order.picking_ids.message_post(body=message)
-            if order.invoice_ids:
-                order.invoice_ids.message_post(body=message)
+            for picking in order.picking_ids:
+                picking.message_post(body=message)
+            for invoice in order.invoice_ids:
+                invoice.message_post(body=message)
 
     @api.model
     def create(self, values):
