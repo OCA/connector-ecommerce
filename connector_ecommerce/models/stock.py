@@ -20,8 +20,10 @@ class StockPicking(models.Model):
     def write(self, vals):
         res = super(StockPicking, self).write(vals)
         if vals.get('carrier_tracking_ref'):
-            for record_id in self.ids:
-                on_tracking_number_added.fire(self.env, self._name, record_id)
+            for record in self:
+                self._event('on_tracking_number_added').notify(record)
+                # deprecated:
+                on_tracking_number_added.fire(self.env, self._name, record.id)
         return res
 
     @api.multi
@@ -37,6 +39,8 @@ class StockPicking(models.Model):
                 method = 'partial'
             else:
                 method = 'complete'
+            self._event('on_picking_out_done').notify(picking, method)
+            # deprecated:
             on_picking_out_done.fire(self.env, 'stock.picking',
                                      picking.id, method)
 
@@ -62,6 +66,10 @@ class StockMove(models.Model):
                         continue
                     # partial pickings are handled in
                     # StockPicking.do_transfer()
+                    picking._event('on_picking_out_done').notify(
+                        picking, 'complete'
+                    )
+                    # deprecated:
                     on_picking_out_done.fire(self.env, 'stock.picking',
                                              picking.id, 'complete')
 
