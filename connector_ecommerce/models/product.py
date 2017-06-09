@@ -2,8 +2,7 @@
 # © 2011-2013 Akretion (Sébastien Beau)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models, fields, api
-from openerp.addons.connector.session import ConnectorSession
+from odoo import models, fields, api
 from .event import on_product_price_changed
 
 
@@ -42,7 +41,6 @@ class ProductTemplate(models.Model):
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
             product_model = self.env['product.product']
-            session = ConnectorSession.from_env(self.env)
             products = product_model.search(
                 [('product_tmpl_id', 'in', self.ids)]
             )
@@ -53,7 +51,7 @@ class ProductTemplate(models.Model):
                 remove_products = product_model.browse(from_product_ids)
                 products -= remove_products
             for product in products:
-                on_product_price_changed.fire(session,
+                on_product_price_changed.fire(self.env,
                                               product_model._name,
                                               product.id)
 
@@ -100,9 +98,8 @@ class ProductProduct(models.Model):
         """
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
-            session = ConnectorSession.from_env(self.env)
             for prod_id in self.ids:
-                on_product_price_changed.fire(session, self._name, prod_id)
+                on_product_price_changed.fire(self.env, self._name, prod_id)
 
     @api.multi
     def write(self, vals):
