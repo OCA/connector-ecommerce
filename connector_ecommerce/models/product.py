@@ -51,6 +51,8 @@ class ProductTemplate(models.Model):
                 remove_products = product_model.browse(from_product_ids)
                 products -= remove_products
             for product in products:
+                self._event('on_product_price_changed').notify(product)
+                # deprecated:
                 on_product_price_changed.fire(self.env,
                                               product_model._name,
                                               product.id)
@@ -98,8 +100,10 @@ class ProductProduct(models.Model):
         """
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
-            for prod_id in self.ids:
-                on_product_price_changed.fire(self.env, self._name, prod_id)
+            for product in self:
+                self._event('on_product_price_changed').notify(product)
+                # deprecated:
+                on_product_price_changed.fire(self.env, self._name, product.id)
 
     @api.multi
     def write(self, vals):

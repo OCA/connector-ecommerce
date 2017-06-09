@@ -15,10 +15,18 @@ That's a technical module, which include amongst other things:
 
 Events
 
-  On which the connectors can subscribe consumers
-  (tracking number added, invoice paid, picking sent, ...)
+  On which the connectors can subscribe listeners.
+  The events it adds are:
 
-ConnectorUnit
+   * ``on_invoice_paid(self, record)``
+   * ``on_invoice_validated(self, record)``
+   * ``on_invoice_validated(self, record)``
+   * ``on_picking_out_done(self, record, method)`` where method is
+     'partial' or 'complete'
+   * ``on_tracking_number_added(self, record)``
+   * ``on_product_price_changed(self, record)``
+
+ Components
 
   A piece of code which allows to play all the ``onchanges`` required
   when we create a sales order.
