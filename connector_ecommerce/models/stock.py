@@ -66,7 +66,7 @@ class StockMove(models.Model):
                         continue
                     # partial pickings are handled in
                     # StockPicking.do_transfer()
-                    self._event('on_picking_out_done').notify(
+                    picking._event('on_picking_out_done').notify(
                         picking, 'complete'
                     )
                     # deprecated:
