@@ -66,7 +66,7 @@ class SaleOrder(models.Model):
         """ Need to be inherited in the connectors to implement the
         parent logic.
 
-        See an implementation example in ``magentoerpconnect``.
+        See an implementation example in ``connector_magento``.
         """
         self.parent_id = False
 
@@ -199,3 +199,12 @@ class SaleOrder(models.Model):
         action['views'] = [(view.id if view else False, 'form')]
         action['res_id'] = parent.id
         return action
+
+    def _create_delivery_line(self, carrier, price_unit):
+        if self.order_line.filtered(lambda r: r.is_delivery):
+            # skip if we have already a delivery line (created by
+            # import of order)
+            return
+        else:
+            return super(SaleOrder, self)._create_delivery_line(carrier,
+                                                                price_unit)

@@ -67,6 +67,11 @@ class ShippingLineBuilder(Component):
         self.product_ref = ('connector_ecommerce', 'product_product_shipping')
         self.sequence = 999
 
+    def get_line(self):
+        values = super(ShippingLineBuilder, self).get_line()
+        values['is_delivery'] = True
+        return values
+
 
 class CashOnDeliveryLineBuilder(Component):
     """ Return values for a Cash on Delivery line """
