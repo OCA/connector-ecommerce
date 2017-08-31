@@ -24,6 +24,6 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 10.0.1.0.0 | Connector for E-Commerce
+[connector_ecommerce](connector_ecommerce/) | 10.0.1.1.0 | Connector for E-Commerce
 
 [//]: # (end addons)
