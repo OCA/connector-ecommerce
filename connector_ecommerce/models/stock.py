@@ -33,17 +33,16 @@ class StockPicking(models.Model):
         self_context = self.with_context(__no_on_event_out_done=True)
         result = super(StockPicking, self_context).do_transfer()
         for picking in self:
-            if picking.picking_type_id.code != 'outgoing':
-                continue
-            if picking.related_backorder_ids:
-                method = 'partial'
-            else:
-                method = 'complete'
-            self._event('on_picking_out_done').notify(picking, method)
-            # deprecated:
-            on_picking_out_done.fire(self.env, 'stock.picking',
-                                     picking.id, method)
-
+            method = 'partial' if picking.related_backorder_ids else 'complete'
+            if picking.picking_type_id.code == 'outgoing':
+                self._event('on_picking_out_done').notify(picking, method)
+                # deprecated:
+                on_picking_out_done.fire(self.env, 'stock.picking',
+                                         picking.id, method)
+            elif (picking.picking_type_id.code == 'incoming'
+                  and picking.location_dest_id.usage == 'customer'):
+                self._event('on_picking_dropship_done').notify(picking, method)
+        
         return result
 
 
