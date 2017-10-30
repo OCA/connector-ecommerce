@@ -39,10 +39,10 @@ class StockPicking(models.Model):
                 # deprecated:
                 on_picking_out_done.fire(self.env, 'stock.picking',
                                          picking.id, method)
-            elif (picking.picking_type_id.code == 'incoming'
-                  and picking.location_dest_id.usage == 'customer'):
+            elif (picking.picking_type_id.code == 'incoming' and
+                  picking.location_dest_id.usage == 'customer'):
                 self._event('on_picking_dropship_done').notify(picking, method)
-        
+
         return result
 
 
