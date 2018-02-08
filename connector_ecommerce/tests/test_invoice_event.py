@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # © 2013 Camptocamp SA
+# © 2018 FactorLibre
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import mock
@@ -19,6 +20,7 @@ class TestInvoiceEvent(common.TransactionCase):
         product = self.env.ref('product.product_product_6')
         invoice_vals = {'partner_id': partner.id,
                         'type': 'out_invoice',
+                        'company_id': self.env.ref('base.main_company')
                         }
         invoice = self.invoice_model.new(invoice_vals)
         invoice._onchange_partner_id()
@@ -43,30 +45,29 @@ class TestInvoiceEvent(common.TransactionCase):
         """ Test if the ``on_invoice_validated`` event is fired
         when an invoice is validated """
         assert self.invoice, "The invoice has not been created"
-        event = ('odoo.addons.connector_ecommerce.'
-                 'models.invoice.on_invoice_validated')
-        with mock.patch(event) as event_mock:
+
+        mock_method = 'odoo.addons.component_event.models.base.Base._event'
+        with mock.patch(mock_method) as mock_event:
             self.invoice.action_invoice_open()
             self.assertEqual(self.invoice.state, 'open')
-            event_mock.fire.assert_called_with(mock.ANY,
-                                               'account.invoice',
-                                               self.invoice.id)
+            mock_event('on_invoice_validated').notify.assert_any_call(
+                self.invoice)
 
     def test_event_paid(self):
         """ Test if the ``on_invoice_paid`` event is fired
         when an invoice is paid """
         assert self.invoice, "The invoice has not been created"
-        self.invoice.action_invoice_open()
-        self.assertEqual(self.invoice.state, 'open')
-        journal = self.env['account.journal'].search([], limit=1)
-        event = ('odoo.addons.connector_ecommerce.models.'
-                 'invoice.on_invoice_paid')
-        with mock.patch(event) as event_mock:
+
+        mock_method = 'odoo.addons.component_event.models.base.Base._event'
+        with mock.patch(mock_method) as mock_event:
+            self.invoice.action_invoice_open()
+            self.assertEqual(self.invoice.state, 'open')
+            journal = self.env['account.journal'].search([], limit=1)
+
             self.invoice.pay_and_reconcile(
                 journal,
                 pay_amount=self.invoice.amount_total,
             )
             self.assertEqual(self.invoice.state, 'paid')
-            event_mock.fire.assert_called_with(mock.ANY,
-                                               'account.invoice',
-                                               self.invoice.id)
+            mock_event('on_invoice_paid').notify.assert_any_call(
+                self.invoice)
