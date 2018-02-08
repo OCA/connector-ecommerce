@@ -1,19 +1,43 @@
 # -*- coding: utf-8 -*-
 # © 2013-TODAY Akretion (Sébastien Beau)
+# © 2018 FactorLibre
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import mock
-
-from odoo.addons.connector_ecommerce.unit.sale_order_onchange import (
-    SaleOrderOnChange)
+from contextlib import contextmanager
+from odoo.addons.component.tests.common import TransactionComponentRegistryCase
+from odoo.addons.connector_ecommerce.components.sale_order_onchange import (
+    OnChangeManager, SaleOrderOnChange)
 import odoo.tests.common as common
 
 DB = common.DB
 ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
-class TestOnchange(common.TransactionCase):
+class TestOnchange(TransactionComponentRegistryCase):
     """ Test if the onchanges are applied correctly on a sales order"""
+
+    def setUp(self):
+        super(TestOnchange, self).setUp()
+        self.collection = self.env['collection.base']
+        OnChangeManager._build_component(self.comp_registry)
+        SaleOrderOnChange._build_component(self.comp_registry)
+        self.collection_record = self.collection.new()
+
+        @contextmanager
+        def get_base():
+            # Our WorkContext, it will be passed along in every
+            # components so we can share data transversally.
+            # We are working with sale.order in the following tests,
+            # unless we change it in the test.
+            with self.collection_record.work_on(
+                    'sale.order',
+                    # we use a custom registry only
+                    # for the sake of the tests
+                    components_registry=self.comp_registry) as work:
+                # We get the 'base' component, handy to test the base
+                # methods component, many_components, ...
+                yield work.component_by_name('base')
+        self.get_base = get_base
 
     def test_play_onchange(self):
         """ Play the onchange ConnectorUnit on a sales order """
@@ -64,9 +88,10 @@ class TestOnchange(common.TransactionCase):
 
         extra_lines = order_vals['backend_order_line']
 
-        env = mock.MagicMock(env=self.env)
-        onchange = SaleOrderOnChange(env)
-        order = onchange.play(order_vals, extra_lines)
+        with self.get_base() as base:
+            onchange = base.component(
+                usage='ecommerce.onchange.manager.sale.order')
+            order = onchange.play(order_vals, extra_lines)
 
         self.assertEqual(order['partner_invoice_id'], partner_invoice.id)
         self.assertEqual(len(order['order_line']), 1)
