@@ -14,7 +14,7 @@ class OnChangeManager(Component):
     def get_new_values(self, record, on_change_result, model=None):
         vals = on_change_result.get('value', {})
         new_values = {}
-        for fieldname, value in vals.iteritems():
+        for fieldname, value in vals.items():
             if fieldname not in record:
                 if model:
                     column = self.env[model]._fields[fieldname]
@@ -45,7 +45,7 @@ class OnChangeManager(Component):
                                                   model=model._name))
             all_values.update(new_values)
 
-        res = {f: v for f, v in all_values.iteritems()
+        res = {f: v for f, v in all_values.items()
                if f in values or f in new_values}
         return res
 
