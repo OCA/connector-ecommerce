@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # © 2011-2013 Akretion (Sébastien Beau)
+# © 2018 FactorLibre
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import models, fields, api
-from .event import on_product_price_changed
 
 
 class ProductTemplate(models.Model):
@@ -52,10 +52,6 @@ class ProductTemplate(models.Model):
                 products -= remove_products
             for product in products:
                 self._event('on_product_price_changed').notify(product)
-                # deprecated:
-                on_product_price_changed.fire(self.env,
-                                              product_model._name,
-                                              product.id)
 
     @api.multi
     def write(self, vals):
@@ -102,8 +98,6 @@ class ProductProduct(models.Model):
         if any(field in vals for field in price_fields):
             for product in self:
                 self._event('on_product_price_changed').notify(product)
-                # deprecated:
-                on_product_price_changed.fire(self.env, self._name, product.id)
 
     @api.multi
     def write(self, vals):
