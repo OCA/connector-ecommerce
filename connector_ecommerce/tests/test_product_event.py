@@ -14,7 +14,7 @@ class TestProductEvent(common.TransactionCase):
         super(TestProductEvent, self).setUp()
         self.product_product = self.env.ref('product.product_product_6')
         self.product_template = self.env.ref(
-                'product.product_product_11_product_template')
+            'product.product_product_11_product_template')
 
     def test_event_on_product_product_price_changed(self):
         """ Test if the ``on_product_price_changed`` event is fired
