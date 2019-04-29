@@ -41,7 +41,7 @@
                     type="action"
                     attrs="{'invisible': ['|', '|', ('canceled_in_backend', '=', False), ('cancellation_resolved', '=', True), ('state', '==', 'cancel')]}"
                     string="Ignore backend's cancellation, Keep Open"
-                    groups="base.group_sale_manager" />
+                    groups="sales_team.group_sale_manager" />
             </xpath>
         </field>
     </record>
