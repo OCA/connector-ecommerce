@@ -41,7 +41,7 @@ class TestPickingEvent(common.TransactionCase):
             'product_id': self.product_6.id,
             'name': "iPad Mini",
             'product_uom_qty': 42,
-            'product_uom': self.env.ref('product.product_uom_unit').id,
+            'product_uom': self.env.ref('uom.product_uom_unit').id,
             'price_unit': 65,
         })
         self.sale_line_model.create({
