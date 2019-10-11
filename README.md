@@ -17,5 +17,3 @@ The project for the **Connector** framework is: https://github.com/OCA/connector
 
 Documentation:
 http://www.odoo-connector.com
-
-
