@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -20,25 +20,23 @@ msgid "<p>Resolution:<ol><li>Cancel the linked invoices, delivery orders, automa
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,help:connector_ecommerce.field_sale_order_parent_need_cancel
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__parent_need_cancel
 msgid "A parent sales order has been canceled on the backend and needs to be canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,help:connector_ecommerce.field_sale_order_parent_id
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__parent_id
 msgid "A parent sales order is a sales order replaced by this one."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order_parent_need_cancel
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__parent_need_cancel
 msgid "A parent sales order needs cancel"
 msgstr ""
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_product_has_checkpoint
-msgid "A product has been imported from a backend\n"
-"                and needs to be reviewed.\n"
-"                Go to Connectors > Checkpoint and review the new products."
+msgid "A product has been imported from a backend and needs to be reviewed. Go to Connectors > Checkpoint and review the new products."
 msgstr ""
 
 #. module: connector_ecommerce
@@ -47,27 +45,27 @@ msgid "A product needs to be reviewed."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,help:connector_ecommerce.field_account_payment_mode_days_before_cancel
+#: model:ir.model.fields,help:connector_ecommerce.field_account_payment_mode__days_before_cancel
 msgid "After 'n' days, if the 'Import Rule' is not fulfilled, the import of the sales order will be canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "Cancel"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order_canceled_in_backend
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__canceled_in_backend
 msgid "Canceled in backend"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
 msgid "Canceled in backend, to cancel"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order_cancellation_resolved
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__cancellation_resolved
 msgid "Cancellation from the backend resolved"
 msgstr ""
 
@@ -78,29 +76,29 @@ msgid "Cash on Delivery"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "Confirm"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_invoice_connector_form
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_order_connector_form
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_stock_picking_out_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_invoice_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_order_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_stock_picking_out_connector_form
 msgid "Connectors"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_create_uid
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_create_date
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode_days_before_cancel
+#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__days_before_cancel
 msgid "Days before cancel"
 msgstr ""
 
@@ -117,7 +115,7 @@ msgid "Discount Coupon"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_display_name
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -128,23 +126,23 @@ msgid "Gift Certificate"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product_has_checkpoint
+#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__has_checkpoint
 msgid "Has Checkpoint"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,help:connector_ecommerce.field_sale_order_need_cancel
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__need_cancel
 msgid "Has been canceled on the backend, need to be canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "However, if for any reason you need to keep it open in Odoo,\n"
 "                        write the reason here and it will stay open."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_id
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__id
 msgid "ID"
 msgstr ""
 
@@ -154,23 +152,23 @@ msgid "Ignore Sales Order Cancel"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
 msgid "Ignore backend's cancellation, Keep Open"
 msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.actions.act_window,name:connector_ecommerce.action_sale_ignore_cancel
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "Ignore the cancellation on the Backend"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode_import_rule
+#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__import_rule
 msgid "Import Rule"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
 msgid "Import Rules"
 msgstr ""
 
@@ -180,39 +178,38 @@ msgid "Invoice"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel___last_update
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_write_uid
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_write_date
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order_need_cancel
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__need_cancel
 msgid "Need to be canceled"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
 msgid "Only sales orders canceled in their backend"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order_parent_id
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__parent_id
 msgid "Parent Order"
 msgstr ""
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
-msgid "Parent sales order canceled on the\n"
-"                backend."
+msgid "Parent sales order canceled on the backend."
 msgstr ""
 
 #. module: connector_ecommerce
@@ -231,18 +228,18 @@ msgid "Product Template"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_sale_order
-msgid "Quotation"
-msgstr ""
-
-#. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel_reason
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__reason
 msgid "Reason"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking_related_backorder_ids
+#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__related_backorder_ids
 msgid "Related backorders"
+msgstr ""
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_sale_order
+msgid "Sale Order"
 msgstr ""
 
 #. module: connector_ecommerce
@@ -272,23 +269,20 @@ msgid "Tax"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product_tax_group_id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template_tax_group_id
+#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__tax_group_id
+#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template__tax_group_id
 msgid "Tax Group"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,help:connector_ecommerce.field_product_product_tax_group_id
-#: model:ir.model.fields,help:connector_ecommerce.field_product_template_tax_group_id
+#: model:ir.model.fields,help:connector_ecommerce.field_product_product__tax_group_id
+#: model:ir.model.fields,help:connector_ecommerce.field_product_template__tax_group_id
 msgid "Tax groups are used with some external system like Prestashop"
 msgstr ""
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_parent_order_need_cancel
-msgid "The parent sales order has been canceled\n"
-"                on the backend.\n"
-"                You will not be able to process this sales order until the parent's one\n"
-"                is canceled."
+msgid "The parent sales order has been canceled on the backend. You will not be able to process this sales order until the parent's one is canceled."
 msgstr ""
 
 #. module: connector_ecommerce
@@ -310,19 +304,14 @@ msgid "The sales order has been automatically canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
-msgid "The sales order has been canceled on the\n"
-"                backend."
-msgstr ""
-
-#. module: connector_ecommerce
 #: code:addons/connector_ecommerce/models/sale.py:131
+#: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
 #, python-format
 msgid "The sales order has been canceled on the backend."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
 msgid "The sales orders using the payment\n"
 "                            method will be imported\n"
 "                            only when they receive a payment on the E-Commerce backend.\n"
@@ -330,17 +319,17 @@ msgid "The sales orders using the payment\n"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
 msgid "The sales orders using the payment method will always be imported."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
 msgid "The sales orders using the payment method will never be imported."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "This sales order has been canceled from the backend.\n"
 "                        The usual action would be to cancel it in Odoo along\n"
 "                        all the documents generated (delivery orders, invoices, ...)."
@@ -352,7 +341,19 @@ msgid "Transfer"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
+#: model:product.product,uom_name:connector_ecommerce.product_product_cash_on_delivery
+#: model:product.product,uom_name:connector_ecommerce.product_product_discount
+#: model:product.product,uom_name:connector_ecommerce.product_product_gift
+#: model:product.product,uom_name:connector_ecommerce.product_product_shipping
+#: model:product.template,uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
+#: model:product.template,uom_name:connector_ecommerce.product_product_discount_product_template
+#: model:product.template,uom_name:connector_ecommerce.product_product_gift_product_template
+#: model:product.template,uom_name:connector_ecommerce.product_product_shipping_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
 msgid "View Parent Sales Order"
 msgstr ""
 
@@ -363,7 +364,19 @@ msgid "Warning: the origin sales order %s has been canceled on the backend."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+#: model:product.product,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery
+#: model:product.product,weight_uom_name:connector_ecommerce.product_product_discount
+#: model:product.product,weight_uom_name:connector_ecommerce.product_product_gift
+#: model:product.product,weight_uom_name:connector_ecommerce.product_product_shipping
+#: model:product.template,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
+#: model:product.template,weight_uom_name:connector_ecommerce.product_product_discount_product_template
+#: model:product.template,weight_uom_name:connector_ecommerce.product_product_gift_product_template
+#: model:product.template,weight_uom_name:connector_ecommerce.product_product_shipping_product_template
+msgid "kg"
+msgstr ""
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "or"
 msgstr ""
 
