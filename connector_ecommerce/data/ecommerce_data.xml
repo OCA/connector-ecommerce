@@ -45,10 +45,8 @@
     <field name="description">The parent sales order has been canceled on the backend. You will not be able to process this sales order until the parent's one is canceled.</field>
     <field name="sequence">30</field>
     <field name="model">sale.order</field>
-    <field name="rule_group">sale</field>
     <field name="code">if sale.parent_need_cancel: failed = True</field>
     <field name="active" eval="True"/>
-    <field name="rule_group">sale</field>
   </record>
 
   <record id="excep_order_need_cancel" model="exception.rule">
@@ -56,10 +54,8 @@
     <field name="description">The sales order has been canceled on the backend.</field>
     <field name="sequence">20</field>
     <field name="model">sale.order</field>
-    <field name="rule_group">sale</field>
     <field name="code">if sale.need_cancel: failed = True</field>
     <field name="active" eval="True"/>
-    <field name="rule_group">sale</field>
   </record>
 
   <record id="excep_product_has_checkpoint" model="exception.rule">
@@ -67,9 +63,7 @@
     <field name="description">A product has been imported from a backend and needs to be reviewed. Go to Connectors > Checkpoint and review the new products.</field>
     <field name="sequence">20</field>
     <field name="model">sale.order.line</field>
-    <field name="rule_group">sale</field>
     <field name="code">if object.product_id and object.product_id.has_checkpoint: failed = True</field>
     <field name="active" eval="True"/>
-    <field name="rule_group">sale</field>
   </record>
 </odoo>
