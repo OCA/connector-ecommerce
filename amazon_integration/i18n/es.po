@@ -1,0 +1,556 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* amazon_integration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-07 13:26+0000\n"
+"PO-Revision-Date: 2019-11-07 13:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+msgid "<span class=\"o_form_label\">Amazon User</span>\n"
+"                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
+msgstr ""
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_kanban
+msgid "<span>Import Market Orders</span>"
+msgstr "<span>Importar pedidos</span>"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__access_key
+msgid "Access Key"
+msgstr "Clave de acceso"
+
+#. module: amazon_integration
+#: model:ir.model,name:amazon_integration.model_amazon_seller
+msgid "Account for Amazon MWS"
+msgstr "Cuenta para Amazon MWS"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_needaction
+msgid "Action Needed"
+msgstr "Acción Necesaria"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
+
+#. module: amazon_integration
+#: model:ir.ui.menu,name:amazon_integration.amazon_menu
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+msgid "Amazon"
+msgstr ""
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_sale_order__amazon_fulfillment
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_order_search
+msgid "Amazon Fulfillment"
+msgstr ""
+
+#. module: amazon_integration
+#: model:product.product,name:amazon_integration.amazon_gift_product
+#: model:product.template,name:amazon_integration.amazon_gift_product_product_template
+msgid "Amazon Gift Costs"
+msgstr "Costes de regalo de Amazon"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_ref_form
+msgid "Amazon Info"
+msgstr "Información de Amazon"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_sale_order__amazon_marketplace_id
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_form
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_order_search
+msgid "Amazon Marketplace"
+msgstr ""
+
+#. module: amazon_integration
+#: model:ir.model,name:amazon_integration.model_amazon_marketplace
+msgid "Amazon Markets from a seller"
+msgstr "Amazon martketplaces de un vendedor"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_sale_order_line__amazon_order_item_id
+msgid "Amazon Order Item Id"
+msgstr ""
+
+#. module: amazon_integration
+#: model:product.product,name:amazon_integration.amazon_not_found_product
+#: model:product.template,name:amazon_integration.amazon_not_found_product_product_template
+msgid "Amazon Product Not Found"
+msgstr "Amazon producto no encontrado"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_sale_order__amazon_reference
+msgid "Amazon Reference"
+msgstr "Amazon referencia"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_form
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_search
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_tree
+msgid "Amazon Seller"
+msgstr "Amazon Vendedor"
+
+#. module: amazon_integration
+#: model:product.product,name:amazon_integration.amazon_shipping_product
+#: model:product.template,name:amazon_integration.amazon_shipping_product_product_template
+msgid "Amazon Shipping Costs"
+msgstr "Costes de envío de Amazon"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_search
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_tree
+msgid "Amazon marketplace"
+msgstr "Amazon marketplace"
+
+#. module: amazon_integration
+#: model:ir.actions.server,name:amazon_integration.ir_cron_import_amazon_orders_ir_actions_server
+#: model:ir.cron,cron_name:amazon_integration.ir_cron_import_amazon_orders
+#: model:ir.cron,name:amazon_integration.ir_cron_import_amazon_orders
+msgid "Amazon: import orders"
+msgstr "Amazon: importar órdenes"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_attachment_count
+msgid "Attachment Count"
+msgstr "Conteo de archivos adjuntos"
+
+#. module: amazon_integration
+#: model_terms:ir.actions.act_window,help:amazon_integration.amazon_seller_action
+msgid "Click to create a new Seller."
+msgstr "Pulsa para crear un nuevo vendedor"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__color
+msgid "Color Index"
+msgstr "Índice de Colores"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_res_config_settings__amazon_user_id
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+msgid "Commercial"
+msgstr "Comercial"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__company_id
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: amazon_integration
+#: model:ir.model,name:amazon_integration.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajustes de configuración"
+
+#. module: amazon_integration
+#: model:ir.ui.menu,name:amazon_integration.amazon_config_menu
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__country_id
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__country_id
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_kanban
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_search
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_search
+msgid "Country"
+msgstr "País"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__create_uid
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__create_date
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: amazon_integration
+#: model:ir.actions.act_window,name:amazon_integration.amazon_marketplace_dashboard_action
+#: model:ir.ui.menu,name:amazon_integration.amazon_dashboard_menu
+msgid "Dashboard"
+msgstr "Tablero"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_seller__last_import_date_seller
+msgid "Date from the last order synced"
+msgstr "Fecha del último pedido sincronizado"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+msgid "Default products"
+msgstr "Productos por defecto"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+msgid "Default user for sales"
+msgstr "Comercial por defecto en ventas"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_kanban
+msgid "Delete"
+msgstr "Suprimir"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__display_name
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_kanban
+msgid "Dropdown menu"
+msgstr "Menú desplegable"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_kanban
+msgid "Edit"
+msgstr "Editar"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_order_search
+#: selection:sale.order,amazon_fulfillment:0
+msgid "FBA"
+msgstr ""
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_order_search
+#: selection:sale.order,amazon_fulfillment:0
+msgid "FBM"
+msgstr ""
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__fiscal_position_id
+msgid "Fiscal Position"
+msgstr "Posición fiscal"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Empresas)"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_search
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_search
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__id
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__id
+msgid "ID"
+msgstr ""
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_unread
+msgid "If checked new messages require your attention."
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_form
+msgid "Import Market Orders"
+msgstr "Importar pedidos"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_form
+msgid "Import Marketplaces"
+msgstr "Importar Marketplaces"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_form
+msgid "Import Orders"
+msgstr "Importar pedidos"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_form
+msgid "Invoice Info"
+msgstr "Facturación"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_is_follower
+msgid "Is Follower"
+msgstr "Es un seguidor"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__lang_id
+msgid "Language"
+msgstr "Idioma"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__last_import_date
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__last_import_date_seller
+msgid "Last Import Date"
+msgstr "Fecha de sincronización"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace____last_update
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__write_uid
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__write_date
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjuntos principales"
+
+#. module: amazon_integration
+#: model:ir.actions.act_window,name:amazon_integration.amazon_marketplace_action
+#: model:ir.ui.menu,name:amazon_integration.amazon_marketplace_menu
+msgid "Marketplace"
+msgstr "Marketplace"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__market_code
+msgid "Marketplace ID"
+msgstr ""
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_form
+msgid "Marketplace Settings"
+msgstr "Ajustes del Marketplace"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__marketplace_ids
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_form
+msgid "Marketplaces"
+msgstr "Marketplaces"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__merchant_id
+msgid "Merchant ID"
+msgstr ""
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de Envío de Mensaje"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__name
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Siguiente plazo de actividad"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la siguiente actividad"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_type_id
+msgid "Next Activity Type"
+msgstr "Siguiente tipo de actividad"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_has_error_counter
+msgid "Number of error"
+msgstr "Número de error"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de envío"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes no leidos"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_marketplace_form
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_res_config_settings_form
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_sale_ref_form
+msgid "Order Info"
+msgstr "Ventas"
+
+#. module: amazon_integration
+#: selection:amazon.marketplace,activity_state:0
+msgid "Overdue"
+msgstr "Atrasado"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__payment_term_id
+msgid "Payment Term"
+msgstr "Plazo de pago"
+
+#. module: amazon_integration
+#: selection:amazon.marketplace,activity_state:0
+msgid "Planned"
+msgstr "Planeado"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__pricelist_id
+msgid "Pricelist"
+msgstr "Tarifa"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
+
+#. module: amazon_integration
+#: model:ir.model,name:amazon_integration.model_sale_order
+msgid "Sale Order"
+msgstr "Pedido de venta"
+
+#. module: amazon_integration
+#: model:ir.model,name:amazon_integration.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Línea de pedido de venta"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_seller__secret_key
+msgid "Secret Key"
+msgstr "Clave secreta"
+
+#. module: amazon_integration
+#: model:ir.actions.act_window,name:amazon_integration.amazon_seller_action
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__seller_id
+#: model:ir.ui.menu,name:amazon_integration.amazon_seller_menu
+msgid "Seller"
+msgstr "Vendedor"
+
+#. module: amazon_integration
+#: model:ir.actions.act_window,name:amazon_integration.amazon_res_config_settings_action
+#: model:ir.ui.menu,name:amazon_integration.amazon_res_config_settings_menu
+msgid "Settings"
+msgstr "Configuración"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__activity_state
+msgid "Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr "Estado basado en actividades\n"
+"Vencida: la fecha tope ya ha pasado\n"
+"Hoy: La fecha tope es hoy\n"
+"Planificada: futuras actividades."
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__tax_id
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: amazon_integration
+#: selection:amazon.marketplace,activity_state:0
+msgid "Today"
+msgstr "Hoy"
+
+#. module: amazon_integration
+#: model:product.product,uom_name:amazon_integration.amazon_gift_product
+#: model:product.product,uom_name:amazon_integration.amazon_not_found_product
+#: model:product.product,uom_name:amazon_integration.amazon_shipping_product
+#: model:product.template,uom_name:amazon_integration.amazon_gift_product_product_template
+#: model:product.template,uom_name:amazon_integration.amazon_not_found_product_product_template
+#: model:product.template,uom_name:amazon_integration.amazon_shipping_product_product_template
+msgid "Unit(s)"
+msgstr "Unidad(es)"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes por leer"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes sin leer"
+
+#. module: amazon_integration
+#: model:ir.model.fields,field_description:amazon_integration.field_amazon_marketplace__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: amazon_integration
+#: model:ir.model.fields,help:amazon_integration.field_amazon_marketplace__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicaciones del sitio web"
+
+#. module: amazon_integration
+#: model_terms:ir.ui.view,arch_db:amazon_integration.view_amazon_seller_form
+msgid "e.g Spanish Seller"
+msgstr "ej. Vendedor S.L."
+
+#. module: amazon_integration
+#: model:product.product,weight_uom_name:amazon_integration.amazon_gift_product
+#: model:product.product,weight_uom_name:amazon_integration.amazon_not_found_product
+#: model:product.product,weight_uom_name:amazon_integration.amazon_shipping_product
+#: model:product.template,weight_uom_name:amazon_integration.amazon_gift_product_product_template
+#: model:product.template,weight_uom_name:amazon_integration.amazon_not_found_product_product_template
+#: model:product.template,weight_uom_name:amazon_integration.amazon_shipping_product_product_template
+msgid "kg"
+msgstr ""
