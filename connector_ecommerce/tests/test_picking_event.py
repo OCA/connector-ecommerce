@@ -15,7 +15,7 @@ class TestPickingEvent(common.TransactionCase):
         vals = {
             "picking_id": picking_id.id,
             "product_id": product.id,
-            "product_qty": product_qty,
+            "product_uom_qty": product_qty,
             "qty_done": product_qty,
         }
         vals.update(**values)
@@ -40,7 +40,7 @@ class TestPickingEvent(common.TransactionCase):
             {
                 "order_id": self.sale.id,
                 "product_id": self.product_6.id,
-                "name": "iPad Mini",
+                "name": "Large Cabinet",
                 "product_uom_qty": 42,
                 "product_uom": self.env.ref("uom.product_uom_unit").id,
                 "price_unit": 65,
@@ -50,7 +50,7 @@ class TestPickingEvent(common.TransactionCase):
             {
                 "order_id": self.sale.id,
                 "product_id": self.product_7.id,
-                "name": "Apple In-Ear Headphones",
+                "name": "Storage Box",
                 "product_uom_qty": 2,
                 "product_uom": self.env.ref("uom.product_uom_unit").id,
                 "price_unit": 405,
@@ -66,20 +66,10 @@ class TestPickingEvent(common.TransactionCase):
         when an outgoing picking is done """
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
-            self._create_pack_operation(
-                self.product_6,
-                42,
-                self.picking,
-                location_id=self.location_id,
-                location_dest_id=self.location_dest_id,
-            )
-            self._create_pack_operation(
-                self.product_7,
-                2,
-                self.picking,
-                location_id=self.location_id,
-                location_dest_id=self.location_dest_id,
-            )
+            self.picking.action_confirm()
+            self.picking.action_assign()
+            for move in self.picking.move_lines:
+                move.move_line_ids.qty_done = move.product_qty
             self.picking.action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
@@ -91,20 +81,9 @@ class TestPickingEvent(common.TransactionCase):
         pickings """
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
-            self._create_pack_operation(
-                self.product_6,
-                1,
-                self.picking,
-                location_id=self.location_id,
-                location_dest_id=self.location_dest_id,
-            )
-            self._create_pack_operation(
-                self.product_7,
-                1,
-                self.picking,
-                location_id=self.location_id,
-                location_dest_id=self.location_dest_id,
-            )
+            self.picking.action_confirm()
+            self.picking.action_assign()
+            self.picking.move_lines.move_line_ids.qty_done = 1.0
             self.picking.action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
