@@ -91,23 +91,21 @@ class TestOnchange(TransactionComponentRegistryCase):
                     },
                 ),
             ],
-            # fake field for the lines coming from a backend
-            "backend_order_line": [
-                (
-                    0,
-                    0,
-                    {
-                        "product_id": product.id,
-                        "price_unit": 10,
-                        "name": "Line 2",
-                        "product_uom_qty": 2,
-                        "sequence": 2,
-                    },
-                ),
-            ],
         }
 
-        extra_lines = order_vals["backend_order_line"]
+        extra_lines = [
+            (
+                0,
+                0,
+                {
+                    "product_id": product.id,
+                    "price_unit": 10,
+                    "name": "Line 2",
+                    "product_uom_qty": 2,
+                    "sequence": 2,
+                },
+            ),
+        ]
 
         with self.get_base() as base:
             onchange = base.component(usage="ecommerce.onchange.manager.sale.order")
@@ -119,7 +117,7 @@ class TestOnchange(TransactionComponentRegistryCase):
         self.assertEqual(line["name"], "My Real Name")
         self.assertEqual(line["product_uom"], product.uom_id.id)
         self.assertEqual(line["tax_id"], [(5,), (4, tax.id)])
-        line = order["backend_order_line"][0][2]
+        line = extra_lines[0][2]
         self.assertEqual(line["name"], "Line 2")
         self.assertEqual(line["product_uom"], product.uom_id.id)
         self.assertEqual(line["tax_id"], [(5,), (4, tax.id)])
