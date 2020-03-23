@@ -1,31 +1,30 @@
-# -*- coding: utf-8 -*-
 # © 2011-2013 Akretion (Sébastien Beau)
 # © 2018 FactorLibre
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class ProductTemplate(models.Model):
-    _inherit = 'product.template'
+    _inherit = "product.template"
 
     # TODO implement set function and also support multi tax
     @api.one
-    @api.depends('taxes_id.tax_group_id')
+    @api.depends("taxes_id.tax_group_id")
     def _compute_tax_group_id(self):
         taxes = self.taxes_id
         self.tax_group_id = taxes[:-1].tax_group_id.id
+
     tax_group_id = fields.Many2one(
-        comodel_name='account.tax.group',
-        compute='_compute_tax_group_id',
-        string='Tax Group',
-        help='Tax groups are used with some external '
-             'system like Prestashop',
+        comodel_name="account.tax.group",
+        compute="_compute_tax_group_id",
+        string="Tax Group",
+        help="Tax groups are used with some external " "system like Prestashop",
     )
 
     @api.model
     def _price_changed_fields(self):
-        return {'list_price', 'lst_price', 'standard_price'}
+        return {"list_price", "lst_price", "standard_price"}
 
     @api.multi
     def _price_changed(self, vals):
@@ -40,18 +39,16 @@ class ProductTemplate(models.Model):
         """
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
-            product_model = self.env['product.product']
-            products = product_model.search(
-                [('product_tmpl_id', 'in', self.ids)]
-            )
+            product_model = self.env["product.product"]
+            products = product_model.search([("product_tmpl_id", "in", self.ids)])
             # when the write is done on the product.product, avoid
             # to fire the event 2 times
-            if self.env.context.get('from_product_ids'):
-                from_product_ids = self.env.context['from_product_ids']
+            if self.env.context.get("from_product_ids"):
+                from_product_ids = self.env.context["from_product_ids"]
                 remove_products = product_model.browse(from_product_ids)
                 products -= remove_products
             for product in products:
-                self._event('on_product_price_changed').notify(product)
+                self._event("on_product_price_changed").notify(product)
 
     @api.multi
     def write(self, vals):
@@ -61,27 +58,31 @@ class ProductTemplate(models.Model):
 
 
 class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
     @api.depends()
     def _compute_has_checkpoint(self):
-        checkpoint_model = self.env['connector.checkpoint']
-        model_model = self.env['ir.model']
-        model = model_model.search([('model', '=', 'product.product')])
+        checkpoint_model = self.env["connector.checkpoint"]
+        model_model = self.env["ir.model"]
+        model = model_model.search([("model", "=", "product.product")])
         for product in self:
-            points = checkpoint_model.search([('model_id', '=', model.id),
-                                              ('record_id', '=', product.id),
-                                              ('state', '=', 'need_review')],
-                                             limit=1,
-                                             )
+            points = checkpoint_model.search(
+                [
+                    ("model_id", "=", model.id),
+                    ("record_id", "=", product.id),
+                    ("state", "=", "need_review"),
+                ],
+                limit=1,
+            )
             product.has_checkpoint = bool(points)
 
-    has_checkpoint = fields.Boolean(compute='_compute_has_checkpoint',
-                                    string='Has Checkpoint')
+    has_checkpoint = fields.Boolean(
+        compute="_compute_has_checkpoint", string="Has Checkpoint"
+    )
 
     @api.model
     def _price_changed_fields(self):
-        return {'lst_price', 'standard_price', 'price', 'price_extra'}
+        return {"lst_price", "standard_price", "price", "price_extra"}
 
     @api.multi
     def _price_changed(self, vals):
@@ -97,7 +98,7 @@ class ProductProduct(models.Model):
         price_fields = self._price_changed_fields()
         if any(field in vals for field in price_fields):
             for product in self:
-                self._event('on_product_price_changed').notify(product)
+                self._event("on_product_price_changed").notify(product)
 
     @api.multi
     def write(self, vals):
