@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="account_payment_mode_form_inherit" model="ir.ui.view">
         <field name="name">account.payment.mode.connector_ecommerce.form</field>
         <field name="model">account.payment.mode</field>
@@ -12,18 +11,14 @@
                         <field name="import_rule" />
                         <field name="days_before_cancel" />
                     </group>
-                    <group name="import_rule_help" class="oe_grey"
-                        col="1">
-                        <p
-                            attrs="{'invisible': [('import_rule', '!=', 'never')]}">
+                    <group name="import_rule_help" class="oe_grey" col="1">
+                        <p attrs="{'invisible': [('import_rule', '!=', 'never')]}">
                             The sales orders using the payment method will never be imported.
                         </p>
-                        <p
-                            attrs="{'invisible': [('import_rule', '!=', 'always')]}">
+                        <p attrs="{'invisible': [('import_rule', '!=', 'always')]}">
                             The sales orders using the payment method will always be imported.
                         </p>
-                        <p
-                            attrs="{'invisible': [('import_rule', '!=', 'paid')]}">
+                        <p attrs="{'invisible': [('import_rule', '!=', 'paid')]}">
                             The sales orders using the payment
                             method will be imported
                             only when they receive a payment on the E-Commerce backend.
@@ -34,7 +29,6 @@
             </group>
         </field>
     </record>
-
     <record id="account_payment_mode_tree_inherit" model="ir.ui.view">
         <field name="name">account.payment.mode.connector_ecommerce.tree</field>
         <field name="model">account.payment.mode</field>
@@ -45,5 +39,4 @@
             </field>
         </field>
     </record>
-
 </odoo>
