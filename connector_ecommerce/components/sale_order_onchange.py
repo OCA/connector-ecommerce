@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2013-TODAY Akretion (Sébastien Beau)
 # © 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
@@ -8,17 +7,17 @@ from odoo.addons.component.core import Component
 
 class OnChangeManager(Component):
 
-    _name = 'ecommerce.onchange.manager'
-    _inherit = 'base.connector'
+    _name = "ecommerce.onchange.manager"
+    _inherit = "base.connector"
 
     def get_new_values(self, record, on_change_result, model=None):
-        vals = on_change_result.get('value', {})
+        vals = on_change_result.get("value", {})
         new_values = {}
         for fieldname, value in vals.items():
             if fieldname not in record:
                 if model:
                     column = self.env[model]._fields[fieldname]
-                    if column.type == 'many2one':
+                    if column.type == "many2one":
                         value = value[0]  # many2one are tuple (id, name)
                 new_values[fieldname] = value
         return new_values
@@ -39,32 +38,31 @@ class OnChangeManager(Component):
 
         new_values = {}
         for field in onchange_fields:
-            onchange_values = new_record.onchange(all_values,
-                                                  field, onchange_specs)
-            new_values.update(self.get_new_values(values, onchange_values,
-                                                  model=model._name))
+            onchange_values = new_record.onchange(all_values, field, onchange_specs)
+            new_values.update(
+                self.get_new_values(values, onchange_values, model=model._name)
+            )
             all_values.update(new_values)
 
-        res = {f: v for f, v in all_values.items()
-               if f in values or f in new_values}
+        res = {f: v for f, v in all_values.items() if f in values or f in new_values}
         return res
 
 
 class SaleOrderOnChange(Component):
 
-    _name = 'ecommerce.onchange.manager.sale.order'
-    _inherit = 'ecommerce.onchange.manager'
-    _usage = 'ecommerce.onchange.manager.sale.order'
+    _name = "ecommerce.onchange.manager.sale.order"
+    _inherit = "ecommerce.onchange.manager"
+    _usage = "ecommerce.onchange.manager.sale.order"
 
     order_onchange_fields = [
-        'partner_id',
-        'partner_shipping_id',
-        'payment_mode_id',
-        'workflow_process_id',
+        "partner_id",
+        "partner_shipping_id",
+        "payment_mode_id",
+        "workflow_process_id",
     ]
 
     line_onchange_fields = [
-        'product_id',
+        "product_id",
     ]
 
     def play(self, order, order_lines):
@@ -79,18 +77,17 @@ class SaleOrderOnChange(Component):
         :rtype: dict
         """
         # play onchange on sales order
-        order = self.play_onchanges('sale.order', order,
-                                    self.order_onchange_fields)
+        order = self.play_onchanges("sale.order", order, self.order_onchange_fields)
 
         # play onchange on sales order line
         processed_order_lines = []
         line_lists = [order_lines]
-        if 'order_line' in order and order['order_line'] is not order_lines:
+        if "order_line" in order and order["order_line"] is not order_lines:
             # we have both backend-dependent and oerp-native order
             # lines.
             # oerp-native lines can have been added to map
             # shipping fees with an Odoo Product
-            line_lists.append(order['order_line'])
+            line_lists.append(order["order_line"])
 
         for line_list in line_lists:
             for idx, command_line in enumerate(line_list):
@@ -99,13 +96,9 @@ class SaleOrderOnChange(Component):
                     # keeps command number and ID (or 0)
                     old_line_data = command_line[2]
                     new_line_data = self.play_onchanges(
-                        'sale.order.line',
-                        old_line_data,
-                        self.line_onchange_fields
+                        "sale.order.line", old_line_data, self.line_onchange_fields
                     )
-                    new_line = (command_line[0],
-                                command_line[1],
-                                new_line_data)
+                    new_line = (command_line[0], command_line[1], new_line_data)
                     processed_order_lines.append(new_line)
                     # in place modification of the sales order line in the list
                     line_list[idx] = new_line
