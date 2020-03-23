@@ -12,33 +12,36 @@ class TestInvoiceEvent(common.TransactionCase):
 
     def setUp(self):
         super(TestInvoiceEvent, self).setUp()
-        self.invoice_model = self.env["account.invoice"]
-        invoice_line_model = self.env["account.invoice.line"]
+        self.invoice_model = self.env["account.move"]
         partner_model = self.env["res.partner"]
         partner = partner_model.create({"name": "Hodor"})
         product = self.env.ref("product.product_product_6")
         invoice_vals = {
             "partner_id": partner.id,
+            "company_id": self.env.ref("base.main_company").id,
             "type": "out_invoice",
-            "company_id": self.env.ref("base.main_company"),
+            "invoice_line_ids": [
+                (
+                    0,
+                    0,
+                    {
+                        "name": "LCD Screen",
+                        "product_id": product.id,
+                        "quantity": 5,
+                        "price_unit": 200,
+                    },
+                )
+            ],
         }
-        invoice = self.invoice_model.new(invoice_vals)
-        invoice._onchange_partner_id()
+        self.invoice = self.invoice_model.create(invoice_vals)
+        self.invoice._onchange_partner_id()
 
-        self.invoice = self.invoice_model.create(
-            invoice._convert_to_write(invoice._cache)
+        # self.invoice = self.invoice_model.create(
+        #     invoice._convert_to_write(invoice._cache)
+        # )
+        self.journal = self.env["account.journal"].search(
+            [("type", "=", "bank"), ("company_id", "=", self.env.company.id)], limit=1,
         )
-
-        line_vals = {
-            "name": "LCD Screen",
-            "product_id": product,
-            "quantity": 5,
-            "price_unit": 200,
-            "invoice_id": self.invoice,
-        }
-        line = invoice_line_model.new(line_vals)
-        line._onchange_product_id()
-        invoice_line_model.create(line._convert_to_write(line._cache))
 
     def test_event_validated(self):
         """ Test if the ``on_invoice_validated`` event is fired
@@ -47,8 +50,8 @@ class TestInvoiceEvent(common.TransactionCase):
 
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
-            self.invoice.action_invoice_open()
-            self.assertEqual(self.invoice.state, "open")
+            self.invoice.action_post()
+            self.assertEqual(self.invoice.state, "posted")
             mock_event("on_invoice_validated").notify.assert_any_call(self.invoice)
 
     def test_event_paid(self):
@@ -58,12 +61,14 @@ class TestInvoiceEvent(common.TransactionCase):
 
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
-            self.invoice.action_invoice_open()
-            self.assertEqual(self.invoice.state, "open")
-            journal = self.env["account.journal"].search([], limit=1)
-
-            self.invoice.pay_and_reconcile(
-                journal, pay_amount=self.invoice.amount_total,
+            self.assertEqual(self.invoice.state, "draft")
+            self.invoice.post()
+            self.assertEqual(self.invoice.state, "posted")
+            register_payments = (
+                self.env["account.payment.register"]
+                .with_context(active_ids=self.invoice.ids)
+                .create({"journal_id": self.journal.id})
             )
-            self.assertEqual(self.invoice.state, "paid")
+            register_payments.create_payments()
+            self.assertEqual(self.invoice.invoice_payment_state, "paid")
             mock_event("on_invoice_paid").notify.assert_any_call(self.invoice)
