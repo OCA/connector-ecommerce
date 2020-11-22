@@ -235,7 +235,6 @@ msgstr "Übergeordneter VK-Auftrag"
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
 #, fuzzy
-#| msgid "Sales order canceled on the backend."
 msgid "Parent sales order canceled on the backend."
 msgstr "VK-Auftrag im Backend abgebrochen."
 
@@ -268,7 +267,6 @@ msgstr ""
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_sale_order
 #, fuzzy
-#| msgid "Sales Order"
 msgid "Sale Order"
 msgstr "VK-Auftrag"
 
