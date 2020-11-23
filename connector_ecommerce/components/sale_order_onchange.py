@@ -28,7 +28,8 @@ class OnChangeManager(Component):
 
         # we need all fields in the dict even the empty ones
         # otherwise 'onchange()' will not apply changes to them
-        all_values = values.copy()
+        all_values = {k: v for k, v in values.items() if k in model._fields}
+        not_values = {k: v for k, v in values.items() if k not in model._fields}
         for field in model._fields:
             if field not in all_values:
                 all_values[field] = False
@@ -44,6 +45,9 @@ class OnChangeManager(Component):
             )
             all_values.update(new_values)
 
+        for fld in not_values:
+            if fld not in all_values:
+                all_values[fld] = not_values[fld]
         res = {f: v for f, v in all_values.items() if f in values or f in new_values}
         return res
 
@@ -61,9 +65,7 @@ class SaleOrderOnChange(Component):
         "workflow_process_id",
     ]
 
-    line_onchange_fields = [
-        "product_id",
-    ]
+    line_onchange_fields = ["product_id"]
 
     def play(self, order, order_lines):
         """ Play the onchange of the sales order and it's lines
