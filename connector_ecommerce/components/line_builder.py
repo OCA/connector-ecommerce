@@ -29,7 +29,7 @@ class SpecialOrderLineBuilder(Component):
     _usage = "order.line.builder"
 
     def __init__(self, work_context):
-        super(SpecialOrderLineBuilder, self).__init__(work_context)
+        super().__init__(work_context)
         self.product = None  # id or browse_record
         # when no product_id, fallback to a product_ref
         self.product_ref = None  # tuple (module, xmlid)
@@ -66,12 +66,12 @@ class ShippingLineBuilder(Component):
     _usage = "order.line.builder.shipping"
 
     def __init__(self, work_context):
-        super(ShippingLineBuilder, self).__init__(work_context)
+        super().__init__(work_context)
         self.product_ref = ("connector_ecommerce", "product_product_shipping")
         self.sequence = 999
 
     def get_line(self):
-        values = super(ShippingLineBuilder, self).get_line()
+        values = super().get_line()
         values["is_delivery"] = True
         return values
 
@@ -84,7 +84,7 @@ class CashOnDeliveryLineBuilder(Component):
     _usage = "order.line.builder.cod"
 
     def __init__(self, work_context):
-        super(CashOnDeliveryLineBuilder, self).__init__(work_context)
+        super().__init__(work_context)
         self.product_ref = ("connector_ecommerce", "product_product_cash_on_delivery")
         self.sequence = 995
 
@@ -97,14 +97,14 @@ class GiftOrderLineBuilder(Component):
     _usage = "order.line.builder.gift"
 
     def __init__(self, work_context):
-        super(GiftOrderLineBuilder, self).__init__(work_context)
+        super().__init__(work_context)
         self.product_ref = ("connector_ecommerce", "product_product_gift")
         self.sign = -1
         self.gift_code = None
         self.sequence = 990
 
     def get_line(self):
-        line = super(GiftOrderLineBuilder, self).get_line()
+        line = super().get_line()
         if self.gift_code:
             line["name"] = "{} [{}]".format(line["name"], self.gift_code)
         return line

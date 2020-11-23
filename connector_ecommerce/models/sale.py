@@ -152,21 +152,21 @@ class SaleOrder(models.Model):
 
     @api.model
     def create(self, values):
-        order = super(SaleOrder, self).create(values)
+        order = super().create(values)
         if values.get("canceled_in_backend"):
             order._log_canceled_in_backend()
             order._try_auto_cancel()
         return order
 
     def write(self, values):
-        result = super(SaleOrder, self).write(values)
+        result = super().write(values)
         if values.get("canceled_in_backend"):
             self._log_canceled_in_backend()
             self._try_auto_cancel()
         return result
 
     def action_cancel(self):
-        res = super(SaleOrder, self).action_cancel()
+        res = super().action_cancel()
         for sale in self:
             # the sales order is canceled => considered as resolved
             if sale.canceled_in_backend and not sale.cancellation_resolved:
@@ -217,4 +217,4 @@ class SaleOrder(models.Model):
             # import of order)
             return
         else:
-            return super(SaleOrder, self)._create_delivery_line(carrier, price_unit)
+            return super()._create_delivery_line(carrier, price_unit)
