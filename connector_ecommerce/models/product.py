@@ -50,7 +50,7 @@ class ProductTemplate(models.Model):
                 self._event("on_product_price_changed").notify(product)
 
     def write(self, vals):
-        result = super(ProductTemplate, self).write(vals)
+        result = super().write(vals)
         self._price_changed(vals)
         return result
 
@@ -105,6 +105,6 @@ class ProductProduct(models.Model):
 
     @api.model
     def create(self, vals):
-        product = super(ProductProduct, self).create(vals)
+        product = super().create(vals)
         product._price_changed(vals)
         return product

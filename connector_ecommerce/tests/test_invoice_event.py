@@ -11,7 +11,7 @@ class TestInvoiceEvent(common.TransactionCase):
     """ Test if the events on the invoice are fired correctly """
 
     def setUp(self):
-        super(TestInvoiceEvent, self).setUp()
+        super().setUp()
         self.invoice_model = self.env["account.move"]
         partner_model = self.env["res.partner"]
         partner = partner_model.create({"name": "Hodor"})

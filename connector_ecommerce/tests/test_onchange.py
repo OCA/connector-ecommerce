@@ -20,7 +20,7 @@ class TestOnchange(TransactionComponentRegistryCase):
     """ Test if the onchanges are applied correctly on a sales order"""
 
     def setUp(self):
-        super(TestOnchange, self).setUp()
+        super().setUp()
         self.collection = self.env["collection.base"]
         OnChangeManager._build_component(self.comp_registry)
         SaleOrderOnChange._build_component(self.comp_registry)
@@ -50,8 +50,17 @@ class TestOnchange(TransactionComponentRegistryCase):
         partner_model = self.env["res.partner"]
         tax_model = self.env["account.tax"]
 
+        fiscal_position = self.env["account.fiscal.position"].create(
+            {"name": "Test", "company_id": self.env.ref("base.main_company").id}
+        )
+
         partner = partner_model.create(
-            {"name": "seb", "zip": "69100", "city": "Villeurbanne"}
+            {
+                "name": "seb",
+                "zip": "69100",
+                "city": "Villeurbanne",
+                "property_account_position_id": fiscal_position.id,
+            }
         )
         partner_invoice = partner_model.create(
             {
@@ -77,6 +86,7 @@ class TestOnchange(TransactionComponentRegistryCase):
         order_vals = {
             "name": "mag_10000001",
             "partner_id": partner.id,
+            "company_id": self.env.company.id,
             "payment_mode_id": payment_mode.id,
             "order_line": [
                 (
@@ -111,6 +121,7 @@ class TestOnchange(TransactionComponentRegistryCase):
             onchange = base.component(usage="ecommerce.onchange.manager.sale.order")
             order = onchange.play(order_vals, extra_lines)
 
+        self.assertEqual(order["fiscal_position_id"], fiscal_position.id)
         self.assertEqual(order["partner_invoice_id"], partner_invoice.id)
         self.assertEqual(len(order["order_line"]), 1)
         line = order["order_line"][0][2]

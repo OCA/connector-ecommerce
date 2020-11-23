@@ -1,5 +1,5 @@
-connector https://github.com/forgeflow/connector 13.0-mig-connector_base_product
+connector
 e-commerce
-sale-workflow https://github.com/forgeflow/sale-workflow 13.0-merges
+sale-workflow https://github.com/bizzappdev/sale-workflow 13.0-mig_sale_automatic_workflow_payment_mode_BAD
 bank-payment
-server-tools https://github.com/hibou-io/server-tools mig/13.0/base_exception
+server-tools
