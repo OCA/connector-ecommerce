@@ -20,11 +20,11 @@ class StockPicking(models.Model):
                 self._event("on_tracking_number_added").notify(record)
         return res
 
-    def action_done(self):
+    def _action_done(self):
         # The key in the context avoid the event to be fired in
         # StockMove.action_done(). Allow to handle the partial pickings
         self_context = self.with_context(__no_on_event_out_done=True)
-        result = super(StockPicking, self_context).action_done()
+        result = super(StockPicking, self_context)._action_done()
         for picking in self:
             method = "partial" if picking.related_backorder_ids else "complete"
             if picking.picking_type_id.code == "outgoing":
@@ -41,13 +41,13 @@ class StockPicking(models.Model):
 class StockMove(models.Model):
     _inherit = "stock.move"
 
-    def action_done(self):
+    def _action_done(self, cancel_backorder=False):
         fire_event = not self.env.context.get("__no_on_event_out_done")
         if fire_event:
             pickings = self.mapped("picking_id")
             states = {p.id: p.state for p in pickings}
 
-        result = super(StockMove, self).action_done()
+        result = super()._action_done(cancel_backorder=cancel_backorder)
 
         if fire_event:
             for picking in pickings:
