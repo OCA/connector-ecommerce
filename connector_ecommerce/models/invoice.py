@@ -19,6 +19,6 @@ class AccountMove(models.Model):
 
     def notify_invoice_validate(self):
         for record in self.filtered(
-            lambda m: m.invoice_payment_state == "not_paid" and m.type == "out_invoice"
+            lambda m: m.move_type == "out_invoice"
         ):
             self._event("on_invoice_validated").notify(record)
