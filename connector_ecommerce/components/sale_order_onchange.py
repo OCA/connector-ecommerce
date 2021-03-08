@@ -95,8 +95,14 @@ class SaleOrderOnChange(Component):
             for idx, command_line in enumerate(line_list):
                 # line_list format:[(0, 0, {...}), (0, 0, {...})]
                 if command_line[0] in (0, 1):  # create or update values
+                    # we work on a temporary record
+                    order_model = self.env['sale.order']
+                    new_record = order_model.new(order)
                     # keeps command number and ID (or 0)
                     old_line_data = command_line[2]
+                    # passing order_id also so order_id.company_id based onchange will
+                    # also work
+                    old_line_data['order_id'] = new_record
                     new_line_data = self.play_onchanges(
                         "sale.order.line", old_line_data, self.line_onchange_fields
                     )
