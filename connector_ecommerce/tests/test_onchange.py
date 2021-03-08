@@ -77,6 +77,7 @@ class TestOnchange(TransactionComponentRegistryCase):
         order_vals = {
             "name": "mag_10000001",
             "partner_id": partner.id,
+            "company_id": self.env.company.id,
             "payment_mode_id": payment_mode.id,
             "order_line": [
                 (
