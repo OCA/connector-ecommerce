@@ -97,7 +97,14 @@ class SaleOrderOnChange(Component):
                 if command_line[0] in (0, 1):  # create or update values
                     # we work on a temporary record
                     order_model = self.env["sale.order"]
-                    new_record = order_model.new(order)
+
+                    all_values = {
+                        k: v for k, v in order.items() if k in order_model._fields
+                    }
+                    for field in order_model._fields:
+                        if field not in all_values:
+                            all_values[field] = False
+                    new_record = order_model.new(all_values)
                     # keeps command number and ID (or 0)
                     old_line_data = command_line[2]
                     # passing order_id also so order_id.company_id based onchange will
