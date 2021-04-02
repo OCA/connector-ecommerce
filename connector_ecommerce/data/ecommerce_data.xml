@@ -55,16 +55,4 @@
         <field name="code">if self.need_cancel: failed = True</field>
         <field name="active" eval="True" />
     </record>
-    <record id="excep_product_has_checkpoint" model="exception.rule">
-        <field name="name">A product needs to be reviewed.</field>
-        <field
-            name="description"
-        >A product has been imported from a backend and needs to be reviewed. Go to Connectors > Checkpoint and review the new products.</field>
-        <field name="sequence">20</field>
-        <field name="model">sale.order.line</field>
-        <field
-            name="code"
-        >if object.product_id and object.product_id.has_checkpoint: failed = True</field>
-        <field name="active" eval="True" />
-    </record>
 </odoo>
