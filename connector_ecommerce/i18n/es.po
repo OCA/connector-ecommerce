@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: odoo-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
-"PO-Revision-Date: 2014-06-06 00:02+0000\n"
-"Last-Translator: Alberto Garcia (Factor Libre) <alberto.garcia@factorlibre."
-"com>\n"
+"PO-Revision-Date: 2021-05-05 20:47+0000\n"
+"Last-Translator: Valentin Vinagre <valentin.vinagre@sygel.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 "X-Launchpad-Export-Date: 2014-06-06 06:38+0000\n"
-"X-Generator: Launchpad (build 17031)\n"
 
 #. module: connector_ecommerce
 #: code:addons/connector_ecommerce/models/sale.py:104
@@ -52,15 +52,15 @@ msgstr "Una orden de venta padre debe cancelar"
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_product_has_checkpoint
-#, fuzzy
 msgid ""
 "A product has been imported from a backend\n"
 "                and needs to be reviewed.\n"
 "                Go to Connectors > Checkpoint and review the new products."
 msgstr ""
-"Un producto ha sido importado de un área de administración y debe ser "
-"revisado.\n"
-"Vaya a Conectores > Punto de Control y revise los nuevos productos."
+"Un producto ha sido importado de un área de administración\n"
+"                 y debe ser revisado.\n"
+"                Vaya a Conectores > Punto de Control y revise los nuevos "
+"productos."
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_product_has_checkpoint
