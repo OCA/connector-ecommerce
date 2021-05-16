@@ -27,7 +27,7 @@ class ProductTemplate(models.Model):
         return {"list_price", "lst_price", "standard_price"}
 
     def _price_changed(self, vals):
-        """ Fire the ``on_product_price_changed`` on all the variants of
+        """Fire the ``on_product_price_changed`` on all the variants of
         the template if the price of the product could have changed.
 
         If one of the field used in a sale pricelist item has been
@@ -63,7 +63,7 @@ class ProductProduct(models.Model):
         return {"lst_price", "standard_price", "price", "price_extra"}
 
     def _price_changed(self, vals):
-        """ Fire the ``on_product_price_changed`` if the price
+        """Fire the ``on_product_price_changed`` if the price
         of the product could have changed.
 
         If one of the field used in a sale pricelist item has been

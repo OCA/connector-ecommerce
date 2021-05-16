@@ -7,7 +7,7 @@ from odoo.addons.component.core import Component
 
 
 class SpecialOrderLineBuilder(Component):
-    """ Base class to build a sales order line for a sales order
+    """Base class to build a sales order line for a sales order
 
     Used when extra order lines have to be added in a sales order
     but we only know some parameters (product, price, ...), for instance,
