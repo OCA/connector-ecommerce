@@ -40,12 +40,13 @@ class TestInvoiceEvent(common.TransactionCase):
         #     invoice._convert_to_write(invoice._cache)
         # )
         self.journal = self.env["account.journal"].search(
-            [("type", "=", "bank"), ("company_id", "=", self.env.company.id)], limit=1,
+            [("type", "=", "bank"), ("company_id", "=", self.env.company.id)],
+            limit=1,
         )
 
     def test_event_validated(self):
-        """ Test if the ``on_invoice_validated`` event is fired
-        when an invoice is validated """
+        """Test if the ``on_invoice_validated`` event is fired
+        when an invoice is validated"""
         assert self.invoice, "The invoice has not been created"
 
         mock_method = "odoo.addons.component_event.models.base.Base._event"
@@ -55,8 +56,8 @@ class TestInvoiceEvent(common.TransactionCase):
             mock_event("on_invoice_validated").notify.assert_any_call(self.invoice)
 
     def test_event_paid(self):
-        """ Test if the ``on_invoice_paid`` event is fired
-        when an invoice is paid """
+        """Test if the ``on_invoice_paid`` event is fired
+        when an invoice is paid"""
         assert self.invoice, "The invoice has not been created"
 
         mock_method = "odoo.addons.component_event.models.base.Base._event"

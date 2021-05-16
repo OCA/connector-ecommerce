@@ -4,10 +4,10 @@
 
 {
     "name": "Connector for E-Commerce",
-    "version": "13.0.1.0.0",
+    "version": "14.0.1.0.0",
     "category": "Hidden",
     "author": "Camptocamp,Akretion,Odoo Community Association (OCA)",
-    "website": "http://odoo-connector.com",
+    "website": "https://github.com/OCA/connector-ecommerce",
     "license": "AGPL-3",
     "depends": [
         "connector",

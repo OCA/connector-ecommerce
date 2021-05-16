@@ -62,8 +62,8 @@ class TestPickingEvent(common.TransactionCase):
         self.location_dest_id = self.picking.move_lines[0].location_dest_id.id
 
     def test_event_on_picking_out_done(self):
-        """ Test if the ``on_picking_out_done`` event is fired
-        when an outgoing picking is done """
+        """Test if the ``on_picking_out_done`` event is fired
+        when an outgoing picking is done"""
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
             self.picking.action_confirm()
@@ -77,8 +77,8 @@ class TestPickingEvent(common.TransactionCase):
             )
 
     def test_event_on_picking_out_done_partial(self):
-        """ Test if the ``on_picking_out_done`` informs of the partial
-        pickings """
+        """Test if the ``on_picking_out_done`` informs of the partial
+        pickings"""
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
             self.picking.action_confirm()
@@ -91,8 +91,8 @@ class TestPickingEvent(common.TransactionCase):
             )
 
     def test_event_on_tracking_number_added(self):
-        """ Test if the ``on_tracking_number_added`` event is fired
-        when a tracking number is added """
+        """Test if the ``on_tracking_number_added`` event is fired
+        when a tracking number is added"""
         mock_method = "odoo.addons.component_event.models.base.Base._event"
         with mock.patch(mock_method) as mock_event:
             self.picking.carrier_tracking_ref = "XYZ"

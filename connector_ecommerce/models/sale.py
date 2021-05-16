@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 class SaleOrder(models.Model):
-    """ Add a cancellation mecanism in the sales orders
+    """Add a cancellation mecanism in the sales orders
 
     When a sales order is canceled in a backend, the connectors can flag
     the 'canceled_in_backend' flag. It will:
@@ -64,7 +64,7 @@ class SaleOrder(models.Model):
 
     @api.depends()
     def _compute_parent_id(self):
-        """ Need to be inherited in the connectors to implement the
+        """Need to be inherited in the connectors to implement the
         parent logic.
 
         See an implementation example in ``connector_magento``.
@@ -74,7 +74,7 @@ class SaleOrder(models.Model):
 
     @api.depends("canceled_in_backend", "cancellation_resolved")
     def _compute_need_cancel(self):
-        """ Return True if the sales order need to be canceled
+        """Return True if the sales order need to be canceled
         (has been canceled on the Backend)
         """
         self.ensure_one()
@@ -87,7 +87,7 @@ class SaleOrder(models.Model):
         "parent_id.parent_need_cancel",
     )
     def _compute_parent_need_cancel(self):
-        """ Return True if at least one parent sales order need to
+        """Return True if at least one parent sales order need to
         be canceled (has been canceled on the backend).
         Follows all the parent sales orders.
         """
@@ -100,7 +100,7 @@ class SaleOrder(models.Model):
             order = order.parent_id
 
     def _try_auto_cancel(self):
-        """ Try to automatically cancel a sales order canceled
+        """Try to automatically cancel a sales order canceled
         in a backend.
 
         If it can't cancel it, does nothing.
@@ -174,7 +174,7 @@ class SaleOrder(models.Model):
         return res
 
     def ignore_cancellation(self, reason):
-        """ Manually set the cancellation from the backend as resolved.
+        """Manually set the cancellation from the backend as resolved.
 
         The user can choose to keep the sales order active for some reason,
         it only requires to push a button to keep it alive.

@@ -7,10 +7,8 @@ from contextlib import contextmanager
 import odoo.tests.common as common
 
 from odoo.addons.component.tests.common import TransactionComponentRegistryCase
-from odoo.addons.connector_ecommerce.components.sale_order_onchange import (
-    OnChangeManager,
-    SaleOrderOnChange,
-)
+
+from .components.sale_order_onchange import OnChangeManager, SaleOrderOnChange
 
 DB = common.DB
 ADMIN_USER_ID = common.ADMIN_USER_ID
