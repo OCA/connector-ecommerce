@@ -2,7 +2,7 @@
 # © 2018 FactorLibre
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import mock
+from unittest import mock
 
 import odoo.tests.common as common
 
@@ -70,7 +70,7 @@ class TestPickingEvent(common.TransactionCase):
             self.picking.action_assign()
             for move in self.picking.move_lines:
                 move.move_line_ids.qty_done = move.product_qty
-            self.picking.action_done()
+            self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
                 self.picking, "complete"
@@ -84,7 +84,7 @@ class TestPickingEvent(common.TransactionCase):
             self.picking.action_confirm()
             self.picking.action_assign()
             self.picking.move_lines.move_line_ids.qty_done = 1.0
-            self.picking.action_done()
+            self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
                 self.picking, "partial"
