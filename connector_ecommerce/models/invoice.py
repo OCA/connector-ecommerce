@@ -7,8 +7,8 @@ from odoo import models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def post(self):
-        super().post()
+    def action_post(self):
+        super().action_post()
         self.notify_invoice_validate()
 
     def action_invoice_paid(self):
