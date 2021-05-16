@@ -68,7 +68,7 @@ class SaleOrderOnChange(Component):
     line_onchange_fields = ["product_id"]
 
     def play(self, order, order_lines):
-        """ Play the onchange of the sales order and it's lines
+        """Play the onchange of the sales order and it's lines
 
         :param order: sales order values
         :type: dict

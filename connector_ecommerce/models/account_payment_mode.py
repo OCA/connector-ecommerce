@@ -33,7 +33,7 @@ class AccountPaymentMode(models.Model):
 
     @api.model
     def get_or_create_payment_method(self, payment_method):
-        """ Try to get a payment method or create if it doesn't exist
+        """Try to get a payment method or create if it doesn't exist
 
         :param payment_method: payment method like PayPal, etc.
         :type payment_method: str
