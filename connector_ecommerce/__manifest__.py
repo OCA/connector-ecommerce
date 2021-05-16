@@ -18,6 +18,7 @@
     ],
     "data": [
         "security/security.xml",
+        "security/ir.model.access.csv",
         "wizard/sale_ignore_cancel_view.xml",
         "data/ecommerce_data.xml",
         "views/sale_view.xml",
