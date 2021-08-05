@@ -51,11 +51,9 @@
                 is canceled.</field>
             <field name="sequence">30</field>
             <field name="model">sale.order</field>
-            <field name="rule_group">sale</field>
             <field name="code">if sale.parent_need_cancel:
                 failed = True</field>
             <field name="active" eval="True" />
-            <field name="rule_group">sale</field>
         </record>
 
         <record id="excep_order_need_cancel" model="exception.rule">
@@ -64,10 +62,8 @@
                 backend.</field>
             <field name="sequence">20</field>
             <field name="model">sale.order</field>
-            <field name="rule_group">sale</field>
             <field name="code">if sale.need_cancel: failed = True</field>
             <field name="active" eval="True" />
-            <field name="rule_group">sale</field>
         </record>
 
         <record id="excep_product_has_checkpoint" model="exception.rule">
@@ -77,10 +73,8 @@
                 Go to Connectors > Checkpoint and review the new products.</field>
             <field name="sequence">20</field>
             <field name="model">sale.order.line</field>
-            <field name="rule_group">sale</field>
             <field name="code">if object.product_id and object.product_id.has_checkpoint: failed = True</field>
             <field name="active" eval="True" />
-            <field name="rule_group">sale</field>
         </record>
 
     </data>
