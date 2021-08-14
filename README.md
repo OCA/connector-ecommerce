@@ -22,8 +22,8 @@ http://www.openerp-connector.com
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 9.0.1.0.0 | Connector for E-Commerce
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_ecommerce](connector_ecommerce/) | 9.0.1.0.0 |  | Connector for E-Commerce
 
 [//]: # (end addons)
