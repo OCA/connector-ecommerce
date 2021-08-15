@@ -22,8 +22,8 @@ http://www.odoo-connector.com
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[connector_ecommerce](connector_ecommerce/) | 10.0.1.1.0 | Connector for E-Commerce
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_ecommerce](connector_ecommerce/) | 10.0.1.1.0 |  | Connector for E-Commerce
 
 [//]: # (end addons)
