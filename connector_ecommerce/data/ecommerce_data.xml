@@ -43,7 +43,7 @@
         <field name="sequence">30</field>
         <field name="model">sale.order</field>
         <field name="code">if self.parent_need_cancel: failed = True</field>
-        <field name="active" eval="True" />
+        <field name="active" eval="False" />
     </record>
     <record id="excep_order_need_cancel" model="exception.rule">
         <field name="name">Sales order canceled on the backend.</field>
@@ -53,6 +53,6 @@
         <field name="sequence">20</field>
         <field name="model">sale.order</field>
         <field name="code">if self.need_cancel: failed = True</field>
-        <field name="active" eval="True" />
+        <field name="active" eval="False" />
     </record>
 </odoo>
