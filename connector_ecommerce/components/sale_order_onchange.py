@@ -18,8 +18,8 @@ class OnChangeManager(Component):
             if fieldname not in record:
                 if model:
                     column = self.env[model]._fields[fieldname]
-                    if column.type == 'many2one':
-                        value = value[0]  # many2one are tuple (id, name)
+                    if column.type == 'many2one' and value is not False:
+                        value = value[0]   # many2one are tuple (id, name)
                 new_values[fieldname] = value
         return new_values
 
