@@ -42,7 +42,7 @@
         >The parent sales order has been canceled on the backend. You will not be able to process this sales order until the parent's one is canceled.</field>
         <field name="sequence">30</field>
         <field name="model">sale.order</field>
-        <field name="code">if self.parent_need_cancel: failed = True</field>
+        <field name="code">failed=obj.parent_need_cancel</field>
         <field name="active" eval="True" />
     </record>
     <record id="excep_order_need_cancel" model="exception.rule">
@@ -52,7 +52,7 @@
         >The sales order has been canceled on the backend.</field>
         <field name="sequence">20</field>
         <field name="model">sale.order</field>
-        <field name="code">if self.need_cancel: failed = True</field>
+        <field name="code">failed=obj.need_cancel</field>
         <field name="active" eval="True" />
     </record>
     <record id="excep_product_has_checkpoint" model="exception.rule">
@@ -64,7 +64,7 @@
         <field name="model">sale.order.line</field>
         <field
             name="code"
-        >if object.product_id and object.product_id.has_checkpoint: failed = True</field>
+        >failed=obj.product_id and obj.product_id.has_checkpoint</field>
         <field name="active" eval="True" />
     </record>
 </odoo>

@@ -45,7 +45,6 @@ class SaleOrder(models.Model):
     )
     parent_id = fields.Many2one(
         comodel_name="sale.order",
-        compute="_compute_parent_id",
         string="Parent Order",
         help="A parent sales order is a sales " "order replaced by this one.",
     )
@@ -61,16 +60,6 @@ class SaleOrder(models.Model):
         help="A parent sales order has been canceled on the backend"
         " and needs to be canceled.",
     )
-
-    @api.depends()
-    def _compute_parent_id(self):
-        """ Need to be inherited in the connectors to implement the
-        parent logic.
-
-        See an implementation example in ``connector_magento``.
-        """
-        self.ensure_one()
-        self.parent_id = False
 
     @api.depends("canceled_in_backend", "cancellation_resolved")
     def _compute_need_cancel(self):

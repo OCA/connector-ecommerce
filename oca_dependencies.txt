@@ -1,5 +1,5 @@
 connector
 e-commerce
-sale-workflow https://github.com/bizzappdev/sale-workflow 13.0-mig_sale_automatic_workflow_payment_mode_BAD
+sale-workflow
 bank-payment
 server-tools
