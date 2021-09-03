@@ -30,6 +30,9 @@ class AccountPaymentMode(models.Model):
         default="always",
         required=True,
     )
+    rule_paid_acquirer_id = fields.Many2one(
+        comodel_name="payment.acquirer", string="Payment Acquirer"
+    )
 
     @api.model
     def get_or_create_payment_method(self, payment_method):

@@ -9,6 +9,11 @@
                 <group name="import_rule" string="Import Rules">
                     <group>
                         <field name="import_rule" />
+                        <field
+                            name="rule_paid_acquirer_id"
+                            attrs="{'invisible': [('import_rule', '!=', 'paid')]}"
+                            ptions="{'no_create': True}"
+                        />
                         <field name="days_before_cancel" />
                     </group>
                     <group name="import_rule_help" class="oe_grey" col="1">
