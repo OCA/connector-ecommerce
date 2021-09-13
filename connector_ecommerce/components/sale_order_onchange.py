@@ -109,7 +109,7 @@ class SaleOrderOnChange(Component):
                     old_line_data = command_line[2]
                     # passing order_id also so order_id.company_id based onchange will
                     # also work
-                    old_line_data["order_id"] = new_record
+                    old_line_data["order_id"] = new_record.id
                     new_line_data = self.play_onchanges(
                         "sale.order.line", old_line_data, self.line_onchange_fields
                     )
