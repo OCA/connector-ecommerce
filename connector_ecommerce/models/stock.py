@@ -43,13 +43,13 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
 
     @api.multi
-    def action_done(self):
+    def _action_done(self):
         fire_event = not self.env.context.get('__no_on_event_out_done')
         if fire_event:
             pickings = self.mapped('picking_id')
             states = {p.id: p.state for p in pickings}
 
-        result = super(StockMove, self).action_done()
+        result = super(StockMove, self)._action_done()
 
         if fire_event:
             for picking in pickings:
