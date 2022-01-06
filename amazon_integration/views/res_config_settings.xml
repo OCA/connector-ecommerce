@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_amazon_res_config_settings_form" model="ir.ui.view">
+    <field name="name">view.amazon_res_config_settings.form</field>
+    <field name="model">res.config.settings</field>
+    <field name="priority" eval="10"/>
+    <field name='inherit_id' ref='base.res_config_settings_view_form'/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('settings')]" position="inside">
+        <div class="app_settings_block" data-string="Amazon" string="Amazon" data-key="amazon_integration">
+          <h2>Order Info</h2>
+          <div class="row mt16 o_settings_container">
+            <div class="col-12 col-lg-6 o_setting_box" title="Default products">
+              <div class="o_setting_left_pane"/>
+              <div class="o_setting_right_pane">
+                <span class="o_form_label">Amazon User</span>
+                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                <div class="text-muted">
+                  Default user for sales
+                </div>
+                <div class="content-group">
+                  <div class="row mt16">
+                    <label string="Commercial" for="amazon_user_id" class="col-lg-3 o_light_label"/>
+                    <field name="amazon_user_id"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </xpath>
+
+    </field>
+  </record>
+
+</odoo>

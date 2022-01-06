@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_amazon_marketplace_form" model="ir.ui.view">
+    <field name="name">view.amazon_marketplace.form</field>
+    <field name="model">amazon.marketplace</field>
+    <field name="arch" type="xml">
+      <form string="Amazon Marketplace" create="0">
+        <header>
+          <button name="import_market_orders" string="Import Market Orders" type="object" class="btn-primary"/>
+        </header>
+        <sheet>
+
+          <div class="oe_title">
+            <h1>
+              <field name="name"/>
+            </h1>
+          </div>
+          <group name="seller">
+            <group>
+              <field name="seller_id"/>
+              <field name="country_id" required="1"/>
+              <field name="lang_id"/>
+            </group>
+            <group name="info">
+              <field name="company_id"/>
+              <field name="last_import_date"/>
+            </group>
+          </group>
+
+          <notebook>
+            <page string="Marketplace Settings">
+              <group>
+                <group string="Order Info" name="order_info">
+                  <field name="pricelist_id"/>
+                </group>
+                <group string="Invoice Info">
+                  <field name="fiscal_position_id"/>
+                  <field name="payment_term_id"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_amazon_marketplace_tree" model="ir.ui.view">
+    <field name="name">view.amazon_marketplace.tree</field>
+    <field name="model">amazon.marketplace</field>
+    <field name="arch" type="xml">
+      <tree string="Amazon marketplace" create="0">
+        <field name="name"/>
+        <field name="seller_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_amazon_marketplace_kanban" model="ir.ui.view">
+    <field name="name">amazon.marketplace.dashboard</field>
+    <field name="model">amazon.marketplace</field>
+    <field name="arch" type="xml">
+      <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors " create="0">
+        <field name="name"/>
+        <field name="color"/>
+        <field name="country_id"/>
+        <field name="seller_id"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click" style="height:150px">
+              <div class="o_kanban_card_header">
+                <div class="o_kanban_card_header_title">
+                  <div class="o_primary"><img t-att-src="kanban_image('res.country', 'image', record.country_id.raw_value)" t-att-title="record.country_id.value" alt="Country" width="35" height="24" class="oe_kanban_avatar"/>
+                    <t t-esc="record.name.value"/></div>
+                  <div class="o_secondary text-muted o_kanban_record_subtitle" style="margin-left:40px;"><field class="o_secondary" name="seller_id"/></div>
+                </div>
+
+              </div>
+              <div class="o_dropdown_kanban dropdown">
+
+                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                  <span class="fa fa-ellipsis-v"/>
+                </a>
+                <div class="dropdown-menu" role="menu">
+                  <t t-if="widget.editable">
+                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                  </t>
+                  <t t-if="widget.deletable">
+                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                  </t>
+                  <ul class="oe_kanban_colorpicker" data-field="color"/>
+                </div>
+              </div>
+              <div class="o_kanban_primary_left">
+                <button type="object" name="import_market_orders" style="margin-bottom:20px;" class="btn btn-primary">
+                  <span>Import Market Orders</span>
+                </button>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="view_amazon_marketplace_search" model="ir.ui.view">
+    <field name="name">view.amazon_marketplace.search</field>
+    <field name="model">amazon.marketplace</field>
+    <field name="arch" type="xml">
+      <search string="Amazon marketplace">
+        <field name="name"/>
+        <group string="Group By" name="groupby">
+          <filter name="group_country_id" string="Country" context="{'group_by': 'country_id'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+</odoo>

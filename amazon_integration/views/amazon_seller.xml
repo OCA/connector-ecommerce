@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_amazon_seller_form" model="ir.ui.view">
+    <field name="name">view.amazon_seller.form</field>
+    <field name="model">amazon.seller</field>
+    <field name="arch" type="xml">
+      <form string="Amazon Seller">
+        <header>
+          <button string="Import Marketplaces" name="get_marketplaces" class="btn-primary" type="object"/>
+          <button string="Import Orders" name="action_import_orders" type="object" class="btn-primary"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="e.g Spanish Seller"/>
+            </h1>
+          </div>
+
+          <group name="seller">
+            <group name="keys">
+              <field name="access_key" password="True" required="1"/>
+              <field name="secret_key" password="True" required="1"/>
+              <field name="merchant_id" password="True" required="1"/>
+            </group>
+            <group name="info">
+              <field name="country_id" required="1"/>
+              <field name="company_id"/>
+              <field name="last_import_date_seller"/>
+            </group>
+          </group>
+
+          <group name="marketplace_ids" string="Marketplaces">
+            <field name="marketplace_ids" nolabel="1" readonly="0">
+              <tree string="Marketplaces">
+                <field name="name"/>
+                <field name="market_code"/>
+                <field name="country_id"/>
+                <field name="pricelist_id"/>
+              </tree>
+            </field>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_amazon_seller_tree" model="ir.ui.view">
+    <field name="name">view.amazon_seller.tree</field>
+    <field name="model">amazon.seller</field>
+    <field name="arch" type="xml">
+      <tree string="Amazon Seller">
+        <field name="name"/>
+        <field name="marketplace_ids" widget="many2many_tags"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_amazon_seller_search" model="ir.ui.view">
+    <field name="name">view.amazon_seller.search</field>
+    <field name="model">amazon.seller</field>
+    <field name="arch" type="xml">
+      <search string="Amazon Seller">
+        <field name="name"/>
+        <group string="Group By" name="groupby">
+          <filter name="country_groupby" string="Country" context="{'group_by': 'country_id'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+</odoo>

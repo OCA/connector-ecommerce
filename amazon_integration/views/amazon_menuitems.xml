@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Actions -->
+  <record id="amazon_marketplace_action" model="ir.actions.act_window">
+    <field name="name">Marketplace</field>
+    <field name="res_model">amazon.marketplace</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="amazon_marketplace_dashboard_action" model="ir.actions.act_window">
+    <field name="name">Dashboard</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">amazon.marketplace</field>
+    <field name="view_mode">kanban,form</field>
+    <field name="context">{'search_default_group_country_id':1}</field>
+    <field name="view_type">form</field>
+    <field name="view_id" ref="view_amazon_marketplace_kanban"/>
+  </record>
+
+  <record id="amazon_seller_action" model="ir.actions.act_window">
+    <field name="name">Seller</field>
+    <field name="res_model">amazon.seller</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="oe_view_nocontent_create">
+        Click to create a new Seller.
+      </p>
+    </field>
+  </record>
+
+  <record id="amazon_res_config_settings_action" model="ir.actions.act_window">
+    <field name="name">Settings</field>
+    <field name="res_model">res.config.settings</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="view_id" ref="amazon_integration.view_amazon_res_config_settings_form"/>
+    <field name="view_mode">form</field>
+    <field name="target">inline</field>
+    <field name="context">{'module' : 'amazon_integration'}</field>
+  </record>
+
+  <!-- Menus -->
+
+  <menuitem id="amazon_menu" name="Amazon" parent="" web_icon="amazon_integration,static/description/icon.png" sequence="20"/>
+
+  <menuitem id="amazon_dashboard_menu" parent="amazon_menu" action="amazon_marketplace_dashboard_action" sequence="10"/>
+
+  <menuitem id="amazon_config_menu" parent="amazon_menu" name="Configuration" sequence="30"/>
+
+  <menuitem id="amazon_seller_menu" parent="amazon_config_menu" action="amazon_seller_action" sequence="20"/>
+
+  <menuitem id="amazon_marketplace_menu" parent="amazon_config_menu" action="amazon_marketplace_action" sequence="30"/>
+
+  <menuitem id="amazon_res_config_settings_menu" name="Settings" parent="amazon_config_menu" sequence="0" action="amazon_res_config_settings_action"/>
+
+</odoo>
