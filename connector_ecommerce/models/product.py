@@ -51,7 +51,7 @@ class ProductTemplate(models.Model):
                 remove_products = product_model.browse(from_product_ids)
                 products -= remove_products
             for product in products:
-                self._event('on_product_price_changed').notify(product)
+                product._event('on_product_price_changed').notify(product)
                 # deprecated:
                 on_product_price_changed.fire(self.env,
                                               product_model._name,
