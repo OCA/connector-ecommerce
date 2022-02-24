@@ -41,19 +41,20 @@ class SaleOrder(models.Model):
     # resolved, either because the SO has been canceled or
     # because the user manually chose to keep it open
     cancellation_resolved = fields.Boolean(
-        string="Cancellation from the " "backend resolved", copy=False
+        string="Cancellation from the backend resolved", copy=False
     )
     parent_id = fields.Many2one(
         comodel_name="sale.order",
         compute="_compute_parent_id",
+        search="_search_parent_id",
         string="Parent Order",
-        help="A parent sales order is a sales " "order replaced by this one.",
+        help="A parent sales order is a sales order replaced by this one.",
     )
     need_cancel = fields.Boolean(
         compute="_compute_need_cancel",
         string="Need to be canceled",
         copy=False,
-        help="Has been canceled on the backend" ", need to be canceled.",
+        help="Has been canceled on the backend, need to be canceled.",
     )
     parent_need_cancel = fields.Boolean(
         compute="_compute_parent_need_cancel",
@@ -71,6 +72,12 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         self.parent_id = False
+
+    # This is to resolve ERROR odoo.osv.expression: Non-stored field
+    # sale.order.parent_id cannot be searched.
+    def _search_parent_id(self, operator, value):
+        """Need to be inherited in the connectors to implement the parent logic. """
+        return [("id", "=", -1)]
 
     @api.depends("canceled_in_backend", "cancellation_resolved")
     def _compute_need_cancel(self):
@@ -127,11 +134,11 @@ class SaleOrder(models.Model):
                 except (osv.osv.except_osv, osv.orm.except_orm, exceptions.Warning):
                     # the 'cancellation_resolved' flag will stay to False
                     message = (
-                        _("The sales order could not be automatically " "canceled.")
+                        _("The sales order could not be automatically canceled.")
                         + resolution_msg
                     )
                 else:
-                    message = _("The sales order has been automatically " "canceled.")
+                    message = _("The sales order has been automatically canceled.")
             order.message_post(body=message)
 
     def _log_canceled_in_backend(self):

@@ -19,7 +19,7 @@ class ProductTemplate(models.Model):
         comodel_name="account.tax.group",
         compute="_compute_tax_group_id",
         string="Tax Group",
-        help="Tax groups are used with some external " "system like Prestashop",
+        help="Tax groups are used with some external system like Prestashop",
     )
 
     @api.model
