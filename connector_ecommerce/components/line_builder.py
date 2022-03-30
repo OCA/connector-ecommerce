@@ -59,7 +59,7 @@ class SpecialOrderLineBuilder(Component):
 
 
 class ShippingLineBuilder(Component):
-    """ Return values for a Shipping line """
+    """Return values for a Shipping line"""
 
     _name = "ecommerce.order.line.builder.shipping"
     _inherit = "ecommerce.order.line.builder"
@@ -77,7 +77,7 @@ class ShippingLineBuilder(Component):
 
 
 class CashOnDeliveryLineBuilder(Component):
-    """ Return values for a Cash on Delivery line """
+    """Return values for a Cash on Delivery line"""
 
     _name = "ecommerce.order.line.builder.cod"
     _inherit = "ecommerce.order.line.builder"
@@ -90,7 +90,7 @@ class CashOnDeliveryLineBuilder(Component):
 
 
 class GiftOrderLineBuilder(Component):
-    """ Return values for a Gift line """
+    """Return values for a Gift line"""
 
     _name = "ecommerce.order.line.builder.gift"
     _inherit = "ecommerce.order.line.builder"

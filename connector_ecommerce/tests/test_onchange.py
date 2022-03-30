@@ -15,7 +15,7 @@ ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
 class TestOnchange(TransactionComponentRegistryCase):
-    """ Test if the onchanges are applied correctly on a sales order"""
+    """Test if the onchanges are applied correctly on a sales order"""
 
     def setUp(self):
         super(TestOnchange, self).setUp()
@@ -43,7 +43,7 @@ class TestOnchange(TransactionComponentRegistryCase):
         self.get_base = get_base
 
     def test_play_onchange(self):
-        """ Play the onchange ConnectorUnit on a sales order """
+        """Play the onchange ConnectorUnit on a sales order"""
         product_model = self.env["product.product"]
         partner_model = self.env["res.partner"]
         tax_model = self.env["account.tax"]
