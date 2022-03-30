@@ -76,7 +76,7 @@ class SaleOrder(models.Model):
     # This is to resolve ERROR odoo.osv.expression: Non-stored field
     # sale.order.parent_id cannot be searched.
     def _search_parent_id(self, operator, value):
-        """Need to be inherited in the connectors to implement the parent logic. """
+        """Need to be inherited in the connectors to implement the parent logic."""
         return [("id", "=", -1)]
 
     @api.depends("canceled_in_backend", "cancellation_resolved")
@@ -198,7 +198,7 @@ class SaleOrder(models.Model):
         return True
 
     def action_view_parent(self):
-        """ Return an action to display the parent sales order """
+        """Return an action to display the parent sales order"""
         self.ensure_one()
 
         parent = self.parent_id
