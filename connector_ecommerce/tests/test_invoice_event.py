@@ -8,7 +8,7 @@ import odoo.tests.common as common
 
 
 class TestInvoiceEvent(common.TransactionCase):
-    """ Test if the events on the invoice are fired correctly """
+    """Test if the events on the invoice are fired correctly"""
 
     def setUp(self):
         super(TestInvoiceEvent, self).setUp()
