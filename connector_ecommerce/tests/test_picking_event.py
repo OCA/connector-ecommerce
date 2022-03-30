@@ -8,7 +8,7 @@ import odoo.tests.common as common
 
 
 class TestPickingEvent(common.TransactionCase):
-    """ Test if the events on the pickings are fired correctly """
+    """Test if the events on the pickings are fired correctly"""
 
     def _create_pack_operation(self, product, product_qty, picking_id, **values):
         move_line_env = self.env["stock.move.line"]
