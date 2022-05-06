@@ -418,7 +418,7 @@ msgstr "Zeige übergeordnete VK-Aufträge"
 #: code:addons/connector_ecommerce/models/sale.py:134
 #, fuzzy, python-format
 msgid "Warning: the origin sales order %s has been canceled on the backend."
-msgstr "Der VK-Auftrag wurde im Backend abgebrochen"
+msgstr "Der VK-Auftrag wurde %s im Backend abgebrochen"
 
 #. module: connector_ecommerce
 #: model:product.product,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery
