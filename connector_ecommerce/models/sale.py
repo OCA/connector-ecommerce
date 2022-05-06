@@ -34,9 +34,7 @@ class SaleOrder(models.Model):
 
     _inherit = "sale.order"
 
-    canceled_in_backend = fields.Boolean(
-        string="Canceled in backend", readonly=True, copy=False
-    )
+    canceled_in_backend = fields.Boolean(readonly=True, copy=False)
     # set to True when the cancellation from the backend is
     # resolved, either because the SO has been canceled or
     # because the user manually chose to keep it open
@@ -59,6 +57,7 @@ class SaleOrder(models.Model):
     parent_need_cancel = fields.Boolean(
         compute="_compute_parent_need_cancel",
         string="A parent sales order needs cancel",
+        recursive=True,
         help="A parent sales order has been canceled on the backend"
         " and needs to be canceled.",
     )
