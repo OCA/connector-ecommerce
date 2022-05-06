@@ -422,7 +422,7 @@ msgstr "Bekijk bovenliggende verkooporder"
 #: code:addons/connector_ecommerce/models/sale.py:134
 #, fuzzy, python-format
 msgid "Warning: the origin sales order %s has been canceled on the backend."
-msgstr "De verkooporder is geannuleerd in de backend."
+msgstr "De verkooporder %s is geannuleerd in de backend."
 
 #. module: connector_ecommerce
 #: model:product.product,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery

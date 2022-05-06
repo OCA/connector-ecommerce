@@ -19,14 +19,12 @@ class AccountPaymentMode(models.Model):
     # the logic around the 2 following fields has to be implemented
     # in the connectors (magentoerpconnect, prestashoperpconnect,...)
     days_before_cancel = fields.Integer(
-        string="Days before cancel",
         default=30,
         help="After 'n' days, if the 'Import Rule' is not fulfilled, the "
         "import of the sales order will be canceled.",
     )
     import_rule = fields.Selection(
         selection="_get_import_rules",
-        string="Import Rule",
         default="always",
         required=True,
     )
