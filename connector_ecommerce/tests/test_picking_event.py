@@ -58,8 +58,8 @@ class TestPickingEvent(common.TransactionCase):
         )
         self.sale.action_confirm()
         self.picking = self.sale.picking_ids
-        self.location_id = self.picking.move_lines[0].location_id.id
-        self.location_dest_id = self.picking.move_lines[0].location_dest_id.id
+        self.location_id = self.picking.move_line_ids[0].location_id.id
+        self.location_dest_id = self.picking.move_line_ids[0].location_dest_id.id
 
     def test_event_on_picking_out_done(self):
         """Test if the ``on_picking_out_done`` event is fired
@@ -68,7 +68,7 @@ class TestPickingEvent(common.TransactionCase):
         with mock.patch(mock_method) as mock_event:
             self.picking.action_confirm()
             self.picking.action_assign()
-            for move in self.picking.move_lines:
+            for move in self.picking.move_ids:
                 move.move_line_ids.qty_done = move.product_qty
             self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
@@ -83,7 +83,7 @@ class TestPickingEvent(common.TransactionCase):
         with mock.patch(mock_method) as mock_event:
             self.picking.action_confirm()
             self.picking.action_assign()
-            self.picking.move_lines.move_line_ids.qty_done = 1.0
+            self.picking.move_line_ids.qty_done = 1.0
             self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
