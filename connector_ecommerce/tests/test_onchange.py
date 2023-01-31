@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 import odoo.tests.common as common
 
-from odoo.addons.component.tests.common import TransactionComponentRegistryCase
+from odoo.addons.component.core import ComponentRegistry
 
 from ..components.sale_order_onchange import OnChangeManager, SaleOrderOnChange
 
@@ -14,7 +14,7 @@ DB = common.DB
 ADMIN_USER_ID = common.ADMIN_USER_ID
 
 
-class TestOnchange(TransactionComponentRegistryCase):
+class TestOnchange(ComponentRegistry):
     """Test if the onchanges are applied correctly on a sales order"""
 
     def setUp(self):
