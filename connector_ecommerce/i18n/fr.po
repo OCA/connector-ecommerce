@@ -18,7 +18,8 @@ msgstr ""
 "X-Generator: Launchpad (build 17017)\n"
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:104
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "<p>Resolution:<ol><li>Cancel the linked invoices, delivery orders, automatic "
@@ -44,22 +45,6 @@ msgid "A parent sales order needs cancel"
 msgstr "Une commande parente doit être annulée"
 
 #. module: connector_ecommerce
-#: model:exception.rule,description:connector_ecommerce.excep_product_has_checkpoint
-#, fuzzy
-msgid ""
-"A product has been imported from a backend and needs to be reviewed. Go to "
-"Connectors > Checkpoint and review the new products."
-msgstr ""
-"Un article a été importé depuis un backend et nécessite un contrôle.\n"
-"Aller dans Connecteurs > Points de contrôle et vérifier les nouveaux "
-"articles."
-
-#. module: connector_ecommerce
-#: model:exception.rule,name:connector_ecommerce.excep_product_has_checkpoint
-msgid "A product needs to be reviewed."
-msgstr "Un article doit être contrôlé."
-
-#. module: connector_ecommerce
 #: model:ir.model.fields,help:connector_ecommerce.field_account_payment_mode__days_before_cancel
 msgid ""
 "After 'n' days, if the 'Import Rule' is not fulfilled, the import of the "
@@ -75,8 +60,8 @@ msgstr "Annuler"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__canceled_in_backend
-msgid "Canceled in backend"
-msgstr "Annulée dans le backend"
+msgid "Canceled In Backend"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
@@ -89,7 +74,6 @@ msgid "Cancellation from the backend resolved"
 msgstr "Annulation depuis le backend résolue"
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_cash_on_delivery
 #: model:product.template,name:connector_ecommerce.product_product_cash_on_delivery_product_template
 #, fuzzy
 msgid "Cash on Delivery"
@@ -101,7 +85,7 @@ msgid "Confirm"
 msgstr "Confirmer"
 
 #. module: connector_ecommerce
-#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_invoice_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_move_form
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_order_connector_form
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_stock_picking_out_connector_form
 msgid "Connectors"
@@ -119,11 +103,12 @@ msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__days_before_cancel
-msgid "Days before cancel"
-msgstr "Jours avant annulation"
+msgid "Days Before Cancel"
+msgstr ""
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:174
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "Despite the cancellation of the sales order on the backend, it should stay "
@@ -131,7 +116,6 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_discount
 #: model:product.template,name:connector_ecommerce.product_product_discount_product_template
 msgid "Discount Coupon"
 msgstr "Bon de réduction"
@@ -142,15 +126,9 @@ msgid "Display Name"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_gift
 #: model:product.template,name:connector_ecommerce.product_product_gift_product_template
 msgid "Gift Certificate"
 msgstr "Coupon Cadeau"
-
-#. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__has_checkpoint
-msgid "Has Checkpoint"
-msgstr "A un point de contrôle"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,help:connector_ecommerce.field_sale_order__need_cancel
@@ -200,9 +178,9 @@ msgid "Import Rules"
 msgstr "Règles d'import"
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_account_invoice
-msgid "Invoice"
-msgstr "Facture"
+#: model:ir.model,name:connector_ecommerce.model_account_move
+msgid "Journal Entry"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel____last_update
@@ -237,7 +215,6 @@ msgstr "Commande parente"
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
 #, fuzzy
-#| msgid "Sales order canceled on the backend."
 msgid "Parent sales order canceled on the backend."
 msgstr "Commandes annulées sur leur backend."
 
@@ -248,14 +225,14 @@ msgid "Payment Modes"
 msgstr "Méthode de paiement"
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_product_product
+#: model:ir.model,name:connector_ecommerce.model_product_template
 msgid "Product"
 msgstr "Produit"
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_product_template
-msgid "Product Template"
-msgstr "Template d'article"
+#: model:ir.model,name:connector_ecommerce.model_product_product
+msgid "Product Variant"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__reason
@@ -269,10 +246,8 @@ msgstr "Reliquat lié"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_sale_order
-#, fuzzy
-#| msgid "Sales Order"
-msgid "Sale Order"
-msgstr "Bon de commande"
+msgid "Sales Order"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_order_need_cancel
@@ -280,12 +255,6 @@ msgid "Sales order canceled on the backend."
 msgstr "Commandes annulées sur leur backend."
 
 #. module: connector_ecommerce
-#: model:product.category,name:connector_ecommerce.product_categ_services
-msgid "Services"
-msgstr "Services"
-
-#. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_shipping
 #: model:product.template,name:connector_ecommerce.product_product_shipping_product_template
 #, fuzzy
 msgid "Shipping Costs"
@@ -328,7 +297,8 @@ msgstr ""
 "annulée."
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:114
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "The sales order cannot be automatically canceled because it is already in "
@@ -336,19 +306,22 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:122
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid "The sales order could not be automatically canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:125
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, fuzzy, python-format
 msgid "The sales order has been automatically canceled."
 msgstr "Les commandes ont été annulées sur leur backend."
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:131
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
 #, python-format
 msgid "The sales order has been canceled on the backend."
@@ -402,44 +375,56 @@ msgid "Transfer"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,uom_name:connector_ecommerce.product_product_cash_on_delivery
-#: model:product.product,uom_name:connector_ecommerce.product_product_discount
-#: model:product.product,uom_name:connector_ecommerce.product_product_gift
-#: model:product.product,uom_name:connector_ecommerce.product_product_shipping
-#: model:product.template,uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_discount_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_gift_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_shipping_product_template
-msgid "Unit(s)"
-msgstr ""
-
-#. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
 msgid "View Parent Sales Order"
 msgstr "Voir la commande parente"
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:134
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, fuzzy, python-format
 msgid "Warning: the origin sales order %s has been canceled on the backend."
 msgstr "Les commandes %s ont été annulées sur leur backend."
 
 #. module: connector_ecommerce
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_discount
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_gift
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_shipping
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_discount_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_gift_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_shipping_product_template
-msgid "kg"
-msgstr ""
-
-#. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "or"
 msgstr "ou"
+
+#, fuzzy
+#~ msgid ""
+#~ "A product has been imported from a backend and needs to be reviewed. Go "
+#~ "to Connectors > Checkpoint and review the new products."
+#~ msgstr ""
+#~ "Un article a été importé depuis un backend et nécessite un contrôle.\n"
+#~ "Aller dans Connecteurs > Points de contrôle et vérifier les nouveaux "
+#~ "articles."
+
+#~ msgid "A product needs to be reviewed."
+#~ msgstr "Un article doit être contrôlé."
+
+#~ msgid "Canceled in backend"
+#~ msgstr "Annulée dans le backend"
+
+#~ msgid "Days before cancel"
+#~ msgstr "Jours avant annulation"
+
+#~ msgid "Has Checkpoint"
+#~ msgstr "A un point de contrôle"
+
+#~ msgid "Invoice"
+#~ msgstr "Facture"
+
+#~ msgid "Product Template"
+#~ msgstr "Template d'article"
+
+#, fuzzy
+#~| msgid "Sales Order"
+#~ msgid "Sale Order"
+#~ msgstr "Bon de commande"
+
+#~ msgid "Services"
+#~ msgstr "Services"
 
 #, fuzzy
 #~ msgid ""

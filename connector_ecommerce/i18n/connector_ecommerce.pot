@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
@@ -52,7 +53,7 @@ msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__canceled_in_backend
-msgid "Canceled in backend"
+msgid "Canceled In Backend"
 msgstr ""
 
 #. module: connector_ecommerce
@@ -66,7 +67,6 @@ msgid "Cancellation from the backend resolved"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_cash_on_delivery
 #: model:product.template,name:connector_ecommerce.product_product_cash_on_delivery_product_template
 msgid "Cash on Delivery"
 msgstr ""
@@ -95,10 +95,11 @@ msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__days_before_cancel
-msgid "Days before cancel"
+msgid "Days Before Cancel"
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
@@ -107,26 +108,16 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_discount
 #: model:product.template,name:connector_ecommerce.product_product_discount_product_template
 msgid "Discount Coupon"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_move__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_tax__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template__display_name
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move__display_name
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_gift
 #: model:product.template,name:connector_ecommerce.product_product_gift_product_template
 msgid "Gift Certificate"
 msgstr ""
@@ -144,15 +135,7 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_move__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_tax__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template__id
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move__id
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__id
 msgid "ID"
 msgstr ""
 
@@ -188,15 +171,7 @@ msgid "Journal Entry"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_move____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_account_tax____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template____last_update
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move____last_update
-#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -236,13 +211,13 @@ msgid "Payment Modes"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_product_product
+#: model:ir.model,name:connector_ecommerce.model_product_template
 msgid "Product"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_product_template
-msgid "Product Template"
+#: model:ir.model,name:connector_ecommerce.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: connector_ecommerce
@@ -266,7 +241,6 @@ msgid "Sales order canceled on the backend."
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,name:connector_ecommerce.product_product_shipping
 #: model:product.template,name:connector_ecommerce.product_product_shipping_product_template
 msgid "Shipping Costs"
 msgstr ""
@@ -301,6 +275,7 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
@@ -309,18 +284,21 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid "The sales order could not be automatically canceled."
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid "The sales order has been automatically canceled."
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
 #, python-format
@@ -360,23 +338,12 @@ msgid "Transfer"
 msgstr ""
 
 #. module: connector_ecommerce
-#: model:product.product,uom_name:connector_ecommerce.product_product_cash_on_delivery
-#: model:product.product,uom_name:connector_ecommerce.product_product_discount
-#: model:product.product,uom_name:connector_ecommerce.product_product_gift
-#: model:product.product,uom_name:connector_ecommerce.product_product_shipping
-#: model:product.template,uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_discount_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_gift_product_template
-#: model:product.template,uom_name:connector_ecommerce.product_product_shipping_product_template
-msgid "Units"
-msgstr ""
-
-#. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
 msgid "View Parent Sales Order"
 msgstr ""
 
 #. module: connector_ecommerce
+#. odoo-python
 #: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid "Warning: the origin sales order %s has been canceled on the backend."

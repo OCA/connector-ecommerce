@@ -26,7 +26,7 @@ class TestPickingEvent(common.TransactionCase):
         )
 
     def setUp(self):
-        super(TestPickingEvent, self).setUp()
+        super().setUp()
         self.picking_model = self.env["stock.picking"]
         self.sale_model = self.env["sale.order"]
         self.sale_line_model = self.env["sale.order.line"]

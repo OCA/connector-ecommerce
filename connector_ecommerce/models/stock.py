@@ -14,7 +14,7 @@ class StockPicking(models.Model):
     )
 
     def write(self, vals):
-        res = super(StockPicking, self).write(vals)
+        res = super().write(vals)
         if vals.get("carrier_tracking_ref"):
             for record in self:
                 self._event("on_tracking_number_added").notify(record)
