@@ -13,7 +13,7 @@ class ProductTemplate(models.Model):
     def _compute_tax_group_id(self):
         self.ensure_one()
         taxes = self.taxes_id
-        self.tax_group_id = taxes[:-1].tax_group_id.id
+        self.tax_group_id = taxes[-1:].tax_group_id.id
 
     tax_group_id = fields.Many2one(
         comodel_name="account.tax.group",
@@ -50,7 +50,7 @@ class ProductTemplate(models.Model):
                 self._event("on_product_price_changed").notify(product)
 
     def write(self, vals):
-        result = super(ProductTemplate, self).write(vals)
+        result = super().write(vals)
         self._price_changed(vals)
         return result
 
@@ -60,7 +60,10 @@ class ProductProduct(models.Model):
 
     @api.model
     def _price_changed_fields(self):
-        return {"lst_price", "standard_price", "price", "price_extra"}
+        return {
+            "lst_price",
+            "price_extra",
+        } | self.product_tmpl_id._price_changed_fields()
 
     def _price_changed(self, vals):
         """Fire the ``on_product_price_changed`` if the price
@@ -83,8 +86,9 @@ class ProductProduct(models.Model):
         self._price_changed(vals)
         return result
 
-    @api.model
-    def create(self, vals):
-        product = super(ProductProduct, self).create(vals)
-        product._price_changed(vals)
-        return product
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for vals, record in zip(vals_list, records):
+            record._price_changed(vals)
+        return records

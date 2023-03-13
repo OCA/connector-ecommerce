@@ -6,7 +6,6 @@ from odoo.addons.component.core import Component
 
 
 class OnChangeManager(Component):
-
     _name = "ecommerce.onchange.manager"
     _inherit = "base.connector"
 
@@ -53,19 +52,13 @@ class OnChangeManager(Component):
 
 
 class SaleOrderOnChange(Component):
-
     _name = "ecommerce.onchange.manager.sale.order"
     _inherit = "ecommerce.onchange.manager"
     _usage = "ecommerce.onchange.manager.sale.order"
 
-    order_onchange_fields = [
-        "partner_id",
-        "partner_shipping_id",
-        "payment_mode_id",
-        "workflow_process_id",
-    ]
+    order_onchange_fields = ["partner_id"]
 
-    line_onchange_fields = ["product_id"]
+    line_onchange_fields = ["order_id", "product_id"]
 
     def play(self, order, order_lines):
         """Play the onchange of the sales order and it's lines
@@ -85,8 +78,7 @@ class SaleOrderOnChange(Component):
         processed_order_lines = []
         line_lists = [order_lines]
         if "order_line" in order and order["order_line"] is not order_lines:
-            # we have both backend-dependent and oerp-native order
-            # lines.
+            # we have both backend-dependent and oerp-native order lines.
             # oerp-native lines can have been added to map
             # shipping fees with an Odoo Product
             line_lists.append(order["order_line"])

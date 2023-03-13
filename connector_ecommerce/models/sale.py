@@ -156,23 +156,24 @@ class SaleOrder(models.Model):
             for invoice in order.invoice_ids:
                 invoice.message_post(body=message)
 
-    @api.model
-    def create(self, values):
-        order = super(SaleOrder, self).create(values)
-        if values.get("canceled_in_backend"):
-            order._log_canceled_in_backend()
-            order._try_auto_cancel()
-        return order
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for vals, record in zip(vals_list, records):
+            if vals.get("canceled_in_backend"):
+                record._log_canceled_in_backend()
+                record._try_auto_cancel()
+        return records
 
     def write(self, values):
-        result = super(SaleOrder, self).write(values)
+        result = super().write(values)
         if values.get("canceled_in_backend"):
             self._log_canceled_in_backend()
             self._try_auto_cancel()
         return result
 
     def action_cancel(self):
-        res = super(SaleOrder, self).action_cancel()
+        res = super().action_cancel()
         for sale in self:
             # the sales order is canceled => considered as resolved
             if sale.canceled_in_backend and not sale.cancellation_resolved:
@@ -219,8 +220,6 @@ class SaleOrder(models.Model):
 
     def _create_delivery_line(self, carrier, price_unit):
         if self.order_line.filtered(lambda r: r.is_delivery):
-            # skip if we have already a delivery line (created by
-            # import of order)
+            # skip if we have already a delivery line (created by import of order)
             return
-        else:
-            return super(SaleOrder, self)._create_delivery_line(carrier, price_unit)
+        return super()._create_delivery_line(carrier, price_unit)
