@@ -12,12 +12,14 @@ class AccountMove(models.Model):
         self.notify_invoice_validate()
         return res
 
-    def action_invoice_paid(self):
-        res = super().action_invoice_paid()
+    def _invoice_paid_hook(self):
+        res = super()._invoice_paid_hook()
         for record in self:
             self._event("on_invoice_paid").notify(record)
         return res
 
     def notify_invoice_validate(self):
-        for record in self.filtered(lambda m: m.move_type == "out_invoice"):
+        for record in self:
+            if record.move_type != "out_invoice":
+                continue
             self._event("on_invoice_validated").notify(record)

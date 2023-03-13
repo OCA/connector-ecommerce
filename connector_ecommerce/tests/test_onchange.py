@@ -18,7 +18,7 @@ class TestOnchange(ComponentRegistry):
     """Test if the onchanges are applied correctly on a sales order"""
 
     def setUp(self):
-        super(TestOnchange, self).setUp()
+        super().setUp()
         self.collection = self.env["collection.base"]
         OnChangeManager._build_component(self.comp_registry)
         SaleOrderOnChange._build_component(self.comp_registry)
