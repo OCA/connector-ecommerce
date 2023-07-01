@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: odoo-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
-"PO-Revision-Date: 2023-06-26 18:08+0000\n"
-"Last-Translator: SoniaViciana <financiero@factorlibre.com>\n"
+"PO-Revision-Date: 2023-07-01 20:09+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +83,7 @@ msgstr "Cancelelación resuelta desde el área de administración"
 #. module: connector_ecommerce
 #: model:product.template,name:connector_ecommerce.product_product_cash_on_delivery_product_template
 msgid "Cash on Delivery"
-msgstr "Contra-reembolso"
+msgstr "Contra reembolso"
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
@@ -120,8 +120,8 @@ msgid ""
 "Despite the cancellation of the sales order on the backend, it should stay "
 "open.<br/><br/>Reason: %s"
 msgstr ""
-"Apesar de la cancelación de la orden de vente en el área de administración. "
-"debería permanecer abierto.<br/><br/>Razón: %s"
+"A pesar de la cancelación de la venta en el área de administración, debería "
+"permanecer abierto.<br/><br/>Razón: %s"
 
 #. module: connector_ecommerce
 #: model:product.template,name:connector_ecommerce.product_product_discount_product_template
@@ -220,14 +220,13 @@ msgstr "Orden Padre"
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
-#, fuzzy
 msgid "Parent sales order canceled on the backend."
 msgstr "Pedido de venta cancelado en el área de administración."
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_account_payment_mode
 msgid "Payment Modes"
-msgstr "Modo de pago"
+msgstr "Método de Pago"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_product_template
@@ -284,19 +283,17 @@ msgstr "Grupo de impuestos"
 #: model:ir.model.fields,help:connector_ecommerce.field_product_product__tax_group_id
 #: model:ir.model.fields,help:connector_ecommerce.field_product_template__tax_group_id
 msgid "Tax groups are used with some external system like Prestashop"
-msgstr ""
-"Los grupos de impuestos se usan con algún sistema externo como Magento o "
-"Prestashop"
+msgstr "El grupo fiscal se usa en algún sistema externo, por ejemplo Prestashop"
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_parent_order_need_cancel
-#, fuzzy
 msgid ""
 "The parent sales order has been canceled on the backend. You will not be "
 "able to process this sales order until the parent's one is canceled."
 msgstr ""
-"El pedido de venta padre ha sido cancelado en el área de administración.\n"
-"No podrá procesar este pedido de venta hasta que el padre sea cancelado."
+"El pedido de venta relacionado ha sido cancelado en el área de "
+"administración. No podrá procesar este pedido de venta mientras el "
+"relacionado esté cancelado."
 
 #. module: connector_ecommerce
 #. odoo-python
@@ -340,9 +337,12 @@ msgid ""
 "Commerce backend.\n"
 "                            <br/>"
 msgstr ""
-"Los pedidos de venta que usan este modo de pago serán importados\n"
-"                                sólo cuando reciban un pago en el area de "
-"administración del comercio electrónico."
+"Los pedidos de venta que usan este método de pago\n"
+"                                                              serán "
+"importados\n"
+"                                                              sólo cuando "
+"reciban un pago en el área de administración del comercio electrónico.\n"
+"                                                              <br/>"
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
@@ -357,7 +357,6 @@ msgstr "Los pedidos de venta que usan este modo de pago nunca serán importados.
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
-#, fuzzy
 msgid ""
 "This sales order has been canceled from the backend.\n"
 "                        The usual action would be to cancel it in Odoo "
