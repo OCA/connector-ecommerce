@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Launchpad (build 17017)\n"
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:104
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "<p>Resolution:<ol><li>Cancel the linked invoices, delivery orders, automatic "
@@ -101,7 +101,7 @@ msgid "Confirm"
 msgstr "Confirmer"
 
 #. module: connector_ecommerce
-#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_invoice_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_move_form
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_order_connector_form
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_stock_picking_out_connector_form
 msgid "Connectors"
@@ -123,7 +123,7 @@ msgid "Days before cancel"
 msgstr "Jours avant annulation"
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:174
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "Despite the cancellation of the sales order on the backend, it should stay "
@@ -200,9 +200,9 @@ msgid "Import Rules"
 msgstr "Règles d'import"
 
 #. module: connector_ecommerce
-#: model:ir.model,name:connector_ecommerce.model_account_invoice
-msgid "Invoice"
-msgstr "Facture"
+#: model:ir.model,name:connector_ecommerce.model_account_move
+msgid "Journal Entries"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel____last_update
@@ -237,9 +237,13 @@ msgstr "Commande parente"
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
 #, fuzzy
-#| msgid "Sales order canceled on the backend."
 msgid "Parent sales order canceled on the backend."
 msgstr "Commandes annulées sur leur backend."
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__rule_paid_acquirer_id
+msgid "Payment Acquirer"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_account_payment_mode
@@ -269,20 +273,13 @@ msgstr "Reliquat lié"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_sale_order
-#, fuzzy
-#| msgid "Sales Order"
-msgid "Sale Order"
-msgstr "Bon de commande"
+msgid "Sales Order"
+msgstr ""
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_order_need_cancel
 msgid "Sales order canceled on the backend."
 msgstr "Commandes annulées sur leur backend."
-
-#. module: connector_ecommerce
-#: model:product.category,name:connector_ecommerce.product_categ_services
-msgid "Services"
-msgstr "Services"
 
 #. module: connector_ecommerce
 #: model:product.product,name:connector_ecommerce.product_product_shipping
@@ -328,7 +325,7 @@ msgstr ""
 "annulée."
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:114
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid ""
 "The sales order cannot be automatically canceled because it is already in "
@@ -336,19 +333,19 @@ msgid ""
 msgstr ""
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:122
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, python-format
 msgid "The sales order could not be automatically canceled."
 msgstr ""
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:125
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, fuzzy, python-format
 msgid "The sales order has been automatically canceled."
 msgstr "Les commandes ont été annulées sur leur backend."
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:131
+#: code:addons/connector_ecommerce/models/sale.py:0
 #: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
 #, python-format
 msgid "The sales order has been canceled on the backend."
@@ -410,7 +407,7 @@ msgstr ""
 #: model:product.template,uom_name:connector_ecommerce.product_product_discount_product_template
 #: model:product.template,uom_name:connector_ecommerce.product_product_gift_product_template
 #: model:product.template,uom_name:connector_ecommerce.product_product_shipping_product_template
-msgid "Unit(s)"
+msgid "Units"
 msgstr ""
 
 #. module: connector_ecommerce
@@ -419,27 +416,26 @@ msgid "View Parent Sales Order"
 msgstr "Voir la commande parente"
 
 #. module: connector_ecommerce
-#: code:addons/connector_ecommerce/models/sale.py:134
+#: code:addons/connector_ecommerce/models/sale.py:0
 #, fuzzy, python-format
 msgid "Warning: the origin sales order %s has been canceled on the backend."
 msgstr "Les commandes ont été annulées sur leur backend."
 
 #. module: connector_ecommerce
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_discount
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_gift
-#: model:product.product,weight_uom_name:connector_ecommerce.product_product_shipping
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_cash_on_delivery_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_discount_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_gift_product_template
-#: model:product.template,weight_uom_name:connector_ecommerce.product_product_shipping_product_template
-msgid "kg"
-msgstr ""
-
-#. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
 msgid "or"
 msgstr "ou"
+
+#~ msgid "Invoice"
+#~ msgstr "Facture"
+
+#, fuzzy
+#~| msgid "Sales Order"
+#~ msgid "Sale Order"
+#~ msgstr "Bon de commande"
+
+#~ msgid "Services"
+#~ msgstr "Services"
 
 #, fuzzy
 #~ msgid ""
