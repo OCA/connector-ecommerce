@@ -283,7 +283,8 @@ msgstr "Grupo de impuestos"
 #: model:ir.model.fields,help:connector_ecommerce.field_product_product__tax_group_id
 #: model:ir.model.fields,help:connector_ecommerce.field_product_template__tax_group_id
 msgid "Tax groups are used with some external system like Prestashop"
-msgstr "El grupo fiscal se usa en algún sistema externo, por ejemplo Prestashop"
+msgstr ""
+"El grupo fiscal se usa en algún sistema externo, por ejemplo Prestashop"
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_parent_order_need_cancel
@@ -353,7 +354,8 @@ msgstr ""
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
 msgid "The sales orders using the payment method will never be imported."
-msgstr "Los pedidos de venta que usan este modo de pago nunca serán importados."
+msgstr ""
+"Los pedidos de venta que usan este modo de pago nunca serán importados."
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
