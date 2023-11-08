@@ -8,8 +8,9 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     def post(self):
-        super().post()
+        res = super().post()
         self.notify_invoice_validate()
+        return res
 
     def action_invoice_paid(self):
         res = super().action_invoice_paid()
