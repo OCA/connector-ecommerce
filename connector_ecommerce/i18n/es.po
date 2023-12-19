@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: odoo-connector-ecommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-01 14:34+0000\n"
-"PO-Revision-Date: 2023-12-19 14:38+0000\n"
+"PO-Revision-Date: 2023-12-19 17:35+0000\n"
 "Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -139,7 +139,7 @@ msgstr "Cupón de Descuento"
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move__display_name
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Mostrar Nombre"
 
 #. module: connector_ecommerce
 #: model:product.product,name:connector_ecommerce.product_product_gift
@@ -154,13 +154,12 @@ msgstr "Ha sido cancelado en el área de administración, debe ser cancelado."
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
-#, fuzzy
 msgid ""
 "However, if for any reason you need to keep it open in Odoo,\n"
 "                        write the reason here and it will stay open."
 msgstr ""
-"Sin embargo. si por alguna razón necesita mantenerlo abierto en Odoo,\n"
-"\t\t\t\t\tescriba la razón aquí y se mantendrá abierto."
+"Sin embargo, si por alguna razón necesitas mantenerlo abierto en Odoo,\n"
+"                        escriba la razón aquí y permanecerá abierta."
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_account_move__id
@@ -173,7 +172,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move__id
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__id
 msgid "ID"
-msgstr ""
+msgstr "ID (identificación)"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_sale_ignore_cancel
@@ -204,7 +203,7 @@ msgstr "Importar Reglas"
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "Entrada en Diario"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_account_move____last_update
@@ -217,17 +216,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_move____last_update
 #: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación el"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Última Actualización por"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última Actualización el"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__need_cancel
@@ -246,15 +245,13 @@ msgstr "Orden Padre"
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
-#, fuzzy
 msgid "Parent sales order canceled on the backend."
 msgstr "Pedido de venta cancelado en el área de administración."
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_account_payment_mode
-#, fuzzy
 msgid "Payment Modes"
-msgstr "Método de Pago"
+msgstr "Modalidades de pago"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_product_product
@@ -279,7 +276,7 @@ msgstr "Pedidos pendientes relacionados"
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Orden de Venta"
 
 #. module: connector_ecommerce
 #: model:exception.rule,name:connector_ecommerce.excep_order_need_cancel
@@ -289,14 +286,13 @@ msgstr "Pedido de venta cancelado en el área de administración."
 #. module: connector_ecommerce
 #: model:product.product,name:connector_ecommerce.product_product_shipping
 #: model:product.template,name:connector_ecommerce.product_product_shipping_product_template
-#, fuzzy
 msgid "Shipping Costs"
-msgstr "Gastos de envio"
+msgstr "Gastos de Envío"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Movimiento de Almacén"
 
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_account_tax
@@ -307,34 +303,33 @@ msgstr "Impuesto"
 #: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__tax_group_id
 #: model:ir.model.fields,field_description:connector_ecommerce.field_product_template__tax_group_id
 msgid "Tax Group"
-msgstr "Tax Group"
+msgstr "Grupo de Impuesto"
 
 #. module: connector_ecommerce
 #: model:ir.model.fields,help:connector_ecommerce.field_product_product__tax_group_id
 #: model:ir.model.fields,help:connector_ecommerce.field_product_template__tax_group_id
-#, fuzzy
 msgid "Tax groups are used with some external system like Prestashop"
 msgstr ""
-"El grupo fiscal se usa con algún sistema externo como magento do prestashop"
+"Los grupos fiscales se utilizan con algún sistema externo como Prestashop"
 
 #. module: connector_ecommerce
 #: model:exception.rule,description:connector_ecommerce.excep_parent_order_need_cancel
-#, fuzzy
 msgid ""
 "The parent sales order has been canceled on the backend. You will not be "
 "able to process this sales order until the parent's one is canceled."
 msgstr ""
-"El pedido de venta padre ha sido cancelado en el área de administración.\n"
-"No podrá procesar este pedido de venta hasta que el padre sea cancelado."
+"El pedido de venta relacionado ha sido cancelado en el área de "
+"administración. No podrá procesar este pedido de venta mientras el "
+"relacionado esté cancelado."
 
 #. module: connector_ecommerce
 #: code:addons/connector_ecommerce/models/sale.py:0
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The sales order cannot be automatically canceled because it is already in "
 "\"Done\" state."
 msgstr ""
-"El pedido de venta no pudesn ser cancelado automáticamente porque ya está "
+"El pedido de venta no puede ser cancelado automáticamente porque ya está "
 "'hecho'."
 
 #. module: connector_ecommerce
@@ -358,7 +353,6 @@ msgstr "El pedido de venta ha sido cancelado en el área de administración."
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
-#, fuzzy
 msgid ""
 "The sales orders using the payment\n"
 "                            method will be imported\n"
@@ -366,9 +360,12 @@ msgid ""
 "Commerce backend.\n"
 "                            <br/>"
 msgstr ""
-"Los pedidos de venta que usan el método de pago serán importados\n"
-"                                solo cuando recivan un pago en el area de "
-"administración del comercio electrónico."
+"Los pedidos de venta que usan este método de pago\n"
+"                                                              serán "
+"importados\n"
+"                                                              sólo cuando "
+"reciban un pago en el área de administración del comercio electrónico.\n"
+"                                                              <br/>"
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
@@ -384,7 +381,6 @@ msgstr ""
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
-#, fuzzy
 msgid ""
 "This sales order has been canceled from the backend.\n"
 "                        The usual action would be to cancel it in Odoo "
@@ -400,7 +396,7 @@ msgstr ""
 #. module: connector_ecommerce
 #: model:ir.model,name:connector_ecommerce.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Transferencia"
 
 #. module: connector_ecommerce
 #: model:product.product,uom_name:connector_ecommerce.product_product_cash_on_delivery
@@ -412,7 +408,7 @@ msgstr ""
 #: model:product.template,uom_name:connector_ecommerce.product_product_gift_product_template
 #: model:product.template,uom_name:connector_ecommerce.product_product_shipping_product_template
 msgid "Units"
-msgstr ""
+msgstr "Unidades"
 
 #. module: connector_ecommerce
 #: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
