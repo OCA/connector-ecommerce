@@ -17,14 +17,13 @@ class OnChangeManager(Component):
                 if model:
                     column = self.env[model]._fields[fieldname]
                     if column.type == "many2one":
-                        value = value[0]  # many2one are tuple (id, name)
+                        value = value["id"]
                 new_values[fieldname] = value
         return new_values
 
     def play_onchanges(self, model, values, onchange_fields):
         model = self.env[model]
-        onchange_specs = model._onchange_spec()
-
+        field_spec = model._get_fields_spec()
         # we need all fields in the dict even the empty ones
         # otherwise 'onchange()' will not apply changes to them
         all_values = {k: v for k, v in values.items() if k in model._fields}
@@ -38,7 +37,7 @@ class OnChangeManager(Component):
 
         new_values = {}
         for field in onchange_fields:
-            onchange_values = new_record.onchange(all_values, field, onchange_specs)
+            onchange_values = new_record.onchange(all_values, [field], field_spec)
             new_values.update(
                 self.get_new_values(values, onchange_values, model=model._name)
             )

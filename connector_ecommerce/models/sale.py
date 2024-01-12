@@ -69,8 +69,8 @@ class SaleOrder(models.Model):
 
         See an implementation example in ``connector_magento``.
         """
-        self.ensure_one()
-        self.parent_id = False
+        for record in self:
+            record.parent_id = False
 
     # This is to resolve ERROR odoo.osv.expression: Non-stored field
     # sale.order.parent_id cannot be searched.
@@ -83,8 +83,10 @@ class SaleOrder(models.Model):
         """Return True if the sales order need to be canceled
         (has been canceled on the Backend)
         """
-        self.ensure_one()
-        self.need_cancel = self.canceled_in_backend and not self.cancellation_resolved
+        for record in self:
+            record.need_cancel = (
+                record.canceled_in_backend and not record.cancellation_resolved
+            )
 
     @api.depends(
         "need_cancel",
@@ -97,13 +99,13 @@ class SaleOrder(models.Model):
         be canceled (has been canceled on the backend).
         Follows all the parent sales orders.
         """
-        self.ensure_one()
-        self.parent_need_cancel = False
-        order = self.parent_id
-        while order:
-            if order.need_cancel:
-                self.parent_need_cancel = True
-            order = order.parent_id
+        for record in self:
+            record.parent_need_cancel = False
+            order = record.parent_id
+            while order:
+                if order.need_cancel:
+                    record.parent_need_cancel = True
+                order = order.parent_id
 
     def _try_auto_cancel(self):
         """Try to automatically cancel a sales order canceled

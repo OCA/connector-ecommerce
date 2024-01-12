@@ -16,7 +16,7 @@ class TestPickingEvent(common.TransactionCase):
             "picking_id": picking_id.id,
             "product_id": product.id,
             "product_uom_qty": product_qty,
-            "qty_done": product_qty,
+            "quantity": product_qty,
         }
         vals.update(**values)
         pack_operation = move_line_env.new(vals)
@@ -69,7 +69,8 @@ class TestPickingEvent(common.TransactionCase):
             self.picking.action_confirm()
             self.picking.action_assign()
             for move in self.picking.move_ids:
-                move.move_line_ids.qty_done = move.product_qty
+                move.move_line_ids.quantity = move.product_qty
+                move.move_line_ids.picked = True
             self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
@@ -83,7 +84,8 @@ class TestPickingEvent(common.TransactionCase):
         with mock.patch(mock_method) as mock_event:
             self.picking.action_confirm()
             self.picking.action_assign()
-            self.picking.move_line_ids.qty_done = 1.0
+            self.picking.move_line_ids.quantity = 1.0
+            self.picking.move_line_ids.picked = True
             self.picking._action_done()
             self.assertEqual(self.picking.state, "done")
             mock_event("on_picking_out_done").notify.assert_called_with(
