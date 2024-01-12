@@ -1,0 +1,5 @@
+odoo-addon-base-exception @ git+https://github.com/OCA/server-tools.git@refs/pull/2809/head#subdirectory=base_exception
+odoo-addon-sale_exception @ git+https://github.com/OCA/sale-workflow.git@refs/pull/2860/head#subdirectory=sale_exception
+odoo-addon-sale_automatic_workflow @ git+https://github.com/OCA/sale-workflow.git@refs/pull/2826/head#subdirectory=sale_automatic_workflow
+odoo-addon-sale_automatic_workflow_payment_mode @ git+https://github.com/OCA/sale-workflow.git@refs/pull/2892/head#subdirectory=sale_automatic_workflow_payment_mode
+odoo-addon-connector_base_product @ git+https://github.com/OCA/connector.git@refs/pull/479/head#subdirectory=connector_base_product
