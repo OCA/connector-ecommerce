@@ -159,7 +159,7 @@ class SaleOrder(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
-        for vals, record in zip(vals_list, records):
+        for vals, record in zip(vals_list, records, strict=True):
             if vals.get("canceled_in_backend"):
                 record._log_canceled_in_backend()
                 record._try_auto_cancel()
