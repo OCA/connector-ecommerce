@@ -89,6 +89,6 @@ class ProductProduct(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
-        for vals, record in zip(vals_list, records):
+        for vals, record in zip(vals_list, records, strict=True):
             record._price_changed(vals)
         return records
