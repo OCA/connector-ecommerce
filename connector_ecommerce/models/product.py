@@ -9,11 +9,12 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     # TODO implement set function and also support multi tax
+
     @api.depends("taxes_id.tax_group_id")
     def _compute_tax_group_id(self):
-        self.ensure_one()
-        taxes = self.taxes_id
-        self.tax_group_id = taxes[-1:].tax_group_id.id
+        for record in self:
+            taxes = record.taxes_id
+            record.tax_group_id = taxes[-1:].tax_group_id.id
 
     tax_group_id = fields.Many2one(
         comodel_name="account.tax.group",

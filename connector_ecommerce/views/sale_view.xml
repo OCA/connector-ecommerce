@@ -34,7 +34,7 @@
                     string="View Parent Sales Order"
                     type="object"
                     class="oe_highlight"
-                    attrs="{'invisible': [('parent_id', '=', False)]}"
+                    invisible="not parent_id"
                     groups="base.group_user"
                 />
             </xpath>
@@ -42,7 +42,7 @@
                 <button
                     name="%(action_sale_ignore_cancel)d"
                     type="action"
-                    attrs="{'invisible': ['|', '|', ('canceled_in_backend', '=', False), ('cancellation_resolved', '=', True), ('state', '==', 'cancel')]}"
+                    invisible="not canceled_in_backend or cancellation_resolved or state == 'cancel'"
                     string="Ignore backend's cancellation, Keep Open"
                     groups="sales_team.group_sale_manager"
                 />
