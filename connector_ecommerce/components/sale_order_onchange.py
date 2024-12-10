@@ -18,7 +18,16 @@ class OnChangeManager(Component):
                 if model:
                     column = self.env[model]._fields[fieldname]
                     if column.type == "many2one":
-                        value = value[0]  # many2one are tuple (id, name)
+                        if value:
+                            assert (
+                                isinstance(value, (tuple, list)) and len(value) == 2
+                            ), (
+                                "onchange() on model %s "
+                                "should return a tuple with 2 elements "
+                                "(id, name) as value for many2one field %s"
+                                % (model, fieldname)
+                            )
+                            value = value[0]
                 new_values[fieldname] = value
         return new_values
 
