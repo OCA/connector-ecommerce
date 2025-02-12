@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_account_payment_method_line_tree_inherit" model="ir.ui.view">
+        <field name="model">account.payment.method.line</field>
+        <field name="inherit_id" ref="account.view_account_payment_method_line_tree" />
+        <field name="arch" type="xml">
+            <field name="journal_id" position="after">
+                <field name="import_rule" />
+                <field name="days_before_cancel" />
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -69,14 +69,11 @@ class TestOnchange(ComponentRegistry):
                 "taxes_id": [(6, 0, [tax.id])],
             }
         )
-        payment_mode_xmlid = "account_payment_mode.payment_mode_inbound_ct2"
-        payment_mode = self.env.ref(payment_mode_xmlid)
 
         order_vals = {
             "name": "mag_10000001",
             "partner_id": partner.id,
             "company_id": self.env.company.id,
-            "payment_mode_id": payment_mode.id,
             "order_line": [
                 (
                     0,

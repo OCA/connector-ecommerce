@@ -5,7 +5,7 @@
 
 import logging
 
-from odoo import _, api, exceptions, fields, models, osv
+from odoo import api, exceptions, fields, models, osv
 
 _logger = logging.getLogger(__name__)
 
@@ -113,7 +113,7 @@ class SaleOrder(models.Model):
 
         If it can't cancel it, does nothing.
         """
-        resolution_msg = _(
+        resolution_msg = self.env._(
             "<p>Resolution:<ol>"
             "<li>Cancel the linked invoices, delivery "
             "orders, automatic payments.</li>"
@@ -125,7 +125,7 @@ class SaleOrder(models.Model):
             if state == "cancel":
                 continue
             elif state == "done":
-                message = _(
+                message = self.env._(
                     "The sales order cannot be automatically "
                     'canceled because it is already in "Done" state.'
                 )
@@ -135,19 +135,23 @@ class SaleOrder(models.Model):
                 except (osv.osv.except_osv, osv.orm.except_orm, exceptions.Warning):
                     # the 'cancellation_resolved' flag will stay to False
                     message = (
-                        _("The sales order could not be automatically canceled.")
+                        self.env._(
+                            "The sales order could not be automatically canceled."
+                        )
                         + resolution_msg
                     )
                 else:
-                    message = _("The sales order has been automatically canceled.")
+                    message = self.env._(
+                        "The sales order has been automatically canceled."
+                    )
             order.message_post(body=message)
 
     def _log_canceled_in_backend(self):
-        message = _("The sales order has been canceled on the backend.")
+        message = self.env._("The sales order has been canceled on the backend.")
         self.message_post(body=message)
         for order in self:
             message = (
-                _(
+                self.env._(
                     "Warning: the origin sales order %s has been canceled "
                     "on the backend."
                 )
@@ -189,7 +193,7 @@ class SaleOrder(models.Model):
         it only requires to push a button to keep it alive.
         """
         message = (
-            _(
+            self.env._(
                 "Despite the cancellation of the sales order on the "
                 "backend, it should stay open.<br/><br/>Reason: %s"
             )

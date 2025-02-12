@@ -4,10 +4,10 @@
 
 from unittest import mock
 
-import odoo.tests.common as common
+from odoo.addons.base.tests.common import BaseCommon
 
 
-class TestPickingEvent(common.TransactionCase):
+class TestPickingEvent(BaseCommon):
     """Test if the events on the pickings are fired correctly"""
 
     def _create_pack_operation(self, product, product_qty, picking_id, **values):

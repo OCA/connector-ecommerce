@@ -4,10 +4,10 @@
     <record model="res.groups" id="base.group_user">
         <field
             name="implied_ids"
-            eval="[(4, ref('product.group_discount_per_so_line')), (4, ref('account.group_delivery_invoice_address'))]"
+            eval="[(4, ref('sale.group_discount_per_so_line')), (4, ref('account.group_delivery_invoice_address'))]"
         />
     </record>
-    <!-- the connector managers always need theses rights to import or export products, sales orders, ... -->
+    <!-- the connector managers always need these rights to import or export products, sales orders, ... -->
     <record id="connector.group_connector_manager" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_manager'))]" />
     </record>

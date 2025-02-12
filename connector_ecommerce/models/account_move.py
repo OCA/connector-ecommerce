@@ -20,6 +20,5 @@ class AccountMove(models.Model):
 
     def notify_invoice_validate(self):
         for record in self:
-            if record.move_type != "out_invoice":
-                continue
-            self._event("on_invoice_validated").notify(record)
+            if record.move_type == "out_invoice":
+                self._event("on_invoice_validated").notify(record)

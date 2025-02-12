@@ -99,12 +99,6 @@ Contributors
 See
 `contributors <https://github.com/OCA/connector-ecommerce/graphs/contributors>`__.
 
-Other credits
--------------
-
-The migration of this module from 13.0 to 14.0 was financially supported
-by Camptocamp.
-
 Maintainers
 -----------
 

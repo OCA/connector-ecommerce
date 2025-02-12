@@ -4,10 +4,10 @@
 
 from unittest import mock
 
-import odoo.tests.common as common
+from odoo.addons.base.tests.common import BaseCommon
 
 
-class TestInvoiceEvent(common.TransactionCase):
+class TestInvoiceEvent(BaseCommon):
     """Test if the events on the invoice are fired correctly"""
 
     def setUp(self):
