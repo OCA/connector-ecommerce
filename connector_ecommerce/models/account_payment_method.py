@@ -9,9 +9,9 @@ class AccountPaymentMethod(models.Model):
     _inherit = "account.payment.method"
 
     @api.model
-    def _get_payment_method_domain(self, payment_method):
+    def _get_payment_method_domain(self, code, with_currency=True, with_country=True):
         """Return the domain for searching a payment method."""
-        return [("name", "=ilike", payment_method)]
+        return [("name", "=ilike", code)]
 
     @api.model
     def _sanitize_payment_method_code(self, payment_method):
