@@ -1,5 +1,5 @@
 # List of OCA dependencies
-# format: repo_name [optional_branch] [optional_url]
+# format: repo_name [optional_url] [optional_branch]
 connector
-sale-workflow 18.0 https://github.com/BITVAX/sale-workflow.git
+sale-workflow https://github.com/BITVAX/sale-workflow.git 18.0
 bank-payment
