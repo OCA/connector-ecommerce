@@ -1,0 +1,6 @@
+# List of OCA dependencies
+# format: repo_name [optional_branch] [optional_url]
+connector
+connector-base-product
+sale-workflow
+bank-payment
