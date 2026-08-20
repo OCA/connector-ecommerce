@@ -13,7 +13,7 @@
         "connector",
         "sale_automatic_workflow_payment_mode",
         "sale_exception",
-        "delivery",
+        "stock_delivery",
         "connector_base_product",
     ],
     "data": [
