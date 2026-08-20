@@ -1,0 +1,389 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_ecommerce
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2024-08-01 16:58+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid ""
+"<p>Resolution:<ol><li>Cancel the linked invoices, delivery orders, automatic"
+" payments.</li><li>Cancel the sales order manually.</li></ol></p>"
+msgstr ""
+"<p>Soluzione:<ol><li>annullare le fatture collegate, ordini di consegna, "
+"pagamenti automatici.</li><li>Annullare l'ordine di vendita "
+"manualmente.</li></ol></p>"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__parent_need_cancel
+msgid ""
+"A parent sales order has been canceled on the backend and needs to be "
+"canceled."
+msgstr ""
+"Un ordine di vendita padre è stato annullato nel backend e deve essere "
+"annullato."
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__parent_id
+msgid "A parent sales order is a sales order replaced by this one."
+msgstr "Un ordine di vendita padre è un ordine di vendita sostituito da questo."
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__parent_need_cancel
+msgid "A parent sales order needs cancel"
+msgstr "Un ordine di vendita padre deve essere annullato"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,help:connector_ecommerce.field_account_payment_mode__days_before_cancel
+msgid ""
+"After 'n' days, if the 'Import Rule' is not fulfilled, the import of the "
+"sales order will be canceled."
+msgstr ""
+"dopo 'n' giorni, se la 'Regola di importazione' non è compilata, "
+"l'importazione dell'ordine di vendita verrà annullata."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__canceled_in_backend
+msgid "Canceled In Backend"
+msgstr "Annullato nel backend"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
+msgid "Canceled in backend, to cancel"
+msgstr "Annullatonel backend, da annullare"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__cancellation_resolved
+msgid "Cancellation from the backend resolved"
+msgstr "Annullamento dal backend risolta"
+
+#. module: connector_ecommerce
+#: model:product.template,name:connector_ecommerce.product_product_cash_on_delivery_product_template
+msgid "Cash on Delivery"
+msgstr "Contanti alla consegna"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid "Confirm"
+msgstr "Conferma"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_move_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_order_connector_form
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_stock_picking_out_connector_form
+msgid "Connectors"
+msgstr "Connettori"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__days_before_cancel
+msgid "Days Before Cancel"
+msgstr "Giorni prima di annullare"
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid ""
+"Despite the cancellation of the sales order on the backend, it should stay "
+"open.<br/><br/>Reason: %s"
+msgstr ""
+"Nonostante l'annullamento dell'ordine di vendita nel backend, deve rimanere "
+"aperto.<br/><br/>Motivo: %s"
+
+#. module: connector_ecommerce
+#: model:product.template,name:connector_ecommerce.product_product_discount_product_template
+msgid "Discount Coupon"
+msgstr "Coupon sconto"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: connector_ecommerce
+#: model:product.template,name:connector_ecommerce.product_product_gift_product_template
+msgid "Gift Certificate"
+msgstr "Certificato omaggio"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,help:connector_ecommerce.field_sale_order__need_cancel
+msgid "Has been canceled on the backend, need to be canceled."
+msgstr "È stato annullato nel backend, deve essere annullato."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid ""
+"However, if for any reason you need to keep it open in Odoo,\n"
+"                        write the reason here and it will stay open."
+msgstr ""
+"Comunque, se per qualsiasi ragione deve rimanere aperto in Odoo,\n"
+"                        scrivere qui il motivo e rimarrà aperto."
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__id
+msgid "ID"
+msgstr "ID"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_sale_ignore_cancel
+msgid "Ignore Sales Order Cancel"
+msgstr "Ignora annullamento ordine di vendita"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
+msgid "Ignore backend's cancellation, Keep Open"
+msgstr "Ignora annullamento backend, mantieni aperto"
+
+#. module: connector_ecommerce
+#: model:ir.actions.act_window,name:connector_ecommerce.action_sale_ignore_cancel
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid "Ignore the cancellation on the Backend"
+msgstr "Ignora la cancellazione nel backend"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_account_payment_mode__import_rule
+msgid "Import Rule"
+msgstr "Regola importazione"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+msgid "Import Rules"
+msgstr "Regole importazione"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_account_move
+msgid "Journal Entry"
+msgstr "Registrazione contabile"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel____last_update
+msgid "Last Modified on"
+msgstr "Ultima modifica il"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__need_cancel
+msgid "Need to be canceled"
+msgstr "Deve essere annullato"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sales_order_filter
+msgid "Only sales orders canceled in their backend"
+msgstr "Solo ordini di vendita annullati nel backend"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_order__parent_id
+msgid "Parent Order"
+msgstr "Ordine padre"
+
+#. module: connector_ecommerce
+#: model:exception.rule,name:connector_ecommerce.excep_parent_order_need_cancel
+msgid "Parent sales order canceled on the backend."
+msgstr "Ordine di vendita padre annullato nel backend."
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_account_payment_mode
+msgid "Payment Modes"
+msgstr "Modi di pagamento"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_product_template
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_product_product
+msgid "Product Variant"
+msgstr "Variante prodotto"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_sale_ignore_cancel__reason
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_stock_picking__related_backorder_ids
+msgid "Related backorders"
+msgstr "Ordini residui relativi"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_sale_order
+msgid "Sales Order"
+msgstr "Ordine di vendita"
+
+#. module: connector_ecommerce
+#: model:exception.rule,name:connector_ecommerce.excep_order_need_cancel
+msgid "Sales order canceled on the backend."
+msgstr "Ordine di vendita annullato nel backend."
+
+#. module: connector_ecommerce
+#: model:product.template,name:connector_ecommerce.product_product_shipping_product_template
+msgid "Shipping Costs"
+msgstr "Costi di spedizione"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_account_tax
+msgid "Tax"
+msgstr "Imposta"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,field_description:connector_ecommerce.field_product_product__tax_group_id
+#: model:ir.model.fields,field_description:connector_ecommerce.field_product_template__tax_group_id
+msgid "Tax Group"
+msgstr "Gruppo imposte"
+
+#. module: connector_ecommerce
+#: model:ir.model.fields,help:connector_ecommerce.field_product_product__tax_group_id
+#: model:ir.model.fields,help:connector_ecommerce.field_product_template__tax_group_id
+msgid "Tax groups are used with some external system like Prestashop"
+msgstr ""
+"I gruppi imposte sono usati con qualche altro sistema esterno come Petrashop"
+
+#. module: connector_ecommerce
+#: model:exception.rule,description:connector_ecommerce.excep_parent_order_need_cancel
+msgid ""
+"The parent sales order has been canceled on the backend. You will not be "
+"able to process this sales order until the parent's one is canceled."
+msgstr ""
+"L'ordine di vendita padre è stato annullato nel backend. Non sarà possibile "
+"elaborare l'ordine di vendita."
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid ""
+"The sales order cannot be automatically canceled because it is already in "
+"\"Done\" state."
+msgstr ""
+"L'ordine di vendita non può essere annullato automaticamente perché è già in "
+"stato \"Evaso\"."
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid "The sales order could not be automatically canceled."
+msgstr "L'ordine di vendita non può essere annullato automaticamente."
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid "The sales order has been automatically canceled."
+msgstr "L'ordine di vendita è stato annullato automaticamente."
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#: model:exception.rule,description:connector_ecommerce.excep_order_need_cancel
+#, python-format
+msgid "The sales order has been canceled on the backend."
+msgstr "L'ordine di vendita è stato annullato nel backend."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+msgid ""
+"The sales orders using the payment\n"
+"                            method will be imported\n"
+"                            only when they receive a payment on the E-Commerce backend.\n"
+"                            <br/>"
+msgstr ""
+"Gli ordini di vendita che utilizzano i metodi\n"
+"                            di pagamento verranno importati\n"
+"                            solo quando ricevono un pagamento nel backend "
+"E-commerce.\n"
+"                            <br/>"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+msgid "The sales orders using the payment method will always be imported."
+msgstr ""
+"Gli ordini di vendita che usano il metodo di pagamento verranno sempre "
+"importati."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.account_payment_mode_form_inherit
+msgid "The sales orders using the payment method will never be imported."
+msgstr ""
+"Gli ordini di vendita che usano il metodo di pagamento non verranno mai "
+"importati."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid ""
+"This sales order has been canceled from the backend.\n"
+"                        The usual action would be to cancel it in Odoo along\n"
+"                        all the documents generated (delivery orders, invoices, ...)."
+msgstr ""
+"Questo ordine di vendita è stato annullato nel backend.\n"
+"                        L'azione normale sarebbe di annullarlo in Odoo "
+"insieme\n"
+"                        a tutti i documenti generati (ordini di consegna, "
+"fatture, ...)."
+
+#. module: connector_ecommerce
+#: model:ir.model,name:connector_ecommerce.model_stock_picking
+msgid "Transfer"
+msgstr "Trasferimento"
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.sale_order_view_form
+msgid "View Parent Sales Order"
+msgstr "Visualizza ordine di vendita padre"
+
+#. module: connector_ecommerce
+#. odoo-python
+#: code:addons/connector_ecommerce/models/sale.py:0
+#, python-format
+msgid "Warning: the origin sales order %s has been canceled on the backend."
+msgstr ""
+"Attenzione: l'ordine di vendita origine %s è stato annullato nel backend."
+
+#. module: connector_ecommerce
+#: model_terms:ir.ui.view,arch_db:connector_ecommerce.view_sale_ignore_cancel
+msgid "or"
+msgstr "o"
